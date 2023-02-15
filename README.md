@@ -16,7 +16,7 @@
 
 <div align="center">
 
-![social-network-db-design](https://user-images.githubusercontent.com/86602542/218822493-8d384d17-d66a-4978-b4e2-54d9c3e33e4b.svg)
+![social-network-db-design](https://user-images.githubusercontent.com/86602542/219208313-ac19f494-3997-4f1b-aa01-05d8e9312cb2.svg)
 
 </div>
 

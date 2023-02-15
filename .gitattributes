@@ -1,4 +1,3 @@
 * text=auto
 
 *.sql			linguist-language=TSQL
-db_full.sql		linguist-detectable=false

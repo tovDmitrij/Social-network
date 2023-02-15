@@ -2,7 +2,7 @@ create table app_logs(
 	cause	nvarchar(max) not null,
 	place	nvarchar(max) not null,
 	text	nvarchar(max) not null,
-	date	datetimeoffset not null
+	date	datetimeoffset default current_timestamp not null
 );
 
 create table app_rule_categories(
@@ -34,7 +34,7 @@ create table users(
 	role_id				integer default 1 not null	foreign key references app_user_roles(id),
 	login				nvarchar(max) not null,
 	password			nvarchar(max) not null,
-	registration_date	datetimeoffset not null,
+	registration_date	datetimeoffset default current_timestamp not null,
 );
 
 create table user_settings_main(
@@ -58,7 +58,7 @@ create table user_settings_messages(
 
 create table groups(
 	id				integer identity(1,1)	primary key,
-	creation_date	datetimeoffset not null
+	creation_date	datetimeoffset default current_timestamp not null
 );
 
 create table conversation_types(
@@ -69,7 +69,7 @@ create table conversation_types(
 create table conversations(
 	id				integer identity(1,1)	primary key,
 	type_id			integer not null		foreign key references conversation_types(id),
-	creation_date	datetimeoffset not null
+	creation_date	datetimeoffset default current_timestamp not null
 );
 
 create table app_user_banlists(
@@ -77,7 +77,7 @@ create table app_user_banlists(
 	user_id			integer	not null			foreign key references users(id),
 	moderator_id	integer	not null			foreign key references users(id),
 	reason_id		integer	not null			foreign key references app_rule_reasons(id),
-	date_from		datetimeoffset not null,
+	date_from		datetimeoffset default current_timestamp not null,
 	date_to			datetimeoffset not null
 );
 
@@ -86,7 +86,7 @@ create table app_group_banlists(
 	group_id		integer	not null			foreign key references groups(id),
 	moderator_id	integer	not null			foreign key	references users(id),
 	reason_id		integer	not null			foreign key references app_rule_reasons(id),
-	date_from		datetimeoffset not null,
+	date_from		datetimeoffset default current_timestamp not null,
 	date_to			datetimeoffset not null
 );
 
@@ -148,19 +148,19 @@ create table family_statuses(
 );
 
 create table countries(
-	id		integer identity(1,1)	primary key,
+	id		integer					primary key,
 	name	nvarchar(max) not null
 );
 
-create table districts(
-	id			integer identity(1,1)	primary key,
+create table regions(
+	id			integer					primary key,
 	country_id	integer not null		foreign key references countries(id),
 	name		nvarchar(max) not null 
 );
 
 create table cities(
-	id			integer identity(1,1)	primary key,
-	district_id integer not null		foreign key references districts(id),
+	id			integer					primary key,
+	region_id 	integer not null		foreign key references regions(id),
 	name		nvarchar(max) not null
 );
 
@@ -262,7 +262,7 @@ create table conversation_member_requests(
 	conversation_id		integer						foreign key references conversations(id),
 	user_id_from		integer						foreign key references users(id),
 	user_id_to			integer						foreign key references users(id),
-	date				datetimeoffset not null,
+	date				datetimeoffset default current_timestamp not null,
 	primary key(conversation_id, user_id_from, user_id_to)
 );
 
@@ -270,7 +270,7 @@ create table messages(
 	id			integer	identity(1,1)	primary key,
 	user_id		integer not null		foreign key references users(id),
 	text		nvarchar(max) not null,
-	date		datetimeoffset not null
+	date		datetimeoffset default current_timestamp not null
 );
 
 create table conversation_messages(
@@ -288,36 +288,37 @@ create table user_friend_lists(
 	page_owner_id	integer						foreign key references users(id),
 	friend_id		integer						foreign key references users(id),
 	friend_role_id	integer not null			foreign key references friend_roles(id),
-	date			datetimeoffset not null,
+	date			datetimeoffset default current_timestamp not null,
 	primary key(page_owner_id, friend_id)
 );
 
 create table user_friend_requests(
 	user_id_from	integer					foreign key references users(id),
 	user_id_to		integer					foreign key references users(id),
-	date			datetimeoffset not null,
+	date			datetimeoffset default current_timestamp not null,
 	primary key (user_id_from, user_id_to)
 );
 
 create table user_group_lists(
 	group_id	integer					foreign key references groups(id),
 	user_id		integer					foreign key references users(id),
-	date		datetimeoffset not null,
+	date		datetimeoffset default current_timestamp not null,
 	primary key(group_id, user_id)
 );
 
 create table user_banlists(
 	user_id_ban_from	integer					foreign key references users(id),
 	user_id_ban_to		integer					foreign key references users(id),
-	date				datetimeoffset not null,
+	date				datetimeoffset default current_timestamp not null,
 	primary key(user_id_ban_from, user_id_ban_to)
 );
 
 create table user_comments(
-	id			integer identity(1,1)	primary key,
-	user_id		integer not null		foreign key references users(id),
+	id			integer identity(1,1)		primary key,
+	user_id		integer not null			foreign key references users(id),
+	rating		integer default 0 not null,
 	text		nvarchar(max) not null,
-	date		datetimeoffset not null
+	date		datetimeoffset default current_timestamp not null
 );
 
 create table user_comment_responses(
@@ -330,9 +331,9 @@ create table user_notes(
 	id				integer identity(1,1)	primary key,
 	page_owner_id	integer not null		foreign key references users(id),
 	user_id			integer not null		foreign key references users(id),
-	rating			integer not null,
+	rating			integer default 0 not null,
 	text			nvarchar(max) not null,
-	date			datetimeoffset not null
+	date			datetimeoffset not null default current_timestamp
 );
 
 create table user_note_comments(
@@ -346,14 +347,14 @@ create table group_banlists(
 	group_id		integer not null			foreign key references groups(id),
 	user_id			integer not null			foreign key references users(id),
 	moderator_id	integer not null			foreign key references users(id),
-	date_from		datetimeoffset not null,
+	date_from		datetimeoffset default current_timestamp not null,
 	date_to			datetimeoffset not null
 );
 
 create table group_member_requests(
 	group_id	integer					foreign key references groups(id),
 	user_id		integer					foreign key references users(id),
-	date		datetimeoffset not null,
+	date		datetimeoffset default current_timestamp not null,
 	primary key(group_id, user_id)
 );
 
@@ -385,9 +386,9 @@ create table group_notes(
 	id				integer	identity(1,1)		primary key,
 	group_id		integer not null			foreign key references groups(id),
 	user_id			integer not null			foreign key references users(id),
-	rating			integer not null,
+	rating			integer default 0 not null,
 	text			nvarchar(max) not null,
-	date			datetimeoffset not null,
+	date			datetimeoffset default current_timestamp not null,
 	is_admin		bit default 0 not null,
 	is_commentable	bit default 1 not null
 );
