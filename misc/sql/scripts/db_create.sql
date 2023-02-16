@@ -5,21 +5,11 @@ create table app_logs(
 	date	datetimeoffset default current_timestamp not null
 );
 
-create table app_rule_categories(
+create table app_rules(
 	id		integer identity(1,1)	primary key,
-	title	nvarchar(max) not null
-);
-
-create table app_rule_paragraph(
-	id		integer identity(1,1)	primary key,
+	title	nvarchar(max) not null,
 	text	nvarchar(max) not null,
 	penalty nvarchar(max) not null
-);
-
-create table app_rule_reasons(
-	id				integer identity(1,1)	primary key,
-	category_id		integer not null		foreign key references app_rule_categories(id),
-	paragraph_id	integer	not null		foreign key	references app_rule_paragraph(id)
 );
 
 create table app_user_roles(
@@ -76,7 +66,8 @@ create table app_user_banlists(
 	id				integer identity(1,1)		primary key,
 	user_id			integer	not null			foreign key references users(id),
 	moderator_id	integer	not null			foreign key references users(id),
-	reason_id		integer	not null			foreign key references app_rule_reasons(id),
+	rule_id			integer	not null			foreign key references app_rules(id),
+	text 			nvarchar(max) not null		
 	date_from		datetimeoffset default current_timestamp not null,
 	date_to			datetimeoffset not null
 );
@@ -85,7 +76,8 @@ create table app_group_banlists(
 	id				integer identity(1,1)		primary key,
 	group_id		integer	not null			foreign key references groups(id),
 	moderator_id	integer	not null			foreign key	references users(id),
-	reason_id		integer	not null			foreign key references app_rule_reasons(id),
+	rule_id			integer	not null			foreign key references app_rules(id),
+	text 			nvarchar(max) not null,
 	date_from		datetimeoffset default current_timestamp not null,
 	date_to			datetimeoffset not null
 );
@@ -368,11 +360,12 @@ create table group_main_info(
 create table group_member_roles(
 	id							integer identity(1,1)	primary key,
 	name						nvarchar(max) not null,
-	can_create_notes_by_group	bit not null,
-	can_create_topics			bit not null,
-	can_ban_users				bit not null,
-	can_delete_comments			bit not null,
-	can_delete_user_notes		bit not null
+	can_create_notes_by_group	bit default 0 not null,
+	can_create_topics			bit default 0 not null,
+	can_ban_users				bit default 0 not null,
+	can_delete_comments			bit default 0 not null,
+	can_delete_user_notes		bit default 0 not null,
+	can_assign_roles			bit default 0 not null
 );
 
 create table group_members(

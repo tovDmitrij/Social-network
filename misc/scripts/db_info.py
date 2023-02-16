@@ -1,5 +1,6 @@
 import pyodbc
 
+
 CONNECTION_STRING = """
     Driver=SQL SERVER;
     Server=DESKTOP-5RRMH4H;

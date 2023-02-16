@@ -1,8 +1,9 @@
-###########################################################
+######################################################
 #
-# Data was taken from https://github.com/x88/i18nGeoNamesDB
+# Data of cities, regions & countries 
+# was taken from https://github.com/x88/i18nGeoNamesDB
 #
-###########################################################
+######################################################
 import openpyxl
 import db_info
 import enums

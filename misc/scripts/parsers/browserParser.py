@@ -10,15 +10,20 @@ DRIVER = webdriver.Chrome(ChromeDriverManager().install())
 
 def GetWikipediaData(request: str):
     '''
-    Get information from Wikipedia pages
+    Get information (world languages) from Wikipedia pages
 
     request - link to specific page
     '''
     DRIVER.get(request)
     SOUP = BeautifulSoup(DRIVER.page_source, 'lxml')
     REGEX_PATTERN = r'\b[а-яА-Я]+\s(язык)\b'
+    DATA = SOUP.find_all('a')
+    DATA_LENGTH = len(DATA)
+    index = 1
     
-    for item in SOUP.find_all('a'):
+    for item in DATA:
+        print(f">>Iteration: {index} / {DATA_LENGTH}")
+        index += 1
         try:
             langName = item.get('title')
             if len(re.findall(REGEX_PATTERN, langName)) != 0:
