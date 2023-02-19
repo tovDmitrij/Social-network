@@ -35,3 +35,15 @@ def GetWikipediaData(request: str):
                 db_info.DATABASE_CONNECTION.commit()
         except Exception as e:
             print(f">>Error: {e}")
+
+def GetGarantData(request: str):
+    '''
+    !!!NOT COMPLETED!!! Get information (study directions) from https://base.garant.ru/
+
+    request - link to specific page
+    '''
+    DRIVER.get(request)
+    SOUP = BeautifulSoup(DRIVER.page_source, 'lxml')
+    DATA = SOUP.find_all('p', 's_16')
+    for item in DATA:
+        print(f"{item}")

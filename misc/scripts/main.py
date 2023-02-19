@@ -1,22 +1,28 @@
-import parsers.browserParser
-import parsers.xlsxParser
-import parsers.jsonParser
+import parsers.browserParser as browser
+import parsers.xlsxParser as xlsx
+import parsers.jsonParser as json
 import os
 import enums
 
-
-parsers.browserParser.GetWikipediaData(
+'''
+browser.GetWikipediaData(
     "https://ru.wikipedia.org/wiki/Список_языков_по_количеству_носителей")
+browser.GetGarantData(
+    "https://base.garant.ru/70480868/53f89421bbdaf741eb2d1ecc4ddb4c33/")
 
-parsers.xlsxParser.GetXLSXData(
+xlsx.GetXLSXData(
     os.path.join(os.path.dirname(__file__), "parsers\\data\\countries.xlsx"), 
     enums.DataType.COUNTRIES)
-parsers.xlsxParser.GetXLSXData(
+xlsx.GetXLSXData(
     os.path.join(os.path.dirname(__file__), "parsers\\data\\regions.xlsx"), 
     enums.DataType.REGIONS)
-parsers.xlsxParser.GetXLSXData(
+xlsx.GetXLSXData(
     os.path.join(os.path.dirname(__file__), "parsers\\data\\cities.xlsx"), 
     enums.DataType.CITIES)
 
-parsers.jsonParser.GetJSONData(
+json.GetJSONData(
     os.path.join(os.path.dirname(__file__), "parsers\\data\\data.json"))
+'''
+json.GrantPermissions(
+    os.path.join(os.path.dirname(__file__), "parsers\\data\\permissions\\db_user_default.json"),
+    "user_default")

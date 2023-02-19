@@ -16,7 +16,7 @@
 
 <div align="center">
 
-![social-network-db-design](https://user-images.githubusercontent.com/86602542/219208313-ac19f494-3997-4f1b-aa01-05d8e9312cb2.svg)
+![social-network-db-design](https://user-images.githubusercontent.com/86602542/219978071-fa8b4f48-6427-4b3e-bfe2-0558f742e59f.svg)
 
 </div>
 
@@ -28,7 +28,7 @@
 ### :earth_asia: Языки
 ```
 C#
-T-SQL
+Pl/pgSQL
 JavaScript
 Python
 ```
@@ -42,7 +42,7 @@ ASP.NET Core
 ```
 ### :floppy_disk: База данных
 ```
-MSSQL
+PostgreSQL
 ```
 ### :scroll: Прочее
 ```

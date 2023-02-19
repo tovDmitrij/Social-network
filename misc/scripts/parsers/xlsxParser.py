@@ -17,16 +17,19 @@ def GetXLSXData(path: str, type: enums.DataType):
 
     type - type of data info (e.g. countries, cities, ...)
     '''
-    reader = openpyxl.load_workbook(path)
-    data = reader.active
+    READER = openpyxl.load_workbook(path)
+    DATA = READER.active
+    DATA_ROW_COUNT = DATA.max_row
+    DATA_COLUMN_COUNT = DATA.max_column
     tmp = []
     sql = ""
     index = 1
 
-    for row in range(0, data.max_row):
-        print(f">>Iteration: {index} / {data.max_row}")
+    for row in range(0, DATA_ROW_COUNT):
+        print(f">>Iteration: {index} / {DATA_ROW_COUNT}")
         index += 1
-        for col in data.iter_cols(1, data.max_column):
+
+        for col in DATA.iter_cols(1, DATA_COLUMN_COUNT):
             tmp.append(col[row].value)
         match type:
             case enums.DataType.COUNTRIES:
@@ -35,6 +38,7 @@ def GetXLSXData(path: str, type: enums.DataType):
                 sql = rf"insert into regions(id, country_id, name) values({tmp[1]}, {tmp[0]}, '{tmp[2]}')"
             case enums.DataType.CITIES:
                 sql = rf"insert into cities(id, region_id, name) values({tmp[1]}, {tmp[0]}, '{tmp[2]}')"
+                
         try:
             db_info.DATABASE_CURSOR.execute(sql)
             db_info.DATABASE_CONNECTION.commit()

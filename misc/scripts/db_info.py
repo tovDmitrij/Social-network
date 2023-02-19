@@ -1,10 +1,9 @@
-import pyodbc
+import psycopg2
 
 
-CONNECTION_STRING = """
-    Driver=SQL SERVER;
-    Server=DESKTOP-5RRMH4H;
-    Database=social-network;
-    Trusted_Connection=yes;"""
-DATABASE_CONNECTION = pyodbc.connect(CONNECTION_STRING)
+DATABASE_CONNECTION = psycopg2.connect(
+    dbname='social_network', 
+    user='postgres', 
+    password='123456', 
+    host='localhost')
 DATABASE_CURSOR = DATABASE_CONNECTION.cursor()

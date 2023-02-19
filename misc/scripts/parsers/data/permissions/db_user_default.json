@@ -1,0 +1,655 @@
+{
+    "data": [
+        {
+            "dmlCommand": "select",
+            "objectName": "app_rules"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "app_user_roles"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "users"
+        },
+        {
+            "dmlCommand": "insert",
+            "objectName": "users"
+        },
+        {
+            "dmlCommand": "update",
+            "attributes": [
+                "password"
+            ],
+            "objectName": "users"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "user_settings_main"
+        },
+        {
+            "dmlCommand": "insert",
+            "objectName": "user_settings_main"
+        },
+        {
+            "dmlCommand": "update",
+            "attributes": [
+                "profile_is_private"
+            ],
+            "objectName": "user_settings_main"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "user_settings_notes"
+        },
+        {
+            "dmlCommand": "insert",
+            "objectName": "user_settings_notes"
+        },
+        {
+            "dmlCommand": "update",
+            "attributes": [
+                "friends_can_create",
+                "friends_can_comment",
+                "not_friends_can_create",
+                "not_friends_can_comment"
+            ],
+            "objectName": "user_settings_notes"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "user_settings_messages"
+        },
+        {
+            "dmlCommand": "insert",
+            "objectName": "user_settings_messages"
+        },
+        {
+            "dmlCommand": "update",
+            "attributes": [
+                "not_friends_can_write",
+                "not_friends_can_invite_into_conversation"
+            ],
+            "objectName": "user_settings_messages"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "groups"
+        },
+        {
+            "dmlCommand": "insert",
+            "objectName": "groups"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "conversation_types"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "conversations"
+        },
+        {
+            "dmlCommand": "insert",
+            "objectName": "conversations"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "attitude_to_alcohol"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "attitude_to_smoking"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "main_things_in_people"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "main_things_in_life"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "world_outlook"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "political_preferences"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "user_life_positions"
+        },
+        {
+            "dmlCommand": "insert",
+            "objectName": "user_life_positions"
+        },
+        {
+            "dmlCommand": "update",
+            "attributes": [
+                "pp_id",
+                "wo_id",
+                "mtl_id",
+                "mtp_id",
+                "ats_id",
+                "ata_id",
+                "inspire"
+            ],
+            "objectName": "user_life_positions"
+        },
+        {
+            "dmlCommand": "delete",
+            "objectName": "user_life_positions"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "languages"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "user_profile_languages"
+        },
+        {
+            "dmlCommand": "insert",
+            "objectName": "user_profile_languages"
+        },
+        {
+            "dmlCommand": "update",
+            "attributes": [
+                "language_id"
+            ],
+            "objectName": "user_profile_languages"
+        },
+        {
+            "dmlCommand": "delete",
+            "objectName": "user_profile_languages"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "family_statuses"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "countries"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "regions"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "cities"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "user_profile_main_info"
+        },
+        {
+            "dmlCommand": "insert",
+            "objectName": "user_profile_main_info"
+        },
+        {
+            "dmlCommand": "update",
+            "attributes": [
+                "family_status_id",
+                "city_id",
+                "surname",
+                "name",
+                "patronymic",
+                "avatar",
+                "status",
+                "birthdate"
+            ],
+            "objectName": "user_profile_main_info"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "user_profile_career"
+        },
+        {
+            "dmlCommand": "insert",
+            "objectName": "user_profile_career"
+        },
+        {
+            "dmlCommand": "update",
+            "attributes": [
+                "city_id",
+                "date_from",
+                "company_name",
+                "job",
+                "date_to"
+            ],
+            "objectName": "user_profile_career"
+        },
+        {
+            "dmlCommand": "delete",
+            "objectName": "user_profile_career"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "user_profile_military_services"
+        },
+        {
+            "dmlCommand": "insert",
+            "objectName": "user_profile_military_services"
+        },
+        {
+            "dmlCommand": "update",
+            "attributes": [
+                "date_from",
+                "country_id",
+                "military_unit",
+                "date_to"
+            ],
+            "objectName": "user_profile_military_services"
+        },
+        {
+            "dmlCommand": "delete",
+            "objectName": "user_profile_military_services"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "study_degrees"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "study_forms"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "study_directions"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "study_faculties"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "faculty_directions"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "universities"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "university_faculties"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "user_profile_universities"
+        },
+        {
+            "dmlCommand": "insert",
+            "objectName": "user_profile_universities"
+        },
+        {
+            "dmlCommand": "update",
+            "attributes": [
+                "univercity_id",
+                "degree_id",
+                "direction_id",
+                "study_form_id",
+                "date_from",
+                "date_to"
+            ],
+            "objectName": "user_profile_universities"
+        },
+        {
+            "dmlCommand": "delete",
+            "objectName": "user_profile_universities"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "conversation_member_roles"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "conversation_members"
+        },
+        {
+            "dmlCommand": "insert",
+            "objectName": "conversation_members"
+        },
+        {
+            "dmlCommand": "update",
+            "objectName": "conversation_members",
+            "attributes": [
+                "role_id"
+            ]
+        },
+        {
+            "dmlCommand": "delete",
+            "objectName": "conversation_members"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "conversation_member_requests"
+        },
+        {
+            "dmlCommand": "insert",
+            "objectName": "conversation_member_requests"
+        },
+        {
+            "dmlCommand": "delete",
+            "objectName": "conversation_member_requests"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "conversation_member_banlists"
+        },
+        {
+            "dmlCommand": "insert",
+            "objectName": "conversation_member_banlists"
+        },
+        {
+            "dmlCommand": "delete",
+            "objectName": "conversation_member_banlists"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "conversation_member_messages"
+        },
+        {
+            "dmlCommand": "insert",
+            "objectName": "conversation_member_messages"
+        },
+        {
+            "dmlCommand": "delete",
+            "objectName": "conversation_member_messages"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "app_group_banlists"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "app_user_banlists"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "app_conversation_banlists"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "user_friend_roles"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "user_banlists"
+        },
+        {
+            "dmlCommand": "insert",
+            "objectName": "user_banlists"
+        },
+        {
+            "dmlCommand": "delete",
+            "objectName": "user_banlists"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "user_friend_requests"
+        },
+        {
+            "dmlCommand": "insert",
+            "objectName": "user_friend_requests"
+        },
+        {
+            "dmlCommand": "delete",
+            "objectName": "user_friend_requests"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "user_friend_lists"
+        },
+        {
+            "dmlCommand": "insert",
+            "objectName": "user_friend_lists"
+        },
+        {
+            "dmlCommand": "delete",
+            "objectName": "user_friend_lists"
+        },
+        {
+            "dmlCommand": "update",
+            "objectName": "user_friend_lists",
+            "attributes": [
+                "friend_role_id"
+            ]
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "user_group_lists"
+        },
+        {
+            "dmlCommand": "insert",
+            "objectName": "user_group_lists"
+        },
+        {
+            "dmlCommand": "delete",
+            "objectName": "user_group_lists"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "group_main_info"
+        },
+        {
+            "dmlCommand": "insert",
+            "objectName": "group_main_info"
+        },
+        {
+            "dmlCommand": "update",
+            "objectName": "group_main_info",
+            "attributes": [
+                "name",
+                "description",
+                "website_link"
+            ]
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "group_settings_main"
+        },
+        {
+            "dmlCommand": "insert",
+            "objectName": "group_settings_main"
+        },
+        {
+            "dmlCommand": "update",
+            "objectName": "group_settings_main",
+            "attributes": [
+                "group_is_private"
+            ]
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "group_settings_notes"
+        },
+        {
+            "dmlCommand": "insert",
+            "objectName": "group_settings_notes"
+        },
+        {
+            "dmlCommand": "update",
+            "objectName": "group_settings_notes",
+            "attributes": [
+                "members_can_create_notes",
+                "members_can_comments_notes"
+            ]
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "group_member_banlists"
+        },
+        {
+            "dmlCommand": "insert",
+            "objectName": "group_member_banlists"
+        },
+        {
+            "dmlCommand": "delete",
+            "objectName": "group_member_banlists"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "group_member_requests"
+        },
+        {
+            "dmlCommand": "insert",
+            "objectName": "group_member_requests"
+        },
+        {
+            "dmlCommand": "delete",
+            "objectName": "group_member_requests"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "group_members"
+        },
+        {
+            "dmlCommand": "insert",
+            "objectName": "group_members"
+        },
+        {
+            "dmlCommand": "delete",
+            "objectName": "group_members"
+        },        
+        {
+            "dmlCommand": "select",
+            "objectName": "group_member_roles"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "user_reactions"
+        },
+        {
+            "dmlCommand": "insert",
+            "objectName": "user_reactions"
+        },
+        {
+            "dmlCommand": "delete",
+            "objectName": "user_reactions"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "user_note_reactions"
+        },
+        {
+            "dmlCommand": "insert",
+            "objectName": "user_note_reactions"
+        },
+        {
+            "dmlCommand": "delete",
+            "objectName": "user_note_reactions"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "user_comment_reactions"
+        },
+        {
+            "dmlCommand": "insert",
+            "objectName": "user_comment_reactions"
+        },
+        {
+            "dmlCommand": "delete",
+            "objectName": "user_comment_reactions"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "user_comment_notes"
+        },
+        {
+            "dmlCommand": "insert",
+            "objectName": "user_comment_notes"
+        },
+        {
+            "dmlCommand": "delete",
+            "objectName": "user_comment_notes"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "user_comments"
+        },
+        {
+            "dmlCommand": "insert",
+            "objectName": "user_comments"
+        },
+        {
+            "dmlCommand": "delete",
+            "objectName": "user_comments"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "user_comment_responses"
+        },
+        {
+            "dmlCommand": "insert",
+            "objectName": "user_comment_responses"
+        },
+        {
+            "dmlCommand": "delete",
+            "objectName": "user_comment_responses"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "user_notes"
+        },
+        {
+            "dmlCommand": "insert",
+            "objectName": "user_notes"
+        },
+        {
+            "dmlCommand": "delete",
+            "objectName": "user_notes"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "user_page_notes"
+        },
+        {
+            "dmlCommand": "insert",
+            "objectName": "user_page_notes"
+        },
+        {
+            "dmlCommand": "delete",
+            "objectName": "user_page_notes"
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "group_page_notes"
+        },
+        {
+            "dmlCommand": "insert",
+            "objectName": "group_page_notes"
+        },
+        {
+            "dmlCommand": "delete",
+            "objectName": "group_page_notes"
+        },
+        {
+            "dmlCommand": "update",
+            "objectName": "group_page_notes",
+            "attributes": [
+                "is_commentable"
+            ]
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "group_topics"
+        },
+        {
+            "dmlCommand": "insert",
+            "objectName": "group_topics"
+        },
+        {
+            "dmlCommand": "delete",
+            "objectName": "group_topics"
+        },
+        {
+            "dmlCommand": "update",
+            "objectName": "group_topics",
+            "attributes": [
+                "is_commentable"
+            ]
+        }
+    ]
+}
