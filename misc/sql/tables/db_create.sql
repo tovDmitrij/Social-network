@@ -59,6 +59,7 @@ create table conversation_types(
 create table conversations(
 	id				serial					primary key,
 	type_id			integer not null		references conversation_types(id),
+	name			text not null,
 	creation_date	timestamp default current_timestamp not null
 );
 

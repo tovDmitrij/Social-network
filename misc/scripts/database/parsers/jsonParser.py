@@ -5,7 +5,7 @@ import db_info
 
 def InsertData(path: str):
     '''
-    Get information from JSON file
+    Get information from JSON file and insert it into database
 
     path - path to the JSON file
     '''
@@ -41,7 +41,7 @@ def InsertData(path: str):
 
 def GrantPermissions(path: str, user: str):
     '''
-    Grant a permission for DB users
+    Grant a permissions for database users
 
     path - path to the JSON file
 

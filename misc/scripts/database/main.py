@@ -8,9 +8,9 @@ import enums
 ABS_PATH = os.path.dirname(__file__)
 
 
-browser.GetWikipediaData(
+browser.GetLanguagesData(
     "https://ru.wikipedia.org/wiki/Список_языков_по_количеству_носителей")
-browser.GetGarantData(
+browser.GetUniversitiesData(
     "https://base.garant.ru/70480868/53f89421bbdaf741eb2d1ecc4ddb4c33/")
 
 xlsx.GetXLSXData(
@@ -24,7 +24,7 @@ xlsx.GetXLSXData(
     enums.DataType.CITIES)
 
 json.InsertData(
-    os.path.join(ABS_PATH, "parsers\\data\\data.json"))
+    os.path.join(ABS_PATH, "parsers\\data\\db_baseInfo.json"))
 
 
 json.GrantPermissions(

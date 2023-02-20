@@ -11,7 +11,7 @@ import enums
 
 def GetXLSXData(path: str, type: enums.DataType):
     '''
-    Get information from Excel files
+    Get information from Excel files and insert it into database
 
     path - path to the excel file
 

@@ -8,9 +8,9 @@ import db_info
 DRIVER = webdriver.Chrome(ChromeDriverManager().install())
 
 
-def GetWikipediaData(request: str):
+def GetLanguagesData(request: str):
     '''
-    Get information (world languages) from Wikipedia pages
+    Get information (world languages) from Wikipedia page
 
     request - link to specific page
     '''
@@ -36,9 +36,9 @@ def GetWikipediaData(request: str):
         except Exception as e:
             print(f">>Error: {e}")
 
-def GetGarantData(request: str):
+def GetUniversitiesData(request: str):
     '''
-    !!!NOT COMPLETED!!! Get information (study directions) from https://base.garant.ru/
+    !!!NOT COMPLETED!!! Get information (universities) from https://base.garant.ru/
 
     request - link to specific page
     '''
