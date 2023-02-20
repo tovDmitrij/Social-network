@@ -3,7 +3,7 @@ import codecs
 import db_info
 
 
-def GetJSONData(path: str):
+def InsertData(path: str):
     '''
     Get information from JSON file
 
@@ -65,7 +65,7 @@ def GrantPermissions(path: str, user: str):
                 attributes += ")"
 
             try:
-                #print(f"\ngrant {dmlCommand} {attributes} on table {objectName} to {user}")
+                print(f"\ngrant {dmlCommand} {attributes} on table {objectName} to {user}")
                 db_info.DATABASE_CURSOR.execute(f"\ngrant {dmlCommand} {attributes} on table {objectName} to {user}")
                 db_info.DATABASE_CONNECTION.commit()
             except Exception as e:

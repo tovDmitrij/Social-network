@@ -1,0 +1,32 @@
+{
+    "data": [
+        {
+            "dmlCommand": "insert",
+            "objectName": "app_group_banlists"
+        },
+        {
+            "dmlCommand": "delete",
+            "objectName": "app_group_banlists"
+        },
+        {
+            "dmlCommand": "insert",
+            "objectName": "app_user_banlists"
+        },
+        {
+            "dmlCommand": "delete",
+            "objectName": "app_user_banlists"
+        },
+        {
+            "dmlCommand": "insert",
+            "objectName": "app_conversation_banlists"
+        },
+        {
+            "dmlCommand": "delete",
+            "objectName": "app_conversation_banlists"
+        },
+        {
+            "dmlCommand": "delete",
+            "objectName": "app_ban_requests"
+        }
+    ]
+}

@@ -1,0 +1,15 @@
+{
+    "data": [
+        {
+            "dmlCommand": "update",
+            "objectName": "users",
+            "attributes": [
+                "role_id"
+            ]
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "app_logs"
+        }
+    ]
+}

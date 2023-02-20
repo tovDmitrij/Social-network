@@ -372,6 +372,14 @@
         },
         {
             "dmlCommand": "select",
+            "objectName": "app_ban_requests"
+        },
+        {
+            "dmlCommand": "insert",
+            "objectName": "app_ban_requests"
+        },
+        {
+            "dmlCommand": "select",
             "objectName": "user_friend_roles"
         },
         {
