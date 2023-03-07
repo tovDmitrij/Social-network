@@ -104,7 +104,7 @@
             ]   
         },
         {
-            "tableName": "friend_roles",
+            "tableName": "user_friend_roles",
             "attributes": [
                 "name"
             ],

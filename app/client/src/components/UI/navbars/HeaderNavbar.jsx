@@ -1,58 +1,43 @@
-import React, { useState } 
-    from 'react'
-import { Link } 
-    from 'react-router-dom'
-import MyDropMenu 
-    from '../myDropMenu/MyDropMenu'
-import { MyImage } 
-    from '../myImage/MyImage'
-import { MySearchInput } 
-    from '../mySearchInput/MySearchInput'
-import ImageSize
-    from '../../../enums/ImageSize'
+import React  from 'react'
+import { Link }  from 'react-router-dom'
+import { LinksDropMenu } from '../dropDownMenu/LinksDropMenu'
+import { NotificationDropMenu } from '../dropDownMenu/NotificationDropMenu'
+import { LogoImage } from '../images/LogoImage'
+import { SearchInput }  from '../inputs/SearchInput'
+import ImageSize from '../../../enums/ImageSize'
 
-
-export default function HeaderNavbar() {
-    const [links, setLinks] = useState([
-        {direct:"/profile/:id", text:"Перейти в профиль"},
-        {direct:"/profile/:id/settings", text:"Настройки аккаунта"},
-        {direct:"/help", text:"Помощь"}
-    ])
-
+/**
+ * Шапка веб-приложения с различной информациями и ссылками
+ */
+export const HeaderNavbar = () => {
     return (
-        <div className='grid grid-cols-4'>
-            {/* Перейти на главную страницу */}
-            <div>
+        <div className='grid grid-cols-4 grid-rows-2 bg-slate-100'>
+
+
+            {/* Перейти на главную страницу приложения*/}
+            <div className='grid justify-items-center items-center'>
                 <Link to="/posts">
-                    <MyImage src='images/avatar_website.webp' size={ImageSize.SMALL} />
-                    <p>Соцсеть "На Связи"</p>
+                    <LogoImage src='/images/avatar_website.webp' size={ImageSize.SMALL} />
                 </Link>
             </div>
 
-            {/* Поиск */}
-            <div>
-                <MySearchInput />
-            </div>
+            <SearchInput />
 
-            {/* Уведомления */}
-            <div className='grid grid-cols-2 items-center gap-4'>
-                <div className='grid '>
-                    <MyImage src='images/notification_ringbell.webp' size={ImageSize.SMALL} />
-                </div>
-                <p>3</p>
-            </div>
+            <NotificationDropMenu posts={[]} />
 
             {/* Профиль пользователя и выпадающий список */}
-            <div className='grid grid-cols-2 items-center gap-4'>
+            <div className='grid grid-cols-2 items-center'>
                 <div className='grid justify-items-end'>
                     <Link to="/profile/:id">
-                        <MyImage src='images/avatar_user_default.webp' size={ImageSize.SMALL} />
+                        <LogoImage src='/images/avatar_user_default.webp' size={ImageSize.SMALL} />
                     </Link>
                 </div>
                 <div className='grid justify-items-start'>
-                    <MyDropMenu text={'⋮'} links={links} />
+                    <LinksDropMenu />
                 </div>
             </div>
+
+
         </div>
     )
 }

@@ -1,8 +1,11 @@
-import React 
-    from 'react'
+import {React, useEffect } from 'react'
 
 
-export default function Help() {
+export const Help = () => {
+    useEffect(() => {
+        document.title = 'FAQ'
+    })
+
     return (
         <div>
             Страница с памяткой для пользователя

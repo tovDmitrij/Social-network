@@ -1,0 +1,11 @@
+.leftBarButton {
+    background-color: lightblue;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 3px;
+    width: 150px;
+}
+
+.leftBarButton:hover {
+    background-color: rgb(119, 174, 187);
+}

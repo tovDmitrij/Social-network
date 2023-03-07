@@ -1,8 +1,11 @@
-import React 
-    from 'react'
+import {React, useEffect } from 'react'
 
 
-export default function About() {
+export const About = () => {
+    useEffect(() => {
+        document.title = 'О проекте'
+    })
+
     return (
         <div>
             О проекте

@@ -5,9 +5,9 @@ import db_info
 
 def InsertData(path: str):
     '''
-    Get information from JSON file and insert it into database
+    Вставка в базу данных её базовой информации из JSON файла
 
-    path - path to the JSON file
+    path - путь до JSON файла
     '''
     index = 0
     with codecs.open(path, 'r', encoding="utf-8") as FILE:
@@ -33,19 +33,19 @@ def InsertData(path: str):
                         tableValues += ','
 
                 try:
-                    print(f"\ninsert into {tableName}({tableAttributes}) values({tableValues})")
+                    print(f"insert into {tableName}({tableAttributes}) values({tableValues})")
                     db_info.DATABASE_CURSOR.execute(f"insert into {tableName}({tableAttributes}) values({tableValues})")
                     db_info.DATABASE_CONNECTION.commit()
                 except Exception as e:
-                    print(f">>Error: {e}")
+                    print(f"\033[91m>>>{e}\033[0m")
 
 def GrantPermissions(path: str, user: str):
     '''
-    Grant a permissions for database users
+    Выдача прав для пользователей базы данных
 
-    path - path to the JSON file
+    path - путь до JSON файла
 
-    user - user, who take the permissions
+    user - пользователь, к-рому даются права
     '''
     with codecs.open(path, 'r', encoding="utf-8") as FILE:
         FILE_DATA = json.load(FILE)
@@ -65,8 +65,8 @@ def GrantPermissions(path: str, user: str):
                 attributes += ")"
 
             try:
-                print(f"\ngrant {dmlCommand} {attributes} on table {objectName} to {user}")
+                print(f"grant {dmlCommand} {attributes} on table {objectName} to {user}")
                 db_info.DATABASE_CURSOR.execute(f"\ngrant {dmlCommand} {attributes} on table {objectName} to {user}")
                 db_info.DATABASE_CONNECTION.commit()
             except Exception as e:
-                print(f">>Error: {e}")
+                print(f"\033[91m>>>{e}\033[0m")

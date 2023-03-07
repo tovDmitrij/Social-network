@@ -1,13 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
-
+using database.context.Models;
 namespace database.context
 {
     /// <summary>
     /// Контекст базы данных социальной сети
     /// </summary>
-    public class DataContext: DbContext
+    public sealed class DataContext: DbContext
     {
-        public DbSet<T> Users { get; init; }
+        public DbSet<UserModel> Users { get; init; }
 
         public DataContext(DbContextOptions options) : base(options) { }
     }

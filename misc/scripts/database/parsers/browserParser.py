@@ -10,20 +10,17 @@ DRIVER = webdriver.Chrome(ChromeDriverManager().install())
 
 def GetLanguagesData(request: str):
     '''
-    Get information (world languages) from Wikipedia page
+    Получение информации о мировых языках из Википедии
 
-    request - link to specific page
+    request - ссылка на страницу
     '''
     DRIVER.get(request)
     SOUP = BeautifulSoup(DRIVER.page_source, 'lxml')
     REGEX_PATTERN = r'\b[а-яА-Я]+\s(язык)\b'
     DATA = SOUP.find_all('a')
-    DATA_LENGTH = len(DATA)
-    index = 1
+    sql = ""
     
     for item in DATA:
-        print(f">>Iteration: {index} / {DATA_LENGTH}")
-        index += 1
         try:
             langName = item.get('title')
             if len(re.findall(REGEX_PATTERN, langName)) != 0:
@@ -31,16 +28,19 @@ def GetLanguagesData(request: str):
                 db_info.DATABASE_CURSOR.execute(f"select count(*) from languages where name='{langName}'")
                 if (db_info.DATABASE_CURSOR.fetchone()[0] >= 1):
                     continue
-                db_info.DATABASE_CURSOR.execute(f"insert into languages(name) values('{langName}')")
+
+                sql = f"insert into languages(name) values('{langName}')"
+                print(sql)
+                db_info.DATABASE_CURSOR.execute(sql)
                 db_info.DATABASE_CONNECTION.commit()
         except Exception as e:
-            print(f">>Error: {e}")
+            print(f"\033[91m>>>{e}\033[0m")
 
 def GetUniversitiesData(request: str):
     '''
-    !!!NOT COMPLETED!!! Get information (universities) from https://base.garant.ru/
+    !!!NOT COMPLETED!!! Получение информации об университетах с сайта https://base.garant.ru/
 
-    request - link to specific page
+    request - ссылка на страницу
     '''
     DRIVER.get(request)
     SOUP = BeautifulSoup(DRIVER.page_source, 'lxml')

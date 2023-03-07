@@ -22,7 +22,7 @@ create table app_user_roles(
 create table users(
 	id					serial						primary key,
 	role_id				integer default 1 not null	references app_user_roles(id),
-	login				text not null,
+	email				text not null,
 	password			text not null,
 	registration_date	timestamp default current_timestamp not null
 );
