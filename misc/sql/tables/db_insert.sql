@@ -1,1 +1,0 @@
-insert into users(login, password, role_id) values('admin', 'admin', 3)

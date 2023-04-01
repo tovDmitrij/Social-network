@@ -36,7 +36,7 @@
 
 <div align="center">
 
-![social-network-db-design](https://user-images.githubusercontent.com/86602542/220178775-1785485b-9360-4ec4-a06c-74e4999b68bb.svg)
+![Main1](https://user-images.githubusercontent.com/86602542/229302620-b5056ea5-cf76-4aa3-a1b4-a23632ca29e2.svg)
 
 </div>
 
@@ -49,20 +49,20 @@
 ```
 C#
 Pl/pgSQL
-JavaScript
+TypeScript
 Python
 ```
 ### :desktop_computer: Фронтенд
 ```
-React
+ReactTs
 ```
 ### :hammer_and_wrench: Бекэнд
 ```
-ASP.NET Core
+ASP.NET Core 7
 ```
 ### :floppy_disk: База данных
 ```
-PostgreSQL
+PostgreSQL 15
 ```
 ### :scroll: Прочее
 ```
