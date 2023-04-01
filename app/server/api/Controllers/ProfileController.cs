@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using database.context.Repos.Profile;
-using database.context.Models.Profile;
 using database.context.Models.Profile.Languages;
+using database.context.Repos.Languages;
 namespace api.Controllers
 {
     /// <summary>
@@ -11,11 +11,16 @@ namespace api.Controllers
     [ApiController]
     //[Authorize]
     [Route("api/[controller]")]
-    public class ProfileController : ControllerBase
+    public sealed class ProfileController : ControllerBase
     {
         private readonly IProfileRepos _profile;
+        private readonly ILanguageRepos _language;
 
-        public ProfileController(IProfileRepos db) => _profile = db;
+        public ProfileController(IProfileRepos profile, ILanguageRepos language)
+        {
+            _profile = profile;
+            _language = language;
+        }
 
 
 
@@ -28,9 +33,7 @@ namespace api.Controllers
         [HttpGet("Base/{userID:int}")]
         public IActionResult GetBaseProfileInfo(int userID)
         {
-            UserBaseInfoModel? user = _profile.GetProfileBaseInfo(userID);
-
-            switch (user is null)
+            switch (!_profile.IsUserExist(userID))
             {
                 case true:
                     return StatusCode(404,
@@ -43,7 +46,7 @@ namespace api.Controllers
                         new
                         {
                             status = "Пользователь успешно найден",
-                            user
+                            user = _profile.GetProfileBaseInfo(userID)
                         });
             }
         }
@@ -55,9 +58,7 @@ namespace api.Controllers
         [HttpGet("Languages/{userID:int}")]
         public IActionResult GetLanguageList(int userID)
         {
-            UserBaseInfoModel? user = _profile.GetProfileBaseInfo(userID);
-
-            switch (user is null)
+            switch (!_profile.IsUserExist(userID))
             {
                 case true:
                     return StatusCode(404,
@@ -66,9 +67,9 @@ namespace api.Controllers
                             status = "Пользователя с заданным идентификатором не существует"
                         });
                 case false:
-                    IEnumerable<ProfileLanguageModel>? languages = _profile.GetLanguages(userID);
+                    IEnumerable<ProfileLanguageInfoModel>? languages = _profile.GetLanguages(userID);
 
-                    switch (languages is not null)
+                    switch (languages.Any())
                     { 
                         case true:
                             return StatusCode(200,
@@ -81,7 +82,7 @@ namespace api.Controllers
                             return StatusCode(404,
                                 new 
                                 {
-                                    status = "У пользователя отсутствуют выбранные языки"
+                                    status = "У пользователя отсутствует список языков"
                                 });
                     }
             }
@@ -96,10 +97,7 @@ namespace api.Controllers
         [HttpPost("Languages")]
         public IActionResult AddLanguage(int userID, int languageID)
         {
-            UserBaseInfoModel? user = _profile.GetProfileBaseInfo(userID);
-            LanguageModel language = _profile.GetLanguageInfo(languageID);
-
-            if (user is null)
+            if (!_profile.IsUserExist(userID))
             {
                 return StatusCode(404,
                     new
@@ -107,7 +105,7 @@ namespace api.Controllers
                         status = "Пользователь с заданным идентификатором не найден"
                     });
             }
-            if (language is null)
+            if (!_language.IsLanguageExist(languageID))
             {
                 return StatusCode(404,
                     new
@@ -115,7 +113,6 @@ namespace api.Controllers
                         status = "Язык с заданным идентификатором не найден"
                     });
             }
-
             if (_profile.IsLanguageAdded(userID, languageID))
             {
                 return StatusCode(406,
@@ -130,6 +127,48 @@ namespace api.Controllers
                 new
                 {
                     status = "Новый язык был успешно добавлен в профиль пользователя"
+                });
+        }
+
+        #endregion
+
+
+
+        #region DELETE
+
+        [HttpDelete("Languages")]
+        public IActionResult RemoveLanguage(int userID, int languageID)
+        {
+            if (!_profile.IsUserExist(userID))
+            {
+                return StatusCode(404,
+                    new
+                    {
+                        status = "Пользователь с заданным идентификатором не найден"
+                    });
+            }
+            if (!_language.IsLanguageExist(languageID))
+            {
+                return StatusCode(404,
+                    new
+                    {
+                        status = "Языка с заданным идентификатором не существует в системе"
+                    });
+            }
+            if (!_profile.IsLanguageAdded(userID, languageID))
+            {
+                return StatusCode(406,
+                    new
+                    {
+                        status = "Языка нет в списке языков пользователя"
+                    });
+            }
+
+            _profile.RemoveLanguage(userID, languageID);
+            return StatusCode(200,
+                new
+                {
+                    status = "Удаление языка из профиля пользователя прошло успешно"
                 });
         }
 

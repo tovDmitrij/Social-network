@@ -11,17 +11,17 @@ namespace database.context.Repos.Profile
         /// Получить базовую информацию о профиле пользователя по его идентификатору
         /// </summary>
         /// <param name="id">Идентификатор пользователя</param>
-        public UserBaseInfoModel? GetProfileBaseInfo(int id);
+        public ProfileBaseInfoModel? GetProfileBaseInfo(int id);
+
+        /// <summary>
+        /// Метод, проверяющий существует ли пользователь с заданным идентификатором
+        /// </summary>
+        /// <param name="id">Идентификатор пользователя</param>
+        public bool IsUserExist(int id);
 
 
 
         #region Языки
-
-        /// <summary>
-        /// Получить информацию об языке по его идентификатору
-        /// </summary>
-        /// <param name="id">Идентификатор языка</param>
-        public LanguageModel? GetLanguageInfo(int id);
 
         /// <summary>
         /// Добавить новый язык в профиль пользователя
@@ -29,6 +29,13 @@ namespace database.context.Repos.Profile
         /// <param name="userID">Идентификатор пользователя</param>
         /// <param name="languageID">Идентификатор языка</param>
         public void AddLanguage(int userID, int languageID);
+
+        /// <summary>
+        /// Удалить язык из профиля пользователя
+        /// </summary>
+        /// <param name="userID">Идентификатор пользователя</param>
+        /// <param name="languageID">Идентификатор языка</param>
+        public void RemoveLanguage(int userID, int languageID);
 
         /// <summary>
         /// Метод, проверяющий добавлен ли язык в список языков пользователя
@@ -41,7 +48,7 @@ namespace database.context.Repos.Profile
         /// Получить список выбранных языков пользователя
         /// </summary>
         /// <param name="userID">Идентификатор пользователя</param>
-        public IEnumerable<ProfileLanguageModel>? GetLanguages(int userID);
+        public IEnumerable<ProfileLanguageInfoModel>? GetLanguages(int userID);
 
         #endregion
 

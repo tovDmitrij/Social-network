@@ -33,14 +33,18 @@ namespace database.context.Models.Auth
         /// Отчество пользователя
         /// </summary>
         [Column("patronymic")]
-        public string? Patronymic { get; set; }
+        public string Patronymic { get; set; }
 
-        public ProfileAuthModel(int user_id, string surname, string name, string? patronymic)
+        public ProfileAuthModel(int user_id, string surname, string name, string patronymic) : this(user_id, surname, name)
+        {
+            Patronymic = patronymic;
+        }
+
+        public ProfileAuthModel(int user_id, string surname, string name)
         {
             ID = user_id;
             Surname = surname;
             Name = name;
-            Patronymic = patronymic;
         }
 
         public ProfileAuthModel() { }

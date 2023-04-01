@@ -2,32 +2,32 @@
 using misc.security;
 namespace database.context.Repos.User
 {
-    public sealed class AuthRepos : IAuthRepos
+    public sealed class AuthRepos : BaseRepos, IAuthRepos
     {
-        private readonly DataContext _db;
+        public AuthRepos(DataContext db) : base(db) { }
 
-        public AuthRepos(DataContext db) => _db = db;
+        public bool IsAccountExist(string email, string password) => _db.TableUsers
+            .Any(user => user.Email == email && user.Password == Security.HashPassword(email, password));
+
+        public bool IsEmailBusy(string email) => _db.TableUsers
+            .Any(user => user.Email == email);
 
         public void Add(string email, string password, string surname, string name, string? patronymic)
         {
-            _db.Users.Add(new(
+            _db.TableUsers.Add(new(
                 email,
                 Security.HashPassword(email, password)));
             _db.SaveChanges();
 
             _db.TableProfileBaseInfo.Add(new(
-                GetByEmail(email).ID,
+                GetAccountInfo(email, password).ID,
                 surname,
                 name,
                 patronymic));
             _db.SaveChanges();
         }
 
-        public UserAuthModel? GetByEmail(string email) => _db.Users
-            .FirstOrDefault(user =>
-                user.Email == email);
-
-        public UserAuthModel? GetByEmailAndPassword(string email, string password) => _db.Users
+        public UserAuthModel? GetAccountInfo(string email, string password) => _db.TableUsers
             .FirstOrDefault(user =>
                 user.Email == email && user.Password == Security.HashPassword(email, password));
     }

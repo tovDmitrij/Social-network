@@ -14,7 +14,7 @@ namespace api.Controllers
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
-    public class AuthController : ControllerBase
+    public sealed class AuthController : ControllerBase
     {
         private readonly IAuthRepos _auth;
 
@@ -37,9 +37,7 @@ namespace api.Controllers
         [HttpPost("SignUp")]
         public IActionResult SignUp(string email, string password, string surname, string name, string? patronymic)
         {
-            bool loginIsTaken = _auth.GetByEmail(email) is not null;
-
-            switch (loginIsTaken)
+            switch (_auth.IsEmailBusy(email))
             {
                 case true:
                     return StatusCode(406, 
@@ -76,9 +74,7 @@ namespace api.Controllers
         [HttpPost("SignIn")]
         public IActionResult SignIn(string email, string password)
         {
-            UserAuthModel? userExist = _auth.GetByEmailAndPassword(email, password);
-
-            switch (userExist is null)
+            switch (!_auth.IsAccountExist(email, password))
             {
                 case true:
                     return StatusCode(404, 
@@ -87,7 +83,7 @@ namespace api.Controllers
                             status = "Пользователя с такой почтой и паролем не существует" 
                         });
                 case false:
-                    UserBaseInfoModel user = _profile.GetProfileBaseInfo(userExist.ID);
+                    ProfileBaseInfoModel user = _profile.GetProfileBaseInfo(_auth.GetAccountInfo(email, password).ID);
 
                     JwtSecurityToken token = new(
                             issuer: AuthOptions.ISSUER,

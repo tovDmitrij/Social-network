@@ -8,7 +8,7 @@ namespace database.context.Models.Profile
     /// </summary>
     [Keyless]
     [Table("view_user_base_info")]
-    public sealed class UserBaseInfoModel
+    public sealed class ProfileBaseInfoModel
     {
         /// <summary>
         /// Идентификатор пользователя
@@ -81,7 +81,7 @@ namespace database.context.Models.Profile
         [Column("family_status")]
         public string? FamilyStatus { get; set; }
 
-        public UserBaseInfoModel(int id, DateTime registration_date, string role_title, string surname, string name, string? patronymic, byte[] avatar, DateTime birthdate, string city, string family_status)
+        public ProfileBaseInfoModel(int id, DateTime registration_date, string role_title, string surname, string name, string? patronymic, byte[] avatar, DateTime birthdate, string city, string family_status)
         {
             ID = id;
             RoleTitle = role_title;
@@ -95,6 +95,6 @@ namespace database.context.Models.Profile
             FamilyStatus = family_status;
         }
 
-        public UserBaseInfoModel() { }
+        public ProfileBaseInfoModel() { }
     }
 }

@@ -1,16 +1,16 @@
 ﻿using database.context.Models.Profile;
 using database.context.Models.Profile.Languages;
-
 namespace database.context.Repos.Profile
 {
-    public sealed class ProfileRepos : IProfileRepos
+    public sealed class ProfileRepos : BaseRepos, IProfileRepos
     {
-        private readonly DataContext _db;
+        public ProfileRepos(DataContext db) : base(db) { }
 
-        public ProfileRepos(DataContext db) => _db = db;
-
-        public UserBaseInfoModel? GetProfileBaseInfo(int id) => _db.ViewProfileBaseInfo
+        public ProfileBaseInfoModel? GetProfileBaseInfo(int id) => _db.ViewProfileBaseInfo
             .FirstOrDefault(user => user.ID == id);
+
+        public bool IsUserExist(int id) => _db.TableUsers
+            .Any(user => user.ID == id);
 
 
 
@@ -24,13 +24,18 @@ namespace database.context.Repos.Profile
             _db.SaveChanges();
         }
 
-        public LanguageModel? GetLanguageInfo(int id) => _db.TableProfileLanguages
-            .FirstOrDefault(language => language.ID == id);
+        public void RemoveLanguage(int userID, int languageID)
+        {
+            _db.TableProfileLanguages.Remove(
+                _db.TableProfileLanguages.First(language => 
+                    language.LanguageID == languageID && language.UserID == userID));
+            _db.SaveChanges();
+        }
 
         public bool IsLanguageAdded(int userID, int languageID) => _db.TableProfileLanguages
-            .FirstOrDefault(language => language.LanguageID == languageID && language.UserID == userID) is not null;
+           .Any(language => language.LanguageID == languageID && language.UserID == userID);
 
-        public IEnumerable<ProfileLanguageModel>? GetLanguages(int userID) => _db.ViewProfileLanguages
+        public IEnumerable<ProfileLanguageInfoModel>? GetLanguages(int userID) => _db.ViewProfileLanguages
             .Where(languages => languages.UserID == userID);
 
         #endregion

@@ -7,6 +7,20 @@ namespace database.context.Repos.User
     public interface IAuthRepos
     {
         /// <summary>
+        /// Метод, проверяющий зарегистрирован ли аккаунт в системе
+        /// </summary>
+        /// <param name="email">Почта пользователя</param>
+        /// <param name="password">Пароль пользователя</param>
+        /// <returns></returns>
+        public bool IsAccountExist(string email, string password);
+
+        /// <summary>
+        /// Метод, проверяющий занята ли почта пользователя кем-то в системе
+        /// </summary>
+        /// <param name="email">Почта пользователя</param>
+        public bool IsEmailBusy(string email);
+
+        /// <summary>
         /// Добавить нового пользователя в систему
         /// </summary>
         /// <param name="email">Почта пользователя</param>
@@ -17,18 +31,10 @@ namespace database.context.Repos.User
         public void Add(string email, string password, string surname, string name, string? patronymic);
 
         /// <summary>
-        /// Получить информацию о пользователе по его почте
-        /// </summary>
-        /// <param name="email">Почта пользователя</param>
-        /// <returns>Информация о пользователе в виде JSON</returns>
-        public UserAuthModel? GetByEmail(string email);
-
-        /// <summary>
-        /// Получить информацию о пользователе по его почте и паролю
+        /// Получить базовую информацию о пользователе по его почте и паролю
         /// </summary>
         /// <param name="email">Почта пользователя</param>
         /// <param name="password">Пароль пользователя</param>
-        /// <returns>Информация о пользователе в виде JSON</returns>
-        public UserAuthModel? GetByEmailAndPassword(string email, string password);
+        public UserAuthModel? GetAccountInfo(string email, string password);
     }
 }

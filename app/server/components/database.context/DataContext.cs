@@ -2,6 +2,7 @@
 using database.context.Models.Auth;
 using database.context.Models.Profile;
 using database.context.Models.Profile.Languages;
+using database.context.Models.Misc;
 namespace database.context
 {
     /// <summary>
@@ -9,10 +10,18 @@ namespace database.context
     /// </summary>
     public sealed class DataContext : DbContext
     {
+
+
+
+        #region Аккаунт пользователя
+
         /// <summary>
         /// Таблица с аккаунтами пользователей
         /// </summary>
-        public DbSet<UserAuthModel> Users { get; set; }
+        public DbSet<UserAuthModel> TableUsers { get; set; }
+
+        #endregion
+
 
 
 
@@ -26,17 +35,28 @@ namespace database.context
         /// <summary>
         /// Представление с базовой информацией о профилях пользователей
         /// </summary>
-        public DbSet<UserBaseInfoModel> ViewProfileBaseInfo { get; set; }
+        public DbSet<ProfileBaseInfoModel> ViewProfileBaseInfo { get; set; }
 
         /// <summary>
         /// Таблица с выбранными пользователями языками в профиле
         /// </summary>
-        public DbSet<LanguageModel> TableProfileLanguages { get; set; }
+        public DbSet<ProfileLanguageModel> TableProfileLanguages { get; set; }
 
         /// <summary>
-        /// Представление с выбранными пользователями языками в профиле
+        /// Представление с информацией о выбранных пользователями языками в профиле
         /// </summary>
-        public DbSet<ProfileLanguageModel> ViewProfileLanguages { get; set; }
+        public DbSet<ProfileLanguageInfoModel> ViewProfileLanguages { get; set; }
+
+        #endregion
+
+
+
+        #region Прочее
+
+        /// <summary>
+        /// Таблица с информацией обо всех языках на платформе
+        /// </summary>
+        public DbSet<LanguageModel> TableLanguages { get; set; }
 
         #endregion
 

@@ -1,11 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using api.Misc;
 using database.context;
 using database.context.Repos.User;
-using api.Misc;
 using database.context.Repos.Profile;
-
+using database.context.Repos.Languages;
 namespace api
 {
     public class Program
@@ -46,6 +46,7 @@ namespace api
                 options.UseNpgsql(builder.Configuration.GetConnectionString("social_network_user_admin")));
             builder.Services.AddScoped<IAuthRepos, AuthRepos>();
             builder.Services.AddScoped<IProfileRepos, ProfileRepos>();
+            builder.Services.AddScoped<ILanguageRepos, LanguageRepos>();
 
             #endregion
 

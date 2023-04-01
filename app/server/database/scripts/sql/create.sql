@@ -440,33 +440,31 @@ create or replace view view_user_base_info as
 create or replace view view_profile_languages as
 	select upl.language_id id, u.id user_id, l.name, upl.date 
 	from users u
-		left join user_profile_languages upl on upl.user_id = u.id
+		right join user_profile_languages upl on upl.user_id = u.id
 		left join languages l on l.id = upl.language_id;
-	
+
+--Представление, содержащее информацию и выбранных жизненных позициях пользователя
+create or replace view view_profile_life_positions as
+	select 
+		u.id user_id, ulp.inspire, ata.name attitude_to_alcohol, ats.name attitude_to_smoking, mtp.name main_things_in_people, mtl.name main_things_in_life, wo.name world_outlook, pp.name political_preferences
+	from users u
+		left join user_profile_main_info upmi on u.id = upmi.user_id
+		left join user_life_positions ulp on u.id = ulp.user_id
+		left join app_user_roles aur on u.role_id = aur.id
+		left join attitude_to_alcohol ata on ulp.ata_id = ata.id
+		left join attitude_to_smoking ats on ulp.ats_id = ats.id
+		left join main_things_in_people mtp on ulp.mtp_id = mtp.id
+		left join main_things_in_life mtl on ulp.mtl_id = mtl.id
+		left join world_outlook wo on ulp.wo_id = wo.id
+		left join political_preferences pp on ulp.pp_id = pp.id
+		left join family_statuses fs on upmi.family_status_id = fs.id
+		left join cities c on upmi.city_id = c.id
 	
 	
 ------------------------
 -- СОЗДАНИЕ ТРИГГЕРОВ --
 ------------------------
-/*--Триггер, срабатывающий при добавлении нового пользователя в систему
-create or replace function add_user() returns trigger as
-	$$
-		declare
-			user_id integer;
-		begin
-			insert into users(email, password)
-			values(new.email, new.password);
-			
-			select id from users into user_id where email = new.email;
-			
-			insert into user_profile_main_info(user_id, surname, name, patronymic)
-			values(user_id, new.surname, new.name, new.patronymic);
-			
-			return new;
-		end;
-	$$ language plpgsql;
-create or replace trigger insert_user instead of insert on view_user_main_info for each row
-	execute function add_user();*/
+--tbd
 
 
 
@@ -484,26 +482,3 @@ GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO user_moderator;
 create user user_admin with password '52iJs*x';
 revoke all privileges on database social_network from user_admin;
 GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO user_admin;
-
-/*
-create or replace view view_user_profile_languages_info as
-	select
-
-	select 
-		u.id user_id, u.email, u.password, aur.name, u.registration_date, 
-		upmi.surname user_surname, upmi.name user_name, upmi.patronymic user_patronymic, c.name city, upmi.avatar, upmi.status, upmi.birthdate, fs.name family_status,
-		--Жизненная позиция пользователя по различным вопросам (user_life_positions)
-		ulp.inspire, ata.name attitude_to_alcohol, ats.name attitude_to_smoking, mtp.name main_things_in_people, mtl.name main_things_in_life, wo.name world_outlook, pp.name political_preferences
-	from users u
-		left join user_profile_main_info upmi on u.id = upmi.user_id
-		left join user_life_positions ulp on u.id = ulp.user_id
-		left join app_user_roles aur on u.role_id = aur.id
-		left join attitude_to_alcohol ata on ulp.ata_id = ata.id
-		left join attitude_to_smoking ats on ulp.ats_id = ats.id
-		left join main_things_in_people mtp on ulp.mtp_id = mtp.id
-		left join main_things_in_life mtl on ulp.mtl_id = mtl.id
-		left join world_outlook wo on ulp.wo_id = wo.id
-		left join political_preferences pp on ulp.pp_id = pp.id
-		left join family_statuses fs on upmi.family_status_id = fs.id
-		left join cities c on upmi.city_id = c.id
-*/

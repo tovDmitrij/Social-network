@@ -3,13 +3,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace database.context.Models.Profile.Languages
 {
     /// <summary>
-    /// Информация о выбранном пользователем в профиле языке
+    /// Промежуточная модель, необходимая для добавления нового языка в профиль пользователя
     /// </summary>
-    [Table("view_profile_languages")]
+    [Table("user_profile_languages")]
     public sealed class ProfileLanguageModel
     {
         /// <summary>
-        /// Идентификатор языка
+        /// Идентификатор связи
         /// </summary>
         [Key]
         [Column("id")]
@@ -23,25 +23,21 @@ namespace database.context.Models.Profile.Languages
         public int UserID { get; set; }
 
         /// <summary>
-        /// Наименование языка
+        /// Идентификатор языка
         /// </summary>
         [Required]
-        [Column("name")]
-        public string Name { get; set; }
+        [Column("language_id")]
+        public int LanguageID { get; set; }
 
-        /// <summary>
-        /// Дата добавления языка в профиль
-        /// </summary>
-        [Required]
-        [Column("date")]
-        public DateTime Date { get; set; }
-
-        public ProfileLanguageModel(int id, int user_id, string name, DateTime date)
+        public ProfileLanguageModel(int id, int user_id, int language_id) : this(user_id, language_id)
         {
             ID = id;
+        }
+
+        public ProfileLanguageModel(int user_id, int language_id)
+        {
             UserID = user_id;
-            Name = name;
-            Date = date;
+            LanguageID = language_id;
         }
 
         public ProfileLanguageModel() { }
