@@ -36,7 +36,7 @@
 
 <div align="center">
 
-![Main1](https://user-images.githubusercontent.com/86602542/229302620-b5056ea5-cf76-4aa3-a1b4-a23632ca29e2.svg)
+![Main](https://user-images.githubusercontent.com/86602542/229361443-10c56148-343b-4f3c-ba13-57898b9cbbc0.svg)
 
 </div>
 

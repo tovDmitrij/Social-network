@@ -1,8 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using database.context.Models.Misc;
 using database.context.Models.Auth;
 using database.context.Models.Profile;
 using database.context.Models.Profile.Languages;
-using database.context.Models.Misc;
+using database.context.Models.Profile.LifePositions;
+using database.context.Models.Data;
+
 namespace database.context
 {
     /// <summary>
@@ -47,6 +50,16 @@ namespace database.context
         /// </summary>
         public DbSet<ProfileLanguageInfoModel> ViewProfileLanguages { get; set; }
 
+        /// <summary>
+        /// Таблица с жизненными позициями пользователей
+        /// </summary>
+        public DbSet<ProfileLifePositionModel> TableProfileLifePositions { get; set; }
+
+        /// <summary>
+        /// Представление с информацией о жизненных позициях пользователей
+        /// </summary>
+        public DbSet<ProfileLifePositionsInfoModel> ViewProfileLifePositions { get; set; }
+
         #endregion
 
 
@@ -57,6 +70,11 @@ namespace database.context
         /// Таблица с информацией обо всех языках на платформе
         /// </summary>
         public DbSet<LanguageModel> TableLanguages { get; set; }
+
+        /// <summary>
+        /// Таблица с информацией обо все жизненных позициях на платформе
+        /// </summary>
+        public DbSet<LifePositionModel> TableLifePositions { get; set; }
 
         #endregion
 

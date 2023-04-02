@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using database.context.Repos.Languages;
+using database.context.Repos.LifePositions;
 namespace api.Controllers
 {
     [ApiController]
@@ -7,18 +8,32 @@ namespace api.Controllers
     public sealed class DataController: ControllerBase
     {
         private readonly ILanguageRepos _language;
+        private readonly ILifePositionsRepos _lifePositions;
 
-        public DataController(ILanguageRepos language)
+        public DataController(ILanguageRepos language, ILifePositionsRepos lifePositions)
         {
             _language = language;
+            _lifePositions = lifePositions;
         }
 
-        [HttpGet("Languages")]
-        public IActionResult GetLanguages() => StatusCode(200,
-            new
+        /// <summary>
+        /// Получить список языков, определённых в системе
+        /// </summary>
+        [HttpGet("Languages/Get")]
+        public IActionResult GetLanguages() => StatusCode(200, new
             {
                 status = "Список языков платформы был успешно сформирован",
-                languages = _language.GetLanguages()
+                data = _language.GetLanguages()
+            });
+
+        /// <summary>
+        /// Получить список жизненных позиций, определённых в системе
+        /// </summary>
+        [HttpGet("LifePositions/Get")]
+        public IActionResult GetLifePositions() => StatusCode(200, new 
+            { 
+                status = "Список жизненных позиций был успешно сформирован",
+                data = _lifePositions.GetLifePositions()
             });
     }
 }

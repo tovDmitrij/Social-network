@@ -4,7 +4,6 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using api.Misc;
 using database.context.Repos.User;
-using database.context.Models.Auth;
 using database.context.Repos.Profile;
 using database.context.Models.Profile;
 namespace api.Controllers
@@ -17,9 +16,7 @@ namespace api.Controllers
     public sealed class AuthController : ControllerBase
     {
         private readonly IAuthRepos _auth;
-
         private readonly IProfileRepos _profile;
-
         public AuthController(IAuthRepos auth, IProfileRepos profile)
         {
             _auth = auth;
@@ -40,29 +37,11 @@ namespace api.Controllers
             switch (_auth.IsEmailBusy(email))
             {
                 case true:
-                    return StatusCode(406, 
-                        new 
-                        {
-                            status = "Почта уже занята другим пользователем"
-                        });
+                    return StatusCode(406, new { status = "Почта уже занята другим пользователем" });
+
                 case false:
-                    try
-                    {
-                        _auth.Add(email, password, surname, name, patronymic);
-                    }
-                    catch (Exception ex)
-                    {
-                        return StatusCode(406, 
-                            new 
-                            {
-                                status = ex.Message
-                            });
-                    }
-                    return StatusCode(200,
-                        new 
-                        {
-                            status = "Пользователь успешно зарегистрирован"
-                        });
+                    _auth.Add(email, password, surname, name, patronymic);
+                    return StatusCode(200, new { status = "Новый пользователь был успешно зарегистрирован" });
             }
         }
 
@@ -74,34 +53,31 @@ namespace api.Controllers
         [HttpPost("SignIn")]
         public IActionResult SignIn(string email, string password)
         {
-            switch (!_auth.IsAccountExist(email, password))
+            switch (_auth.IsAccountExist(email, password))
             {
                 case true:
-                    return StatusCode(404, 
-                        new 
-                        { 
-                            status = "Пользователя с такой почтой и паролем не существует" 
-                        });
-                case false:
+                    #nullable disable warnings
                     ProfileBaseInfoModel user = _profile.GetProfileBaseInfo(_auth.GetAccountInfo(email, password).ID);
 
                     JwtSecurityToken token = new(
                             issuer: AuthOptions.ISSUER,
                             audience: AuthOptions.AUDIENCE,
-                            claims: new List<Claim> { 
+                            claims: new List<Claim> {
                                 new(ClaimTypes.Role, user.RoleTitle),
-                                new(ClaimTypes.Name, email) 
+                                new(ClaimTypes.Name, email)
                             },
                             expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(30)),
                             signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha512));
-                    
-                    return StatusCode(200, 
-                        new 
-                        { 
-                            status = "Пользователь успешно найден", 
+
+                    return StatusCode(200, new
+                        {
+                            status = "Пользователь успешно найден",
                             id = user.ID,
                             token = new JwtSecurityTokenHandler().WriteToken(token)
                         });
+
+                case false:
+                    return StatusCode(404, new { status = "Пользователя с такой почтой и паролем не существует" });
             }
         }
     }

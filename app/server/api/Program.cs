@@ -6,6 +6,8 @@ using database.context;
 using database.context.Repos.User;
 using database.context.Repos.Profile;
 using database.context.Repos.Languages;
+using database.context.Repos.LifePositions;
+
 namespace api
 {
     public class Program
@@ -47,6 +49,7 @@ namespace api
             builder.Services.AddScoped<IAuthRepos, AuthRepos>();
             builder.Services.AddScoped<IProfileRepos, ProfileRepos>();
             builder.Services.AddScoped<ILanguageRepos, LanguageRepos>();
+            builder.Services.AddScoped<ILifePositionsRepos, LifePositionsRepos>();
 
             #endregion
 

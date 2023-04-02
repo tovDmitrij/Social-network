@@ -10,17 +10,18 @@ namespace api.Misc
         /// <summary>
         /// Издатель токена
         /// </summary>
-        public const string ISSUER = "MyAuthServer";
+        public const string ISSUER = "OnCallService";
 
         /// <summary>
         /// Потребитель токена
         /// </summary>
-        public const string AUDIENCE = "MyAuthClient";
+        public const string AUDIENCE = "ReactClient";
 
         /// <summary>
         /// Ключ для шифрования токена
         /// </summary>
-        private const string KEY = "mysupersecret_secretkey!123";
+        private const string KEY = "Seth_MacFarlane-My_Way";
+
         public static SymmetricSecurityKey GetSymmetricSecurityKey() =>
             new(Encoding.UTF8.GetBytes(KEY));
     }

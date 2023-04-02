@@ -91,45 +91,22 @@ create table if not exists app_ban_requests(
 	date 	timestamp default current_timestamp not null
 );
 
-create table if not exists attitude_to_alcohol(
-	id		serial					primary key,
+create table if not exists life_position_types(
+	id		serial	primary key,
 	name	text not null
 );
 
-create table if not exists attitude_to_smoking(
-	id		serial					primary key,
-	name	text not null
-);
-
-create table if not exists main_things_in_people(
-	id		serial					primary key,
-	name	text not null
-);
-
-create table if not exists main_things_in_life(
-	id		serial					primary key,
-	name	text not null
-);
-
-create table if not exists world_outlook(
-	id		serial					primary key,
-	name	text not null
-);
-
-create table if not exists political_preferences(
-	id		serial					primary key,
+create table if not exists life_positions(
+	id		serial				primary key,
+	type_id	integer not null 	references life_position_types(id),
 	name	text not null
 );
 
 create table if not exists user_life_positions(
-	user_id		integer		primary key references users(id),
-	pp_id		integer		references political_preferences(id),
-	wo_id		integer		references world_outlook(id),
-	mtl_id		integer		references main_things_in_life(id),
-	mtp_id		integer		references main_things_in_people(id),
-	ats_id		integer		references attitude_to_smoking(id),
-	ata_id		integer		references attitude_to_alcohol(id),
-	inspire		text
+	id					serial		primary key,
+	user_id				integer		references users(id),
+	life_position_id	integer		references life_positions(id),
+	date				timestamp default current_timestamp not null
 );
 
 create table if not exists languages(
@@ -446,21 +423,19 @@ create or replace view view_profile_languages as
 --Представление, содержащее информацию и выбранных жизненных позициях пользователя
 create or replace view view_profile_life_positions as
 	select 
-		u.id user_id, ulp.inspire, ata.name attitude_to_alcohol, ats.name attitude_to_smoking, mtp.name main_things_in_people, mtl.name main_things_in_life, wo.name world_outlook, pp.name political_preferences
+		u.id user_id, lp.type_id, lpt.name type_name, lp.id position_id, lp.name position_name, ulp.date
 	from users u
-		left join user_profile_main_info upmi on u.id = upmi.user_id
-		left join user_life_positions ulp on u.id = ulp.user_id
-		left join app_user_roles aur on u.role_id = aur.id
-		left join attitude_to_alcohol ata on ulp.ata_id = ata.id
-		left join attitude_to_smoking ats on ulp.ats_id = ats.id
-		left join main_things_in_people mtp on ulp.mtp_id = mtp.id
-		left join main_things_in_life mtl on ulp.mtl_id = mtl.id
-		left join world_outlook wo on ulp.wo_id = wo.id
-		left join political_preferences pp on ulp.pp_id = pp.id
-		left join family_statuses fs on upmi.family_status_id = fs.id
-		left join cities c on upmi.city_id = c.id
+		right join user_life_positions ulp on u.id = ulp.user_id
+		left join life_positions lp on ulp.life_position_id = lp.id
+		left join life_position_types lpt on lpt.id = lp.type_id;
 	
-	
+--Представление, содержащее информацию о жизненных позициях
+create or replace view view_life_positions as
+	select lp.id, lp.name position_name, lp.type_id, lps.name type_name
+	from life_positions lp
+		left join life_position_types lps on lp.type_id = lps.id
+		
+
 ------------------------
 -- СОЗДАНИЕ ТРИГГЕРОВ --
 ------------------------
