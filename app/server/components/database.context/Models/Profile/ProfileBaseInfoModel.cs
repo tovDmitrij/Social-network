@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace database.context.Models.Profile
 {
     /// <summary>
-    /// Базовая информация о пользователе
+    /// Модель с базовая информацией о пользователе
     /// </summary>
     [Keyless]
     [Table("view_user_base_info")]

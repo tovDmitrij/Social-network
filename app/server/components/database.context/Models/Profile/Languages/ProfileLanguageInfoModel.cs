@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace database.context.Models.Profile.Languages
 {
     /// <summary>
-    /// Информация о выбранном пользователем в профиле языке
+    /// Полная информация о выбранном пользователем в профиле языке
     /// </summary>
     [Keyless]
     [Table("view_profile_languages")]

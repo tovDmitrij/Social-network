@@ -5,13 +5,13 @@ namespace database.context.Repos.Languages
     {
         public LanguageRepos(DataContext db) : base(db) { }
 
-        public bool IsLanguageExist(int id) => _db.TableLanguages
-            .Any(language => language.ID == id);
+        public bool IsLanguageExist(int langID) => _db.TableLanguages
+            .Any(language => language.ID == langID);
 
-        public LanguageModel? GetLanguageInfo(int id) => _db.TableLanguages
-            .FirstOrDefault(language => language.ID == id);
+        public LanguageModel? GetLanguage(int langID) => _db.TableLanguages
+            .Single(language => language.ID == langID);
 
-        public IEnumerable<LanguageModel> GetLanguages() => _db.TableLanguages
+        public IEnumerable<LanguageModel>? GetLanguages() => _db.TableLanguages
             .Select(language => language);
     }
 }

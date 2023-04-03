@@ -406,7 +406,7 @@ create table if not exists group_member_banlists(
 --Представление, содержащее основную информацию о пользователе
 create or replace view view_user_base_info as
 	select
-		u.id, u.registration_date, aur.name role_title, upmi.surname, upmi.name, upmi.patronymic, upmi.avatar, upmi.status, upmi,birthdate, fs.name family_status, c.name city
+		u.id, u.registration_date, aur.name role_title, upmi.surname, upmi.name, upmi.patronymic, upmi.avatar, upmi.status, upmi.birthdate, fs.name family_status, c.name city
 	from users u
 		left join user_profile_main_info upmi on u.id = upmi.user_id
 		left join app_user_roles aur on u.role_id = aur.id
@@ -434,6 +434,14 @@ create or replace view view_life_positions as
 	select lp.id, lp.name position_name, lp.type_id, lps.name type_name
 	from life_positions lp
 		left join life_position_types lps on lp.type_id = lps.id
+		
+--Представление, содержащее информацию о городах
+create or replace view view_cities as
+	select c.id city_id, c.name city_name, r.id region_id, r.name region_name, cr.id country_id, cr.name country_name
+	from cities c
+		left join regions r on c.region_id = r.id
+		left join countries cr on r.country_id = cr.id
+		
 		
 
 ------------------------

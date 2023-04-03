@@ -7,6 +7,7 @@ using database.context.Repos.User;
 using database.context.Repos.Profile;
 using database.context.Repos.Languages;
 using database.context.Repos.LifePositions;
+using database.context.Repos.Cities;
 
 namespace api
 {
@@ -40,16 +41,14 @@ namespace api
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddDistributedMemoryCache();
-            builder.Services.AddSession(options =>
-            {
-                options.IdleTimeout = TimeSpan.FromMinutes(30);
-            });
-            builder.Services.AddDbContext<DataContext>(options =>
-                options.UseNpgsql(builder.Configuration.GetConnectionString("social_network_user_admin")));
+            builder.Services.AddSession(options => { options.IdleTimeout = TimeSpan.FromMinutes(30);});
+            
+            builder.Services.AddDbContext<DataContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("social_network_user_admin")));
             builder.Services.AddScoped<IAuthRepos, AuthRepos>();
             builder.Services.AddScoped<IProfileRepos, ProfileRepos>();
             builder.Services.AddScoped<ILanguageRepos, LanguageRepos>();
             builder.Services.AddScoped<ILifePositionsRepos, LifePositionsRepos>();
+            builder.Services.AddScoped<ICityRepos, ICityRepos>();
 
             #endregion
 

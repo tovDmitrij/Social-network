@@ -7,20 +7,20 @@ namespace database.context.Repos.Languages
     public interface ILanguageRepos
     {
         /// <summary>
-        /// Метод, проверяющий существования языка с заданным идентификатором
+        /// Метод, проверяющий существование языка с заданным идентификатором
         /// </summary>
-        /// <param name="id">Идентификатор языка</param>
-        public bool IsLanguageExist(int id);
+        /// <param name="langID">Идентификатор языка</param>
+        public bool IsLanguageExist(int langID);
 
         /// <summary>
-        /// Получить информацию о конкретном языке по его идентификатору
+        /// Получить язык, определённый в системе, по его идентификатору
         /// </summary>
-        /// <param name="id">Идентификатор языка</param>
-        public LanguageModel? GetLanguageInfo(int id);
+        /// <param name="langID">Идентификатор языка</param>
+        public LanguageModel? GetLanguage(int langID);
 
         /// <summary>
-        /// Получить список языков
+        /// Получить список языков, определённых в системе
         /// </summary>
-        public IEnumerable<LanguageModel> GetLanguages();
+        public IEnumerable<LanguageModel>? GetLanguages();
     }
 }

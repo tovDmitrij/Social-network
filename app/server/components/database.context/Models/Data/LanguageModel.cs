@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace database.context.Models.Misc
 {
     /// <summary>
-    /// Модель с информацией о языке, присутствующем на платформе
+    /// Модель с информацией об языке, присутствующем на платформе
     /// </summary>
     [Table("languages")]
     public sealed class LanguageModel

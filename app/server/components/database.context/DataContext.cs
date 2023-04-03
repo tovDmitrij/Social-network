@@ -1,11 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using database.context.Models.Misc;
 using database.context.Models.Auth;
+using database.context.Models.Data;
 using database.context.Models.Profile;
 using database.context.Models.Profile.Languages;
 using database.context.Models.Profile.LifePositions;
-using database.context.Models.Data;
-
 namespace database.context
 {
     /// <summary>
@@ -31,7 +30,7 @@ namespace database.context
         #region Профиль пользователя
 
         /// <summary>
-        /// Таблица с базовой информацией о профилях пользователей
+        /// Таблица с базовой информацией об аккаунтах пользователей
         /// </summary>
         public DbSet<ProfileAuthModel> TableProfileBaseInfo { get; set; }
 
@@ -46,7 +45,7 @@ namespace database.context
         public DbSet<ProfileLanguageModel> TableProfileLanguages { get; set; }
 
         /// <summary>
-        /// Представление с информацией о выбранных пользователями языками в профиле
+        /// Представление с подробной информацией о выбранных пользователями языками в профиле
         /// </summary>
         public DbSet<ProfileLanguageInfoModel> ViewProfileLanguages { get; set; }
 
@@ -56,7 +55,7 @@ namespace database.context
         public DbSet<ProfileLifePositionModel> TableProfileLifePositions { get; set; }
 
         /// <summary>
-        /// Представление с информацией о жизненных позициях пользователей
+        /// Представление с подробной информацией о жизненных позициях пользователей
         /// </summary>
         public DbSet<ProfileLifePositionsInfoModel> ViewProfileLifePositions { get; set; }
 
@@ -72,9 +71,19 @@ namespace database.context
         public DbSet<LanguageModel> TableLanguages { get; set; }
 
         /// <summary>
-        /// Таблица с информацией обо все жизненных позициях на платформе
+        /// Представление с информацией обо все жизненных позициях на платформе
         /// </summary>
-        public DbSet<LifePositionModel> TableLifePositions { get; set; }
+        public DbSet<LifePositionModel> ViewLifePositions { get; set; }
+
+        /// <summary>
+        /// Представление с информацией обо всех городах на платформе
+        /// </summary>
+        public DbSet<CitiesModel> ViewCities { get; set; }
+
+        /// <summary>
+        /// Таблица с информацией обо всех семейных положениях на платформе
+        /// </summary>
+        public DbSet<FamilyStatusModel> TableFamilyStatuses { get; set; }
 
         #endregion
 

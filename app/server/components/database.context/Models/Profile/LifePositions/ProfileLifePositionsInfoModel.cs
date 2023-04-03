@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace database.context.Models.Profile.LifePositions
 {
     /// <summary>
-    /// Информация о выбранных жизненных позициях пользователей
+    /// Полная информация о выбранных жизненных позициях пользователей
     /// </summary>
     [Keyless]
     [Table("view_profile_life_positions")]

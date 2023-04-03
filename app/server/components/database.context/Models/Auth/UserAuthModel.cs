@@ -29,10 +29,15 @@ namespace database.context.Models.Auth
         [Column("password")]
         public string Password { get; set; }
 
-        public UserAuthModel(string email, string password)
+        public UserAuthModel(int id, string email, string password) : this(id)
         {
             Email = email;
             Password = password;
+        }
+
+        public UserAuthModel(int id)
+        {
+            ID = id;
         }
 
         public UserAuthModel() { }

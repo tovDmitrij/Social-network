@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace database.context.Models.Auth
 {
     /// <summary>
-    /// Информация, необходимая для аутентификации пользователя в системе
+    /// Информация, необходимая для создания профиля пользователя в системе
     /// </summary>
     [Table("user_profile_main_info")]
     public class ProfileAuthModel
@@ -33,9 +33,9 @@ namespace database.context.Models.Auth
         /// Отчество пользователя
         /// </summary>
         [Column("patronymic")]
-        public string Patronymic { get; set; }
+        public string? Patronymic { get; set; }
 
-        public ProfileAuthModel(int user_id, string surname, string name, string patronymic) : this(user_id, surname, name)
+        public ProfileAuthModel(int user_id, string surname, string name, string? patronymic) : this(user_id, surname, name)
         {
             Patronymic = patronymic;
         }

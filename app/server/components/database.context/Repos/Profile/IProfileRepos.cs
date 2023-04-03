@@ -9,16 +9,66 @@ namespace database.context.Repos.Profile
     public interface IProfileRepos
     {
         /// <summary>
+        /// Метод, проверяющий существует ли пользователь с заданным идентификатором
+        /// </summary>
+        /// <param name="id">Идентификатор пользователя</param>
+        public bool IsUserExist(int id);
+
+
+
+        #region Основная информация
+
+        /// <summary>
         /// Получить базовую информацию о профиле пользователя по его идентификатору
         /// </summary>
         /// <param name="id">Идентификатор пользователя</param>
         public ProfileBaseInfoModel? GetProfileBaseInfo(int id);
 
         /// <summary>
-        /// Метод, проверяющий существует ли пользователь с заданным идентификатором
+        /// Изменить статус пользователя в профиле
         /// </summary>
-        /// <param name="id">Идентификатор пользователя</param>
-        public bool IsUserExist(int id);
+        /// <param name="userID">Идентификатор пользователя</param>
+        /// <param name="status">Статус пользователя</param>
+        public void ChangeStatus(int userID, string status);
+
+        /// <summary>
+        /// Изменить аватар пользователя в профиле
+        /// </summary>
+        /// <param name="userID">Идентификатор пользователя</param>
+        /// <param name="avatar">Аватарка пользователя</param>
+        public void ChangeAvatar(int userID, byte[] avatar);
+
+        /// <summary>
+        /// Изменить родной город пользователя в профиле
+        /// </summary>
+        /// <param name="userID">Идентификатор пользователя</param>
+        /// <param name="cityID">Идентификатор города</param>
+        public void ChangeCity(int userID, int cityID);
+
+        /// <summary>
+        /// Изменить семейное положение пользователя в профиле
+        /// </summary>
+        /// <param name="userID">Идентификатор пользователя</param>
+        /// <param name="statusID">Идентификатор семейного положения</param>
+        public void ChangeFamilyStatus(int userID, int statusID);
+
+        /// <summary>
+        /// Изменить дату рождения пользователя в профиле
+        /// </summary>
+        /// <param name="userID">Идентификатор пользователя</param>
+        /// <param name="date">Дата рождения пользователя</param>
+        public void ChangeBirthDate(int userID, DateTime date);
+
+        /// <summary>
+        /// Изменить ФИО пользователя в профиле
+        /// </summary>
+        /// <param name="userID">Идентификатор пользователя</param>
+        /// <param name="surname">Фамилия пользователя</param>
+        /// <param name="name">Имя пользователя</param>
+        /// <param name="patronymic">Отчество пользователя</param>
+        public void ChangeFullname(int userID, string surname, string name, string patronymic);
+
+        #endregion
 
 
 
@@ -28,22 +78,22 @@ namespace database.context.Repos.Profile
         /// Добавить новый язык в профиль пользователя
         /// </summary>
         /// <param name="userID">Идентификатор пользователя</param>
-        /// <param name="languageID">Идентификатор языка</param>
-        public void AddLanguage(int userID, int languageID);
+        /// <param name="langID">Идентификатор языка</param>
+        public void AddLanguage(int userID, int langID);
 
         /// <summary>
         /// Удалить язык из профиля пользователя
         /// </summary>
         /// <param name="userID">Идентификатор пользователя</param>
-        /// <param name="languageID">Идентификатор языка</param>
-        public void RemoveLanguage(int userID, int languageID);
+        /// <param name="langID">Идентификатор языка</param>
+        public void RemoveLanguage(int userID, int langID);
 
         /// <summary>
         /// Метод, проверяющий добавлен ли язык в список языков пользователя
         /// </summary>        
         /// <param name="userID">Идентификатор пользователя</param>
-        /// <param name="languageID">Идентификатор языка</param>
-        public bool IsLanguageAdded(int userID, int languageID);
+        /// <param name="langID">Идентификатор языка</param>
+        public bool IsLanguageAdded(int userID, int langID);
 
         /// <summary>
         /// Получить список выбранных языков пользователя
@@ -61,22 +111,22 @@ namespace database.context.Repos.Profile
         /// Добавить новую жизненную позицию в профиль пользователя
         /// </summary>
         /// <param name="userID">Идентификатор пользователя</param>
-        /// <param name="positionID">Идентификатор жизненной позиции</param>
-        public void AddLifePosition(int userID, int positionID);
+        /// <param name="posID">Идентификатор жизненной позиции</param>
+        public void AddLifePosition(int userID, int posID);
 
         /// <summary>
         /// Удалить жизненную позицию из профиля пользователя
         /// </summary>
         /// <param name="userID">Идентификатор пользователя</param>
-        /// <param name="positionID">Идентификатор жизненной позиции</param>
-        public void RemoveLifePosition(int userID, int positionID);
+        /// <param name="posID">Идентификатор жизненной позиции</param>
+        public void RemoveLifePosition(int userID, int posID);
 
         /// <summary>
         /// Удалить категорию жизненной позиции из профиля пользователя
         /// </summary>
         /// <param name="userID">Идентификатор пользователя</param>
         /// <param name="typeID">Идентификатор типа жизненной позиции</param>
-        public void RemoveLifePositionCategory(int userID, int typeID);
+        public void RemoveLifePositionType(int userID, int typeID);
 
         /// <summary>
         /// Метод, проверяющий наличие заданного типа жизненной позиции в профиле пользователя
@@ -89,9 +139,9 @@ namespace database.context.Repos.Profile
         /// Метод, проверяющий наличие заданной жизненной позиции в профиле пользователя
         /// </summary>
         /// <param name="userID">Идентификатор пользователя</param>
-        /// <param name="positionID">Идентификатор жизненной позиции</param>
+        /// <param name="posID">Идентификатор жизненной позиции</param>
         /// <returns></returns>
-        public bool IsPositionAdded(int userID, int positionID);
+        public bool IsPositionAdded(int userID, int posID);
 
         /// <summary>
         /// Получить список жизненных позиций пользователя по его идентификатору

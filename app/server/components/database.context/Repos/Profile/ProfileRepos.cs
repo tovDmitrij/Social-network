@@ -17,24 +17,24 @@ namespace database.context.Repos.Profile
 
         #region Языки
 
-        public void AddLanguage(int userID, int languageID)
+        public void AddLanguage(int userID, int langID)
         {
             _db.TableProfileLanguages.Add(new(
                 userID,
-                languageID));
+                langID));
             _db.SaveChanges();
         }
 
-        public void RemoveLanguage(int userID, int languageID)
+        public void RemoveLanguage(int userID, int langID)
         {
             _db.TableProfileLanguages.Remove(
                 _db.TableProfileLanguages.First(language => 
-                    language.LanguageID == languageID && language.UserID == userID));
+                    language.LanguageID == langID && language.UserID == userID));
             _db.SaveChanges();
         }
 
-        public bool IsLanguageAdded(int userID, int languageID) => _db.TableProfileLanguages
-           .Any(language => language.LanguageID == languageID && language.UserID == userID);
+        public bool IsLanguageAdded(int userID, int langID) => _db.TableProfileLanguages
+           .Any(language => language.LanguageID == langID && language.UserID == userID);
 
         public IEnumerable<ProfileLanguageInfoModel>? GetLanguages(int userID) => _db.ViewProfileLanguages
             .Where(languages => languages.UserID == userID);
@@ -45,23 +45,23 @@ namespace database.context.Repos.Profile
 
         #region Жизненные позиции
 
-        public void AddLifePosition(int userID, int positionID)
+        public void AddLifePosition(int userID, int posID)
         {
             _db.TableProfileLifePositions.Add(new(
                 userID, 
-                positionID));
+                posID));
             _db.SaveChanges();
         }
 
-        public void RemoveLifePosition(int userID, int positionID)
+        public void RemoveLifePosition(int userID, int posID)
         {
             _db.TableProfileLifePositions.Remove(
                 _db.TableProfileLifePositions.First(position => 
-                    position.UserID == userID && position.PositionID == positionID));
+                    position.UserID == userID && position.PositionID == posID));
             _db.SaveChanges();
         }
 
-        public void RemoveLifePositionCategory(int userID, int typeID)
+        public void RemoveLifePositionType(int userID, int typeID)
         {
             _db.TableProfileLifePositions.Remove(
                 _db.TableProfileLifePositions.First(position =>
@@ -70,11 +70,11 @@ namespace database.context.Repos.Profile
             _db.SaveChanges();
         }
 
-        public bool IsPositionTypeAdded(int userID, int positionTypeID) => _db.ViewProfileLifePositions
-            .Any(position => position.TypeID == positionTypeID && position.UserID == userID);
+        public bool IsPositionTypeAdded(int userID, int typeID) => _db.ViewProfileLifePositions
+            .Any(position => position.TypeID == typeID && position.UserID == userID);
 
-        public bool IsPositionAdded(int userID, int positionID) => _db.ViewProfileLifePositions
-            .Any(position => position.PositionID == positionID && position.UserID == userID);
+        public bool IsPositionAdded(int userID, int posID) => _db.ViewProfileLifePositions
+            .Any(position => position.PositionID == posID && position.UserID == userID);
 
         public IEnumerable<ProfileLifePositionsInfoModel>? GetLifePositions(int userID) => _db.ViewProfileLifePositions
             .Where(positions => positions.UserID == userID);
