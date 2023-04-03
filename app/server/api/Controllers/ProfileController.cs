@@ -11,14 +11,26 @@ namespace api.Controllers
     [Route("api/[controller]")]
     public sealed class ProfileController : ControllerBase
     {
+        /// <summary>
+        /// Взаимодействие с профилями пользователей
+        /// </summary>
         private readonly IProfileRepos _profile;
+
+        /// <summary>
+        /// Взаимодействие с таблицей языков
+        /// </summary>
         private readonly ILanguageRepos _language;
-        private readonly ILifePositionsRepos _lifePositions;
+
+        /// <summary>
+        /// Взаимодействие с таблицей жизненных позиций
+        /// </summary>
+        private readonly ILifePositionsRepos _position;
+
         public ProfileController(IProfileRepos profile, ILanguageRepos language, ILifePositionsRepos lifePositions)
         {
             _profile = profile;
             _language = language;
-            _lifePositions = lifePositions;
+            _position = lifePositions;
         }
 
 
@@ -29,7 +41,7 @@ namespace api.Controllers
         /// Получить базовую информацию о профиле пользователя по его идентификатору
         /// </summary>
         /// <param name="userID">Идентификатор пользователя</param>
-        [HttpGet("BaseInfo/Get/{userID:int}")]
+        [HttpGet("{userID:int}/BaseInfo/Get")]
         public IActionResult GetBaseProfileInfo(int userID)
         {
             switch (_profile.IsUserExist(userID))
@@ -50,7 +62,7 @@ namespace api.Controllers
         /// Получить список языков пользователя по его идентификатору
         /// </summary>
         /// <param name="userID">Идентификатор пользователя</param>
-        [HttpGet("Languages/Get/{userID:int}")]
+        [HttpGet("{userID:int}/Languages/Get")]
         public IActionResult GetLanguageInfo(int userID)
         {
             if (!_profile.IsUserExist(userID))
@@ -77,7 +89,7 @@ namespace api.Controllers
         /// Получить список жизненных позиций пользователя по его идентификатору
         /// </summary>
         /// <param name="userID">Идентификатор пользователя</param>
-        [HttpGet("LifePositions/Get/{userID:int}")]
+        [HttpGet("{userID:int}/LifePositions/Get")]
         public IActionResult GetLifePositionsInfo(int userID) 
         {
             if (!_profile.IsUserExist(userID))
@@ -111,7 +123,7 @@ namespace api.Controllers
         /// </summary>
         /// <param name="userID">Идентификатор пользователя</param>
         /// <param name="langID">Идентификатор языка</param>
-        [HttpPost("Languages/Add")]
+        [HttpPost("{userID:int}/Language/Add/{langID:int}")]
         public IActionResult AddLanguage(int userID, int langID)
         {
             if (!_profile.IsUserExist(userID))
@@ -137,14 +149,14 @@ namespace api.Controllers
         /// <param name="userID">Идентификатор пользователя</param>
         /// <param name="typeID">Идентификатор типа ЖП</param>
         /// <param name="posID">Идентификатор ЖП</param>
-        [HttpPost("LifePositions/Add")]
+        [HttpPost("{userID:int}/LifePosition/Add/{typeID:int}/{posID:int}")]
         public IActionResult AddLifePosition(int userID, int typeID, int posID)
         {
             if (!_profile.IsUserExist(userID))
             {
                 return StatusCode(200, new { status = "Пользователя с заданным идентификатором не существует" });
             }
-            if (!_lifePositions.IsLifePositionExist(typeID, posID))
+            if (!_position.IsLifePositionExist(typeID, posID))
             {
                 return StatusCode(404, new { status = "Жизненной позиции с заданными параметрами не существует" });
             }
@@ -196,7 +208,7 @@ namespace api.Controllers
         /// </summary>
         /// <param name="userID">Идентификатор пользователя</param>
         /// <param name="langID">Идентификатор языка</param>
-        [HttpDelete("Languages/Delete")]
+        [HttpDelete("{userID:int}/Language/Delete/{langID:int}")]
         public IActionResult RemoveLanguage(int userID, int langID)
         {
             if (!_profile.IsUserExist(userID))
@@ -222,14 +234,14 @@ namespace api.Controllers
         /// <param name="userID">Идентификатор пользователя</param>
         /// <param name="typeID">Идентификатор категории жизненной позиции</param>
         /// <param name="posID">Идентификатор жизненной позиции</param>
-        [HttpDelete("LifePositions/Delete")]
+        [HttpDelete("{userID:int}/LifePosition/Delete/{typeID:int}/{posID:int}")]
         public IActionResult RemoveLifePosition(int userID, int typeID, int posID)
         {
             if (!_profile.IsUserExist(userID))
             {
                 return StatusCode(404, new { status = "Пользователя с заданным идентификатором не существует" });
             }
-            if (!_lifePositions.IsLifePositionExist(typeID, posID))
+            if (!_position.IsLifePositionExist(typeID, posID))
             {
                 return StatusCode(404, new { status = "Жизненной позиции с заданными параметрами не существует" });
             }

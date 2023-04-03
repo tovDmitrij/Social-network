@@ -4,11 +4,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace database.context.Models.Data
 {
     /// <summary>
-    /// Полная информация о городах, хранящихся в системе
+    /// Полная информация о местах проживания, хранящихся в системе
     /// </summary>
     [Keyless]
-    [Table("view_cities")]
-    public sealed class CitiesModel
+    [Table("view_place_of_living")]
+    public sealed class PlaceOfLivingModel
     {
         /// <summary>
         /// Идентификатор города
@@ -52,7 +52,7 @@ namespace database.context.Models.Data
         [Column("country_name")]
         public string CountryName { get; set; }
 
-        public CitiesModel(int city_id, string city_name, int region_id, string region_name, int country_id, string country_name)
+        public PlaceOfLivingModel(int city_id, string city_name, int region_id, string region_name, int country_id, string country_name)
         {
             CityID = city_id;
             CityName = city_name;
@@ -62,6 +62,6 @@ namespace database.context.Models.Data
             CountryName = country_name;
         }
 
-        public CitiesModel() { }
+        public PlaceOfLivingModel() { }
     }
 }

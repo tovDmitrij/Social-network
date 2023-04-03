@@ -1,10 +1,12 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using System.Text;
 namespace api.Misc
 {
     /// <summary>
     /// Настройки генерации токена
     /// </summary>
+    [NonController]
     internal sealed class AuthOptions
     {
         /// <summary>

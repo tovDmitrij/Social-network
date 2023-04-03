@@ -9,7 +9,7 @@ namespace database.context.Repos.Languages
             .Any(language => language.ID == langID);
 
         public LanguageModel? GetLanguage(int langID) => _db.TableLanguages
-            .Single(language => language.ID == langID);
+            .FirstOrDefault(language => language.ID == langID);
 
         public IEnumerable<LanguageModel>? GetLanguages() => _db.TableLanguages
             .Select(language => language);

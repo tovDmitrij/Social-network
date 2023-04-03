@@ -8,7 +8,6 @@ using database.context.Repos.Profile;
 using database.context.Repos.Languages;
 using database.context.Repos.LifePositions;
 using database.context.Repos.Cities;
-
 namespace api
 {
     public class Program
@@ -48,7 +47,7 @@ namespace api
             builder.Services.AddScoped<IProfileRepos, ProfileRepos>();
             builder.Services.AddScoped<ILanguageRepos, LanguageRepos>();
             builder.Services.AddScoped<ILifePositionsRepos, LifePositionsRepos>();
-            builder.Services.AddScoped<ICityRepos, ICityRepos>();
+            builder.Services.AddScoped<IPlaceOfLivingRepos, PlaceOfLivingRepos>();
 
             #endregion
 

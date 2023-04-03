@@ -7,15 +7,54 @@ namespace database.context.Repos.Profile
     {
         public ProfileRepos(DataContext db) : base(db) { }
 
-        public ProfileBaseInfoModel? GetProfileBaseInfo(int id) => _db.ViewProfileBaseInfo
-            .FirstOrDefault(user => user.ID == id);
-
         public bool IsUserExist(int id) => _db.TableUsers
             .Any(user => user.ID == id);
 
 
 
+        #region Основная информация
+
+        public ProfileBaseInfoModel? GetProfileBaseInfo(int id) => _db.ViewProfileBaseInfo
+            .FirstOrDefault(user => user.ID == id);
+
+        public void ChangeStatus(int userID, string status)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ChangeAvatar(int userID, byte[] avatar)
+        {
+            throw new NotImplementedException();
+        }
+        
+        public void ChangeCity(int userID, int cityID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ChangeFamilyStatus(int userID, int statusID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ChangeBirthDate(int userID, DateTime date)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ChangeFullname(int userID, string surname, string name, string patronymic)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+
+
         #region Языки
+
+        public bool IsLanguageAdded(int userID, int langID) => _db.TableProfileLanguages
+            .Any(language => language.LanguageID == langID && language.UserID == userID);
 
         public void AddLanguage(int userID, int langID)
         {
@@ -33,17 +72,20 @@ namespace database.context.Repos.Profile
             _db.SaveChanges();
         }
 
-        public bool IsLanguageAdded(int userID, int langID) => _db.TableProfileLanguages
-           .Any(language => language.LanguageID == langID && language.UserID == userID);
-
         public IEnumerable<ProfileLanguageInfoModel>? GetLanguages(int userID) => _db.ViewProfileLanguages
-            .Where(languages => languages.UserID == userID);
+            .Where(language => language.UserID == userID);
 
         #endregion
 
 
 
         #region Жизненные позиции
+
+        public bool IsPositionTypeAdded(int userID, int typeID) => _db.ViewProfileLifePositions
+            .Any(position => position.TypeID == typeID && position.UserID == userID);
+
+        public bool IsPositionAdded(int userID, int posID) => _db.ViewProfileLifePositions
+            .Any(position => position.PositionID == posID && position.UserID == userID);
 
         public void AddLifePosition(int userID, int posID)
         {
@@ -70,14 +112,8 @@ namespace database.context.Repos.Profile
             _db.SaveChanges();
         }
 
-        public bool IsPositionTypeAdded(int userID, int typeID) => _db.ViewProfileLifePositions
-            .Any(position => position.TypeID == typeID && position.UserID == userID);
-
-        public bool IsPositionAdded(int userID, int posID) => _db.ViewProfileLifePositions
-            .Any(position => position.PositionID == posID && position.UserID == userID);
-
         public IEnumerable<ProfileLifePositionsInfoModel>? GetLifePositions(int userID) => _db.ViewProfileLifePositions
-            .Where(positions => positions.UserID == userID);
+            .Where(position => position.UserID == userID);
 
         #endregion
 

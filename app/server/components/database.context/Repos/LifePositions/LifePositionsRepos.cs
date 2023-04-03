@@ -15,12 +15,12 @@ namespace database.context.Repos.LifePositions
             .Any(position => position.TypeID == typeID);
 
         public LifePositionModel? GetLifePosition(int posID) => _db.ViewLifePositions
-            .Single(position => position.PositionID == posID);
+            .FirstOrDefault(position => position.PositionID == posID);
 
         public IEnumerable<LifePositionModel>? GetLifePositions() => _db.ViewLifePositions
-            .Select(positions => positions);
+            .Select(position => position);
 
         public IEnumerable<LifePositionModel>? GetLifePositions(int typeID) => _db.ViewLifePositions
-            .Where(positions => positions.TypeID == typeID);
+            .Where(position => position.TypeID == typeID);
     }
 }

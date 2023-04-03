@@ -15,8 +15,16 @@ namespace api.Controllers
     [Route("api/[controller]")]
     public sealed class AuthController : ControllerBase
     {
+        /// <summary>
+        /// Взаимодействие с аккаунтами пользователей
+        /// </summary>
         private readonly IAuthRepos _auth;
+
+        /// <summary>
+        /// Взаимодействие с профилями пользователей
+        /// </summary>
         private readonly IProfileRepos _profile;
+
         public AuthController(IAuthRepos auth, IProfileRepos profile)
         {
             _auth = auth;

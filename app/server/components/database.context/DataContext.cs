@@ -26,7 +26,6 @@ namespace database.context
 
 
 
-
         #region Профиль пользователя
 
         /// <summary>
@@ -76,9 +75,24 @@ namespace database.context
         public DbSet<LifePositionModel> ViewLifePositions { get; set; }
 
         /// <summary>
-        /// Представление с информацией обо всех городах на платформе
+        /// Представление с информацией обо всех местах проживания на платформе
         /// </summary>
-        public DbSet<CitiesModel> ViewCities { get; set; }
+        public DbSet<PlaceOfLivingModel> ViewPlaceOfLiving { get; set; }
+
+        /// <summary>
+        /// Таблица с информацией обо всех городах
+        /// </summary>
+        public DbSet<CityModel> TableCities { get; set; }
+
+        /// <summary>
+        /// Таблица с информацией обо всех регионах
+        /// </summary>
+        public DbSet<RegionModel> TableRegions { get; set; }
+
+        /// <summary>
+        /// Таблица с информацией обо всех странах
+        /// </summary>
+        public DbSet<CountryModel> TableCountries { get; set; }
 
         /// <summary>
         /// Таблица с информацией обо всех семейных положениях на платформе

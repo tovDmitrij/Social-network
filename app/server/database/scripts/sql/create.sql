@@ -435,8 +435,8 @@ create or replace view view_life_positions as
 	from life_positions lp
 		left join life_position_types lps on lp.type_id = lps.id
 		
---Представление, содержащее информацию о городах
-create or replace view view_cities as
+--Представление, содержащее информацию о местах проживания
+create or replace view view_place_of_living as
 	select c.id city_id, c.name city_name, r.id region_id, r.name region_name, cr.id country_id, cr.name country_name
 	from cities c
 		left join regions r on c.region_id = r.id
