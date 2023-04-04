@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using api.Misc;
+using api.Middlewares;
 using database.context.Contexts;
 using database.context.Repos.User;
 using database.context.Repos.Profile;
@@ -68,6 +69,7 @@ namespace api
                 .SetIsOriginAllowed(origin => true)
                 .AllowCredentials()
             );
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseAuthorization();

@@ -29,14 +29,12 @@ namespace api.logger
                         channel.QueueBind(
                             queue: queueName,
                             exchange: "direct_logs",
-                            routingKey: "log");
+                            routingKey: "error");
 
                         var consumer = new EventingBasicConsumer(channel);
                         consumer.Received += (sender, args) =>
                         {
-                            #nullable disable warnings
-                            LogModel log = JsonSerializer.Deserialize<LogModel>(Encoding.UTF8.GetString(args.Body.ToArray()));
-                            _logger.Log(log.Message, log.Source, log.StackTrace);
+                            _logger.Log(JsonSerializer.Deserialize<LogModel>(Encoding.UTF8.GetString(args.Body.ToArray())));
                         };
 
                         channel.BasicConsume(

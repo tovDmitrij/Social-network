@@ -42,21 +42,9 @@ namespace api.Controllers
         /// </summary>
         /// <param name="langID">Идентификатор языка</param>
         [HttpGet("Language/{langID:int}/Get")]
-        public IActionResult GetLanguage(int langID)
-        {
-            switch (_language.IsLanguageExist(langID))
-            {
-                case true:
-                    return StatusCode(200, new
-                    {
-                        status = "Информация о языке была успешно сформированна",
-                        data = _language.GetLanguage(langID)
-                    });
-
-                case false:
-                    return StatusCode(404, new { status = "Языка с заданным идентификатором не существует в системе" });
-            }
-        }
+        public IActionResult GetLanguage(int langID) => _language.IsLanguageExist(langID) ? 
+            LanguageOk(_language.GetLanguage(langID)) : 
+            LanguageNotFound;
 
         /// <summary>
         /// Получить список языков, определённых в системе
@@ -65,14 +53,9 @@ namespace api.Controllers
         public IActionResult GetLanguages()
         {
             var languages = _language.GetLanguages();
-
             return languages.Any() ? 
-                StatusCode(200, new
-                {
-                    status = "Список языков был успешно сформирован",
-                    data = languages
-                }) : 
-                StatusCode(404, new { status = "Список языков пуст" });
+                LanguagesOk(languages) : 
+                LanguagesNotFound;
         }
 
         #endregion
@@ -86,21 +69,9 @@ namespace api.Controllers
         /// </summary>
         /// <param name="posID">Идентификатор жизненной позиции</param>
         [HttpGet("LifePositions/Position/{posID:int}/Get")]
-        public IActionResult GetLifePosition(int posID)
-        {
-            switch (_position.IsLifePositionExist(posID))
-            {
-                case true:
-                    return StatusCode(200, new
-                    {
-                        status = "Информация о жизненной позиции была успешно сформированна",
-                        data = _position.GetLifePosition(posID)
-                    });
-
-                case false:
-                    return StatusCode(404, new { status = "Жизненной позиции с заданным идентификатором не существует" });
-            }
-        }
+        public IActionResult GetLifePosition(int posID) => _position.IsLifePositionExist(posID) ? 
+            LifePositionOk(_position.GetLifePosition(posID)) : 
+            LifePositionNotFound;
 
         /// <summary>
         /// Получить список жизненных позиций, определённых в системе, по их типу
@@ -111,22 +82,13 @@ namespace api.Controllers
         {
             if (!_position.IsLifePositionTypeExist(typeID))
             {
-                return StatusCode(404, new { status = "Тип жизненной позиции с заданным идентификатором не существует в системе" });
+                return LifePositionTypeNotFound;
             }
 
             var positions = _position.GetLifePositions(typeID);
-            switch (positions.Any())
-            {
-                case true:
-                    return StatusCode(200, new
-                    {
-                        status = "Список жизненных позиций был успешно сформирован",
-                        data = positions
-                    });
-
-                case false:
-                    return StatusCode(404, new { status = "Список жизненных позиций пуст" });
-            }
+            return positions.Any() ? 
+                LifePositionsOk(positions) : 
+                LifePositionsByTypeNotFound;
         }
 
         /// <summary>
@@ -138,12 +100,8 @@ namespace api.Controllers
             var positions = _position.GetLifePositions();
 
             return positions.Any() ?
-                StatusCode(200, new
-                {
-                    status = "Список жизненных позиций был успешно сформирован",
-                    data = positions
-                }) :
-                StatusCode(404, new { status = "Список жизненных позиций пуст" });
+                LifePositionsOk(positions) :
+                LifePositionsNotFound;
         }
 
         #endregion
@@ -157,21 +115,9 @@ namespace api.Controllers
         /// </summary>
         /// <param name="cityID">Идентификатор города</param>
         [HttpGet("City/{cityID:int}/Get")]
-        public IActionResult GetCity(int cityID)
-        {
-            switch (_place.IsCityExist(cityID))
-            {
-                case true:
-                    return StatusCode(200, new
-                    {
-                        status = "Информация о городе была успешно сформирована",
-                        data = _place.GetCity(cityID)
-                    });
-
-                case false:
-                    return StatusCode(404, new { status = "Города с заданным идентификатором не существует" });
-            }
-        }
+        public IActionResult GetCity(int cityID) => _place.IsCityExist(cityID) ?
+            CityOk(_place.GetCity(cityID)) :
+            CityNotFound;
 
         /// <summary>
         /// Получить информацию по городу по его идентификатору и идентификатору региона
@@ -181,24 +127,11 @@ namespace api.Controllers
         [HttpGet("Region/{regionID:int}/City/{cityID:int}/Get")]
         public IActionResult GetCityByRegion(int cityID,  int regionID)
         {
-            if (!_place.IsCityExist(cityID))
-            {
-                return StatusCode(404, new { status = "Города с заданным идентификатором не существует" });
-            }
-            if (!_place.IsRegionExist(regionID))
-            {
-                return StatusCode(404, new { status = "Региона с заданным идентификатором не существует" });
-            }
-            if (!_place.IsCityExistInRegion(cityID, regionID))
-            {
-                return StatusCode(404, new { status = "Города в регионе с заданным идентификатором не существует" });
-            }
+            if (!_place.IsCityExist(cityID)) return CityNotFound;
+            if (!_place.IsRegionExist(regionID)) return RegionNotFound;
+            if (!_place.IsCityExistInRegion(cityID, regionID)) return CityInRegionNotFound;
 
-            return StatusCode(200, new
-            {
-                status = "Информация по городу была успешно сформирована",
-                data = _place.GetCity(cityID)
-            });
+            return CityOk(_place.GetCity(cityID));
         }
 
         /// <summary>
@@ -209,24 +142,11 @@ namespace api.Controllers
         [HttpGet("Country/{countryID:int}/City/{cityID:int}/Get")]
         public IActionResult GetCityByCountry(int cityID, int countryID)
         {
-            if (!_place.IsCityExist(cityID))
-            {
-                return StatusCode(404, new { status = "Города с заданным идентификатором не существует" });
-            }
-            if (!_place.IsCountryExist(countryID))
-            {
-                return StatusCode(404, new { status = "Страны с заданным идентификатором не существует" });
-            }
-            if (!_place.IsCityExistInCountry(cityID, countryID))
-            {
-                return StatusCode(404, new { status = "Города в стране с заданным идентификатором не существует" });
-            }
+            if (!_place.IsCityExist(cityID)) return CityNotFound;
+            if (!_place.IsCountryExist(countryID)) return CountryNotFound;
+            if (!_place.IsCityExistInCountry(cityID, countryID)) return CityInCountryNotFound;
 
-            return StatusCode(200, new
-            {
-                status = "Информация по городу была успешно сформирована",
-                data = _place.GetCity(cityID)
-            });
+            return CityOk(_place.GetCity(cityID));
         }
 
         /// <summary>
@@ -237,12 +157,8 @@ namespace api.Controllers
         {
             var cities = _place.GetCities();
             return cities.Any() ? 
-                StatusCode(200, new
-                {
-                    status = "Список городов был успешно сформирован",
-                    data = cities
-                }) :
-                StatusCode(404, new { status = "Список городов пуст" });
+                CitiesOk(cities) :
+                CitiesNotFound;
         }
 
         /// <summary>
@@ -252,24 +168,12 @@ namespace api.Controllers
         [HttpGet("Region/{regionID:int}/Cities/Get")]
         public IActionResult GetCitiesByRegion(int regionID)
         {
-            if (!_place.IsRegionExist(regionID))
-            {
-                return StatusCode(404, new { status = "Региона с заданным идентификатором не существует" });
-            }
+            if (!_place.IsRegionExist(regionID)) return RegionNotFound;
 
             var cities = _place.GetCitiesByRegion(regionID);
-            switch (cities.Any())
-            {
-                case true:
-                    return StatusCode(200, new
-                    {
-                        status = "Список городов был успешно сформирован",
-                        data = cities
-                    });
-
-                case false:
-                    return StatusCode(404, new { status = "Список городов для данного региона пуст" });
-            }
+            return cities.Any() ? 
+                CitiesOk(cities) : 
+                CitiesByRegionNotFound;
         }
 
         /// <summary>
@@ -279,24 +183,12 @@ namespace api.Controllers
         [HttpGet("Country/{countryID:int}/Cities/Get")]
         public IActionResult GetCitiesByCountry(int countryID)
         {
-            if (!_place.IsCountryExist(countryID))
-            {
-                return StatusCode(404, new { status = "Страны с заданным идентификатором не существует" });
-            }
+            if (!_place.IsCountryExist(countryID)) return CountryNotFound;
 
             var cities = _place.GetCitiesByCountry(countryID);
-            switch (cities.Any())
-            {
-                case true:
-                    return StatusCode(200, new
-                    {
-                        status = "Список городов был успешно сформирован",
-                        data = cities
-                    });
-
-                case false:
-                    return StatusCode(404, new { status = "Список городов для заданной страны пуст" });
-            }
+            return cities.Any() ?
+                CitiesOk(cities) :
+                CitiesByCountryNotFound;
         }
 
 
@@ -306,21 +198,9 @@ namespace api.Controllers
         /// </summary>
         /// <param name="regionID">Идентификатор региона</param>
         [HttpGet("Region/{regionID:int}/Get")]
-        public IActionResult GetRegion(int regionID)
-        {
-            switch (_place.IsRegionExist(regionID))
-            {
-                case true:
-                    return StatusCode(200, new
-                    {
-                        status = "Информация о регионе была успешно сформирована",
-                        data = _place.GetRegion(regionID)
-                    });
-
-                case false:
-                    return StatusCode(404, "Региона с заданным идентификатором не существует");
-            }
-        }
+        public IActionResult GetRegion(int regionID) => _place.IsRegionExist(regionID) ?
+            RegionOk(_place.GetRegion(regionID)) :
+            RegionNotFound;
 
         /// <summary>
         /// Получить информацию о регионе по его идентификатору и идентификатору страны
@@ -330,24 +210,11 @@ namespace api.Controllers
         [HttpGet("Country/{countryID:int}/Region/{regionID:int}/Get")]
         public IActionResult GetRegionByCountry(int regionID, int countryID)
         {
-            if (!_place.IsCountryExist(countryID))
-            {
-                return StatusCode(404, new { status = "Страны с заданным идентификатором не существует" });
-            }
-            if (!_place.IsRegionExist(regionID))
-            {
-                return StatusCode(404, new { status = "Региона с заданным идентификатором не существует" });
-            }
-            if (!_place.IsRegionExistInCountry(regionID, countryID))
-            {
-                return StatusCode(404, new { status = "Региона в стране с заданным идентификатором не существует" });
-            }
+            if (!_place.IsCountryExist(countryID)) return CountryNotFound;
+            if (!_place.IsRegionExist(regionID)) return RegionNotFound;
+            if (!_place.IsRegionExistInCountry(regionID, countryID)) return RegionByCountryNotFound;
 
-            return StatusCode(200, new
-            {
-                status = "Информация по региону была успешно сформирована",
-                data = _place.GetRegion(regionID)
-            });
+            return RegionOk(_place.GetRegion(regionID));
         }
 
         /// <summary>
@@ -357,18 +224,9 @@ namespace api.Controllers
         public IActionResult GetRegions()
         {
             var regions = _place.GetRegions();
-            switch (regions.Any())
-            {
-                case true:
-                    return StatusCode(200, new
-                    {
-                        status = "Список регионов был успешно сформирован",
-                        data = regions
-                    });
-
-                case false:
-                    return StatusCode(404, new { status = "Список регионов пуст" });
-            }
+            return regions.Any() ?
+                RegionsOk(regions) :
+                RegionsNotFound;
         }
 
         /// <summary>
@@ -378,24 +236,12 @@ namespace api.Controllers
         [HttpGet("Country/{countryID:int}/Regions/Get")]
         public IActionResult GetRegionsByCountry(int countryID)
         {
-            if (!_place.IsCountryExist(countryID))
-            {
-                return StatusCode(404, new { status = "Страны с заданным идентификатором не существует" });
-            }
+            if (!_place.IsCountryExist(countryID)) return CountryNotFound;
 
             var regions = _place.GetRegionsByCountry(countryID);
-            switch (regions.Any())
-            {
-                case true:
-                    return StatusCode(200, new
-                    {
-                        status = "Список регионов был успешно сформирован",
-                        data = regions
-                    });
-
-                case false:
-                    return StatusCode(404, new { status = "Список регионов для заданной страны пуст" });
-            }
+            return regions.Any() ?
+                RegionsOk(regions) :
+                RegionByCountryNotFound;
         }
 
 
@@ -405,21 +251,9 @@ namespace api.Controllers
         /// </summary>
         /// <param name="countryID">Идентификатор страны</param>
         [HttpGet("Country/{countryID:int}/Get")]
-        public IActionResult GetCountry(int countryID)
-        {
-            switch (_place.IsCountryExist(countryID))
-            {
-                case true:
-                    return StatusCode(200, new
-                    {
-                        status = "Информация о стране была успешно сформирована",
-                        data = _place.GetCountry(countryID)
-                    });
-
-                case false:
-                    return StatusCode(404, new { status = "Страны с заданным идентификатором не существует" });
-            }
-        }
+        public IActionResult GetCountry(int countryID) => _place.IsCountryExist(countryID) ?
+            CountryOk(_place.GetCountry(countryID)) :
+            CountryNotFound;
 
         /// <summary>
         /// Получить список стран, определённых в системе
@@ -428,21 +262,9 @@ namespace api.Controllers
         public IActionResult GetCountries()
         {
             var countries = _place.GetCountries();
-            switch (countries.Any())
-            {
-                case true:
-                    return StatusCode(200, new
-                    {
-                        status = "Список стран был успешно сформирован",
-                        data = countries
-                    });
-
-                case false:
-                    return StatusCode(404, new
-                    {
-                        status = "Список стран пуст"
-                    });
-            }
+            return countries.Any() ?
+                CountriesOk(countries) :
+                CountriesNotFound;
         }
 
         #endregion

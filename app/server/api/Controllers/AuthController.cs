@@ -1,15 +1,11 @@
-﻿using System.Text;
-using System.Text.Json;
-using System.IdentityModel.Tokens.Jwt;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using RabbitMQ.Client;
 using api.Misc;
 using database.context.Repos.User;
 using database.context.Repos.Profile;
 using database.context.Models.Profile;
-using database.context.Models.Data;
 namespace api.Controllers
 {
     /// <summary>
@@ -49,11 +45,11 @@ namespace api.Controllers
             switch (_auth.IsEmailBusy(email))
             {
                 case true:
-                    return StatusCode(406, new { status = "Почта уже занята другим пользователем" });
+                    return EmailIsNotAcceptable;
 
                 case false:
                     _auth.Add(email, password, surname, name, patronymic);
-                    return StatusCode(200, new { status = "Новый пользователь был успешно зарегистрирован" });
+                    return SignUpOk;
             }
         }
 
@@ -68,7 +64,6 @@ namespace api.Controllers
             switch (_auth.IsAccountExist(email, password))
             {
                 case true:
-                    #nullable disable warnings
                     ProfileBaseInfoModel user = _profile.GetProfileBaseInfo(_auth.GetAccountInfo(email, password).ID);
 
                     JwtSecurityToken token = new(
@@ -81,15 +76,10 @@ namespace api.Controllers
                             expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(30)),
                             signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha512));
 
-                    return StatusCode(200, new
-                        {
-                            status = "Пользователь успешно найден",
-                            id = user.ID,
-                            token = new JwtSecurityTokenHandler().WriteToken(token)
-                        });
+                    return SignInOk(user.ID, new JwtSecurityTokenHandler().WriteToken(token));
 
                 case false:
-                    return StatusCode(404, new { status = "Пользователя с такой почтой и паролем не существует" });
+                    return SignInNotFound;
             }
         }
     }

@@ -42,21 +42,9 @@ namespace api.Controllers
         /// </summary>
         /// <param name="userID">Идентификатор пользователя</param>
         [HttpGet("{userID:int}/BaseInfo/Get")]
-        public IActionResult GetBaseProfileInfo(int userID)
-        {
-            switch (_profile.IsUserExist(userID))
-            {
-                case true:
-                    return StatusCode(200, new
-                        {
-                            status = "Базовая информация о пользователе была успешно сформирована",
-                            user = _profile.GetProfileBaseInfo(userID)
-                        });
-
-                case false:
-                    return StatusCode(404, new { status = "Пользователя с заданным идентификатором не существует" });
-            }
-        }
+        public IActionResult GetBaseProfileInfo(int userID) => _profile.IsUserExist(userID) ?
+            ProfileBaseInfoOk(_profile.GetProfileBaseInfo(userID)) :
+            UserNotFound;
 
         /// <summary>
         /// Получить список языков пользователя по его идентификатору
@@ -65,24 +53,12 @@ namespace api.Controllers
         [HttpGet("{userID:int}/Languages/Get")]
         public IActionResult GetLanguageInfo(int userID)
         {
-            if (!_profile.IsUserExist(userID))
-            {
-                return StatusCode(404, new { status = "Пользователя с заданным идентификатором не существует" });
-            }
+            if (!_profile.IsUserExist(userID)) return UserNotFound;
 
             var languages = _profile.GetLanguages(userID);
-            switch (languages.Any())
-            {
-                case true:
-                    return StatusCode(200, new
-                    {
-                        status = "Список языков пользователя успешно сформирован",
-                        data = languages
-                    });
-
-                case false:
-                    return StatusCode(404, new { status = "У пользователя отсутствует список языков" });
-            }
+            return languages.Any() ?
+                ProfileLanguagesOk(languages) :
+                ProfileLanguagesNotFound;
         }
 
         /// <summary>
@@ -92,24 +68,12 @@ namespace api.Controllers
         [HttpGet("{userID:int}/LifePositions/Get")]
         public IActionResult GetLifePositionsInfo(int userID) 
         {
-            if (!_profile.IsUserExist(userID))
-            {
-                return StatusCode(404, new { status = "Пользователя с заданным идентификатором не существует" });
-            }
-
+            if (!_profile.IsUserExist(userID)) return UserNotFound;
+            
             var positions = _profile.GetLifePositions(userID);
-            switch (positions.Any())
-            {
-                case true:
-                    return StatusCode(200, new
-                    {
-                        status = "Список жизненных позиций был успешно сформирован",
-                        data = positions
-                    });
-
-                case false:
-                    return StatusCode(404, new { status = "У пользователя отсутствует список жизненных позиций" });
-            }
+            return positions.Any() ?
+                ProfileLifePositionsOk(positions) :
+                ProfileLifePositionsNotFound;
         }
 
         #endregion
@@ -126,21 +90,12 @@ namespace api.Controllers
         [HttpPost("{userID:int}/Language/Add/{langID:int}")]
         public IActionResult AddLanguage(int userID, int langID)
         {
-            if (!_profile.IsUserExist(userID))
-            {
-                return StatusCode(404, new { status = "Пользователя с заданным идентификатором не существует" });
-            }
-            if (!_language.IsLanguageExist(langID))
-            {
-                return StatusCode(404, new { status = "Языка с заданным идентификатором не существует" });
-            }
-            if (_profile.IsLanguageAdded(userID, langID))
-            {
-                return StatusCode(406, new { status = "Язык уже добавлен в список языков пользователя" });
-            }
+            if (!_profile.IsUserExist(userID)) return UserNotFound;
+            if (!_language.IsLanguageExist(langID)) return LanguageNotFound;
+            if (_profile.IsLanguageAdded(userID, langID)) return ProfileLanguageNotAcceptable;
 
             _profile.AddLanguage(userID, langID);
-            return StatusCode(200, new { status = "Новый язык был успешно добавлен в профиль пользователя" });
+            return ProfileLanguageAddOk;
         }
 
         /// <summary>
@@ -152,22 +107,12 @@ namespace api.Controllers
         [HttpPost("{userID:int}/LifePosition/Add/{typeID:int}/{posID:int}")]
         public IActionResult AddLifePosition(int userID, int typeID, int posID)
         {
-            if (!_profile.IsUserExist(userID))
-            {
-                return StatusCode(200, new { status = "Пользователя с заданным идентификатором не существует" });
-            }
-            if (!_position.IsLifePositionExist(typeID, posID))
-            {
-                return StatusCode(404, new { status = "Жизненной позиции с заданными параметрами не существует" });
-            }
-            if (_profile.IsPositionTypeAdded(userID, typeID))
-            {
-                _profile.RemoveLifePositionType(userID, typeID);
-                //return StatusCode(406, new { status = "Жизненная позиция в заданной категории уже добавлена" });
-            }
+            if (!_profile.IsUserExist(userID)) return UserNotFound;
+            if (!_position.IsLifePositionExist(typeID, posID)) return LifePositionByTypeNotFound;
+            if (_profile.IsPositionTypeAdded(userID, typeID)) _profile.RemoveLifePositionType(userID, typeID);
 
             _profile.AddLifePosition(userID, posID);
-            return StatusCode(200, new { status = "Новая жизненная позиция была успешно добавлена" });
+            return ProfileLifePositionAddOk;
         }
 
         #endregion
@@ -211,21 +156,12 @@ namespace api.Controllers
         [HttpDelete("{userID:int}/Language/Delete/{langID:int}")]
         public IActionResult RemoveLanguage(int userID, int langID)
         {
-            if (!_profile.IsUserExist(userID))
-            {
-                return StatusCode(404, new { status = "Пользователь с заданным идентификатором не найден" });
-            }
-            if (!_language.IsLanguageExist(langID))
-            {
-                return StatusCode(404, new { status = "Языка с заданным идентификатором не существует в системе" });
-            }
-            if (!_profile.IsLanguageAdded(userID, langID))
-            {
-                return StatusCode(406, new { status = "Языка нет в списке языков пользователя" });
-            }
+            if (!_profile.IsUserExist(userID)) return UserNotFound;
+            if (!_language.IsLanguageExist(langID)) return LanguageNotFound;
+            if (!_profile.IsLanguageAdded(userID, langID)) return ProfileLanguageNotFound;
 
             _profile.RemoveLanguage(userID, langID);
-            return StatusCode(200, new { status = "Удаление языка из профиля пользователя прошло успешно" });
+            return ProfileLanguageDeleteOk;
         }
 
         /// <summary>
@@ -237,21 +173,12 @@ namespace api.Controllers
         [HttpDelete("{userID:int}/LifePosition/Delete/{typeID:int}/{posID:int}")]
         public IActionResult RemoveLifePosition(int userID, int typeID, int posID)
         {
-            if (!_profile.IsUserExist(userID))
-            {
-                return StatusCode(404, new { status = "Пользователя с заданным идентификатором не существует" });
-            }
-            if (!_position.IsLifePositionExist(typeID, posID))
-            {
-                return StatusCode(404, new { status = "Жизненной позиции с заданными параметрами не существует" });
-            }
-            if (!_profile.IsPositionAdded(userID, posID))
-            {
-                return StatusCode(406, new { status = "Жизненная позиция c заданными параметрами отсутствует в списке пользователя" });
-            }
+            if (!_profile.IsUserExist(userID)) return UserNotFound;
+            if (!_position.IsLifePositionExist(typeID, posID)) return LifePositionByTypeNotFound;
+            if (!_profile.IsPositionAdded(userID, posID)) return LifePositionNotFound;
 
             _profile.RemoveLifePosition(userID, posID);
-            return StatusCode(200, new { status = "Удаление жизненной позиции прошло успешно" });
+            return ProfileLifePositionDeleteOk;
         }
 
         #endregion

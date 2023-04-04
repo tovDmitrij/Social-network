@@ -1,4 +1,5 @@
 ﻿using database.context.Contexts;
+using database.context.Models.Data;
 namespace database.context.Repos.Logger
 {
     public sealed class LoggerRepos : ILoggerRepos
@@ -6,12 +7,9 @@ namespace database.context.Repos.Logger
         private readonly LoggerContext _db;
         public LoggerRepos(LoggerContext db) => _db = db;
 
-        public void Log(string message, string source, string stack_trace)
+        public void Log(LogModel log)
         {
-            _db.TableLogs.Add(new(
-                message, 
-                source, 
-                stack_trace));
+            _db.TableLogs.Add(log);
             _db.SaveChanges();
         }
     }
