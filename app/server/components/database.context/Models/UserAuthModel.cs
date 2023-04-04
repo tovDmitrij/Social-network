@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-namespace database.context.Models.Auth
+
+namespace database.context.main.Models
 {
     /// <summary>
     /// Информация, необходимая для аутентификации пользователя в системе

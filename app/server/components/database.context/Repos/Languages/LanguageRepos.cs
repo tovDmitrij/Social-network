@@ -1,6 +1,6 @@
-﻿using database.context.Contexts;
-using database.context.Models.Misc;
-namespace database.context.Repos.Languages
+﻿using database.context.main;
+using database.context.main.Models.Misc;
+namespace database.context.main.Repos.Languages
 {
     public sealed class LanguageRepos : BaseRepos, ILanguageRepos
     {

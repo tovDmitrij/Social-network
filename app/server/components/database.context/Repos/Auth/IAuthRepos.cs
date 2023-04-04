@@ -1,5 +1,6 @@
-﻿using database.context.Models.Auth;
-namespace database.context.Repos.User
+﻿using database.context.main.Models;
+
+namespace database.context.main.Repos.User
 {
     /// <summary>
     /// Взаимодействие с аккаунтом пользователей

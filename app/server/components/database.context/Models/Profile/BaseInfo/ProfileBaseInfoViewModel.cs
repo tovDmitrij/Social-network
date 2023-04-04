@@ -1,14 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-namespace database.context.Models.Profile
+namespace database.context.main.Models.Profile.BaseInfo
 {
     /// <summary>
     /// Модель с базовая информацией о пользователе
     /// </summary>
     [Keyless]
     [Table("view_user_base_info")]
-    public sealed class ProfileBaseInfoModel
+    public sealed class ProfileBaseInfoViewModel
     {
         /// <summary>
         /// Идентификатор пользователя
@@ -81,7 +81,7 @@ namespace database.context.Models.Profile
         [Column("family_status")]
         public string? FamilyStatus { get; set; }
 
-        public ProfileBaseInfoModel(int id, DateTime registration_date, string role_title, string surname, string name, string? patronymic, byte[] avatar, DateTime birthdate, string city, string family_status)
+        public ProfileBaseInfoViewModel(int id, DateTime registration_date, string role_title, string surname, string name, string? patronymic, byte[] avatar, DateTime birthdate, string city, string family_status)
         {
             ID = id;
             RoleTitle = role_title;
@@ -95,6 +95,6 @@ namespace database.context.Models.Profile
             FamilyStatus = family_status;
         }
 
-        public ProfileBaseInfoModel() { }
+        public ProfileBaseInfoViewModel() { }
     }
 }

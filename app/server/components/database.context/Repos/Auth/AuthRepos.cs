@@ -1,7 +1,7 @@
-﻿using database.context.Contexts;
-using database.context.Models.Auth;
+﻿using database.context.main;
+using database.context.main.Models;
 using misc.security;
-namespace database.context.Repos.User
+namespace database.context.main.Repos.User
 {
     public sealed class AuthRepos : BaseRepos, IAuthRepos
     {

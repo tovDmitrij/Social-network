@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-namespace database.context.Models.Data
+namespace database.context.main.Models.Data
 {
     /// <summary>
     /// Модель с информацией о жизненных позициях пользователей, определённых в системе

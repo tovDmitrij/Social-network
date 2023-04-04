@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-namespace database.context.Models.Profile.LifePositions
+namespace database.context.main.Models.Profile.LifePositions
 {
     /// <summary>
     /// Информация, необходимая для обновления информации о жизненных позициях пользователя

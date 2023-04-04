@@ -3,9 +3,9 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using api.Misc;
-using database.context.Repos.User;
-using database.context.Repos.Profile;
-using database.context.Models.Profile;
+using database.context.main.Repos.User;
+using database.context.main.Repos.Profile;
+using database.context.main.Models.Profile.BaseInfo;
 namespace api.Controllers
 {
     /// <summary>
@@ -39,7 +39,7 @@ namespace api.Controllers
         /// <param name="surname">Фамилия пользователя</param>
         /// <param name="name">Имя пользователя</param>
         /// <param name="patronymic">Отчество пользователя</param>
-        [HttpPost("SignUp")]
+        [HttpPost("SignUp/email={email}&password={password}&surname={surname}&name={name}&patronymic={patronymic}")]
         public IActionResult SignUp(string email, string password, string surname, string name, string? patronymic)
         {
             switch (_auth.IsEmailBusy(email))
@@ -58,13 +58,13 @@ namespace api.Controllers
         /// </summary>
         /// <param name="email">Почта пользователя</param>
         /// <param name="password">Пароль пользоватея</param>
-        [HttpPost("SignIn")]
+        [HttpPost("SignIn/email={email}&password={password}")]
         public IActionResult SignIn(string email, string password)
         {
             switch (_auth.IsAccountExist(email, password))
             {
                 case true:
-                    ProfileBaseInfoModel user = _profile.GetProfileBaseInfo(_auth.GetAccountInfo(email, password).ID);
+                    ProfileBaseInfoViewModel user = _profile.GetProfileBaseInfo(_auth.GetAccountInfo(email, password).ID);
 
                     JwtSecurityToken token = new(
                             issuer: AuthOptions.ISSUER,

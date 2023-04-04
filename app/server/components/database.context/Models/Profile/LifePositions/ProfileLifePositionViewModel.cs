@@ -1,14 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-namespace database.context.Models.Profile.LifePositions
+namespace database.context.main.Models.Profile.LifePositions
 {
     /// <summary>
     /// Полная информация о выбранных жизненных позициях пользователей
     /// </summary>
     [Keyless]
     [Table("view_profile_life_positions")]
-    public sealed class ProfileLifePositionsInfoModel
+    public sealed class ProfileLifePositionViewModel
     {
         /// <summary>
         /// Идентификатор пользователя
@@ -52,7 +52,7 @@ namespace database.context.Models.Profile.LifePositions
         [Column("date")]
         public DateTime Date { get; set; }
 
-        public ProfileLifePositionsInfoModel(int userID, int typeID, string typeName, int positionID, string positionName, DateTime date)
+        public ProfileLifePositionViewModel(int userID, int typeID, string typeName, int positionID, string positionName, DateTime date)
         {
             UserID = userID;
             TypeID = typeID;
@@ -62,6 +62,6 @@ namespace database.context.Models.Profile.LifePositions
             Date = date;
         }
 
-        public ProfileLifePositionsInfoModel() { }
+        public ProfileLifePositionViewModel() { }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-namespace database.context.Models.Misc
+namespace database.context.main.Models.Misc
 {
     /// <summary>
     /// Модель с информацией об языке, присутствующем на платформе

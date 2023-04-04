@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-namespace database.context.Models.Profile.Languages
+namespace database.context.main.Models.Profile.Languages
 {
     /// <summary>
     /// Промежуточная модель, необходимая для добавления нового языка в профиль пользователя

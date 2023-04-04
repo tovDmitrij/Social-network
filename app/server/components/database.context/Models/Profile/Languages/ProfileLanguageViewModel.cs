@@ -1,14 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-namespace database.context.Models.Profile.Languages
+namespace database.context.main.Models.Profile.Languages
 {
     /// <summary>
     /// Полная информация о выбранном пользователем в профиле языке
     /// </summary>
     [Keyless]
     [Table("view_profile_languages")]
-    public sealed class ProfileLanguageInfoModel
+    public sealed class ProfileLanguageViewModel
     {
         /// <summary>
         /// Идентификатор языка
@@ -38,7 +38,7 @@ namespace database.context.Models.Profile.Languages
         [Column("date")]
         public DateTime Date { get; set; }
 
-        public ProfileLanguageInfoModel(int id, int user_id, string name, DateTime date)
+        public ProfileLanguageViewModel(int id, int user_id, string name, DateTime date)
         {
             LanguageID = id;
             UserID = user_id;
@@ -46,6 +46,6 @@ namespace database.context.Models.Profile.Languages
             Date = date;
         }
 
-        public ProfileLanguageInfoModel() { }
+        public ProfileLanguageViewModel() { }
     }
 }

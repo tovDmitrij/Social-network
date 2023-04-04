@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using database.context.Models.Misc;
-using database.context.Models.Auth;
-using database.context.Models.Data;
-using database.context.Models.Profile;
-using database.context.Models.Profile.Languages;
-using database.context.Models.Profile.LifePositions;
-namespace database.context.Contexts
+using database.context.main.Models.Misc;
+using database.context.main.Models.Data;
+using database.context.main.Models.Profile.Languages;
+using database.context.main.Models.Profile.LifePositions;
+using database.context.main.Models.Profile.BaseInfo;
+using database.context.main.Models;
+namespace database.context.main
 {
     /// <summary>
     /// Основной контекст базы данных социальной сети
@@ -29,14 +29,14 @@ namespace database.context.Contexts
         #region Профиль пользователя
 
         /// <summary>
-        /// Таблица с базовой информацией об аккаунтах пользователей
+        /// Таблица с базовой информацией о профилях пользователей
         /// </summary>
-        public DbSet<ProfileAuthModel> TableProfileBaseInfo { get; set; }
+        public DbSet<ProfileBaseInfoModel> TableProfileBaseInfo { get; set; }
 
         /// <summary>
         /// Представление с базовой информацией о профилях пользователей
         /// </summary>
-        public DbSet<ProfileBaseInfoModel> ViewProfileBaseInfo { get; set; }
+        public DbSet<ProfileBaseInfoViewModel> ViewProfileBaseInfo { get; set; }
 
         /// <summary>
         /// Таблица с выбранными пользователями языками в профиле
@@ -46,7 +46,7 @@ namespace database.context.Contexts
         /// <summary>
         /// Представление с подробной информацией о выбранных пользователями языками в профиле
         /// </summary>
-        public DbSet<ProfileLanguageInfoModel> ViewProfileLanguages { get; set; }
+        public DbSet<ProfileLanguageViewModel> ViewProfileLanguages { get; set; }
 
         /// <summary>
         /// Таблица с жизненными позициями пользователей
@@ -56,7 +56,7 @@ namespace database.context.Contexts
         /// <summary>
         /// Представление с подробной информацией о жизненных позициях пользователей
         /// </summary>
-        public DbSet<ProfileLifePositionsInfoModel> ViewProfileLifePositions { get; set; }
+        public DbSet<ProfileLifePositionViewModel> ViewProfileLifePositions { get; set; }
 
         #endregion
 

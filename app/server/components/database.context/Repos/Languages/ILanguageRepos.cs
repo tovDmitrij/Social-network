@@ -1,5 +1,5 @@
-﻿using database.context.Models.Misc;
-namespace database.context.Repos.Languages
+﻿using database.context.main.Models.Misc;
+namespace database.context.main.Repos.Languages
 {
     /// <summary>
     /// Взаимодействие с таблицей языков платформы

@@ -1,20 +1,18 @@
----------------------
--- СОЗДАНИЕ ТАБЛИЦ --
----------------------
-create table if not exists app_logs(
-	id			serial			primary key,
-	message		text not null,
-	source 		text not null,
-	stack_trace text not null,
-	date		timestamp default current_timestamp not null
-);
-
+--------------------------
+-- СОЗДАНИЕ БАЗЫ ДАННЫХ --
+--------------------------
+create database social_network with
+    owner = postgres
+    encoding = 'UTF8'
+    connection limit = -1
+    IS_TEMPLATE = False;
+	
 create table if not exists app_rules(
 	id		serial			primary key,
 	title	text not null,
 	text	text not null,
 	penalty text not null
-);
+); 
 
 create table if not exists app_user_roles(
 	id		serial			primary key,

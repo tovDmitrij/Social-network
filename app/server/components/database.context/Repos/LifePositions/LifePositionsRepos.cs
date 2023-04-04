@@ -1,6 +1,6 @@
-﻿using database.context.Contexts;
-using database.context.Models.Data;
-namespace database.context.Repos.LifePositions
+﻿using database.context.main;
+using database.context.main.Models.Data;
+namespace database.context.main.Repos.LifePositions
 {
     public sealed class LifePositionsRepos : BaseRepos, ILifePositionsRepos
     {

@@ -1,5 +1,5 @@
-﻿using database.context.Contexts;
-namespace database.context.Repos
+﻿using database.context.main;
+namespace database.context.main.Repos
 {
     public abstract class BaseRepos
     {

@@ -1,5 +1,5 @@
-﻿using database.context.Models.Data;
-namespace database.context.Repos.LifePositions
+﻿using database.context.main.Models.Data;
+namespace database.context.main.Repos.LifePositions
 {
     /// <summary>
     /// Взаимодействие с таблицей жизненных позиций, определённых в системе

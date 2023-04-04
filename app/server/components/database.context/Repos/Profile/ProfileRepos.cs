@@ -1,8 +1,8 @@
-﻿using database.context.Contexts;
-using database.context.Models.Profile;
-using database.context.Models.Profile.Languages;
-using database.context.Models.Profile.LifePositions;
-namespace database.context.Repos.Profile
+﻿using database.context.main;
+using database.context.main.Models.Profile.BaseInfo;
+using database.context.main.Models.Profile.Languages;
+using database.context.main.Models.Profile.LifePositions;
+namespace database.context.main.Repos.Profile
 {
     public sealed class ProfileRepos : BaseRepos, IProfileRepos
     {
@@ -15,12 +15,15 @@ namespace database.context.Repos.Profile
 
         #region Основная информация
 
-        public ProfileBaseInfoModel? GetProfileBaseInfo(int id) => _db.ViewProfileBaseInfo
+        public ProfileBaseInfoViewModel? GetProfileBaseInfo(int id) => _db.ViewProfileBaseInfo
             .FirstOrDefault(user => user.ID == id);
 
         public void ChangeStatus(int userID, string status)
         {
-            throw new NotImplementedException();
+            var user = _db.TableProfileBaseInfo.Single(user => user.UserID == userID);
+            user.Status = status;
+            _db.TableProfileBaseInfo.Update(user);
+            _db.SaveChanges();
         }
 
         public void ChangeAvatar(int userID, byte[] avatar)
@@ -73,7 +76,7 @@ namespace database.context.Repos.Profile
             _db.SaveChanges();
         }
 
-        public IEnumerable<ProfileLanguageInfoModel>? GetLanguages(int userID) => _db.ViewProfileLanguages
+        public IEnumerable<ProfileLanguageViewModel>? GetLanguages(int userID) => _db.ViewProfileLanguages
             .Where(language => language.UserID == userID);
 
         #endregion
@@ -113,7 +116,7 @@ namespace database.context.Repos.Profile
             _db.SaveChanges();
         }
 
-        public IEnumerable<ProfileLifePositionsInfoModel>? GetLifePositions(int userID) => _db.ViewProfileLifePositions
+        public IEnumerable<ProfileLifePositionViewModel>? GetLifePositions(int userID) => _db.ViewProfileLifePositions
             .Where(position => position.UserID == userID);
 
         #endregion

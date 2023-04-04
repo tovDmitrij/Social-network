@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using database.context.Repos.Profile;
-using database.context.Repos.Languages;
-using database.context.Repos.LifePositions;
+using database.context.main.Repos.Profile;
+using database.context.main.Repos.Languages;
+using database.context.main.Repos.LifePositions;
 namespace api.Controllers
 {
     /// <summary>
@@ -41,7 +41,7 @@ namespace api.Controllers
         /// Получить базовую информацию о профиле пользователя по его идентификатору
         /// </summary>
         /// <param name="userID">Идентификатор пользователя</param>
-        [HttpGet("{userID:int}/BaseInfo/Get")]
+        [HttpGet("userID={userID:int}/BaseInfo/Get")]
         public IActionResult GetBaseProfileInfo(int userID) => _profile.IsUserExist(userID) ?
             ProfileBaseInfoOk(_profile.GetProfileBaseInfo(userID)) :
             UserNotFound;
@@ -50,7 +50,7 @@ namespace api.Controllers
         /// Получить список языков пользователя по его идентификатору
         /// </summary>
         /// <param name="userID">Идентификатор пользователя</param>
-        [HttpGet("{userID:int}/Languages/Get")]
+        [HttpGet("userID={userID:int}/Languages/Get")]
         public IActionResult GetLanguageInfo(int userID)
         {
             if (!_profile.IsUserExist(userID)) return UserNotFound;
@@ -65,7 +65,7 @@ namespace api.Controllers
         /// Получить список жизненных позиций пользователя по его идентификатору
         /// </summary>
         /// <param name="userID">Идентификатор пользователя</param>
-        [HttpGet("{userID:int}/LifePositions/Get")]
+        [HttpGet("userID={userID:int}/LifePositions/Get")]
         public IActionResult GetLifePositionsInfo(int userID) 
         {
             if (!_profile.IsUserExist(userID)) return UserNotFound;
@@ -87,7 +87,7 @@ namespace api.Controllers
         /// </summary>
         /// <param name="userID">Идентификатор пользователя</param>
         /// <param name="langID">Идентификатор языка</param>
-        [HttpPost("{userID:int}/Language/Add/{langID:int}")]
+        [HttpPost("userID={userID:int}/Language/Add/langID={langID:int}")]
         public IActionResult AddLanguage(int userID, int langID)
         {
             if (!_profile.IsUserExist(userID)) return UserNotFound;
@@ -104,7 +104,7 @@ namespace api.Controllers
         /// <param name="userID">Идентификатор пользователя</param>
         /// <param name="typeID">Идентификатор типа ЖП</param>
         /// <param name="posID">Идентификатор ЖП</param>
-        [HttpPost("{userID:int}/LifePosition/Add/{typeID:int}/{posID:int}")]
+        [HttpPost("userID={userID:int}/LifePosition/Add/typeID={typeID:int}&posID={posID:int}")]
         public IActionResult AddLifePosition(int userID, int typeID, int posID)
         {
             if (!_profile.IsUserExist(userID)) return UserNotFound;
@@ -121,22 +121,63 @@ namespace api.Controllers
 
         #region PUT
 
-        [HttpPut("BaseInfo/Update/Status/{userID:int}")]
-        public IActionResult UpdateBaseProfileInfo(int userID, string status)
+        /// <summary>
+        /// Обновить статус в профиле пользователя
+        /// </summary>
+        /// <param name="userID">Идентификатор пользователя</param>
+        /// <param name="status">Статус пользователя</param>
+        [HttpPut("userID={userID:int}/BaseInfo/Status/Update/status={status}")]
+        public IActionResult UpdateProfileStatus(int userID, string status)
         {
             //TODO
             return Ok();
         }
 
-        [HttpPut("BaseInfo/Update/Avatar/{userID:int}")]
-        public IActionResult UpdateBaseProfileInfo(int userID, byte[] avatar)
+        /// <summary>
+        /// Обновить аватар в профиле пользователя
+        /// </summary>
+        /// <param name="userID">Идентфикатор пользователя</param>
+        /// <param name="avatar">Аватарка</param>
+        [HttpPut("userID={userID:int}/BaseInfo/Avatar/Update/avatar={avatar}")]
+        public IActionResult UpdateProfileAvatar(int userID, string avatar)
         {
             //TODO
             return Ok();
         }
 
-        [HttpPut("BaseInfo/Update/{userID:int}")]
-        public IActionResult UpdateBaseProfileInfo(int userID, string surname, string name, string patronymic, int cityID, int familyStatusID, DateTime birthDate)
+        /// <summary>
+        /// Обновить город в профиле пользователя
+        /// </summary>
+        /// <param name="userID">Идентификатор пользователя</param>
+        /// <param name="cityID">Идентификатор города</param>
+        [HttpPut("userID={userID:int}/BaseInfo/City/Update/cityID={cityID:int}")]
+        public IActionResult UpdateProfileCity(int userID, int cityID) 
+        {
+            //TODO
+            return Ok();
+        }
+
+        /// <summary>
+        /// Обновить информацию о семейном положении в профиле пользователя
+        /// </summary>
+        /// <param name="userID">Идентификатор пользователя</param>
+        /// <param name="statusID">Идентификатор статуса</param>
+        [HttpPut("userID={userID:int}/BaseInfo/FamilyStatus/Update/statusID={statusID:int}")]
+        public IActionResult UpdateProfileFamilyStatus(int userID, int statusID) 
+        {
+            //TODO
+            return Ok();
+        }
+
+        /// <summary>
+        /// Обновить ФИО в профиле пользователя
+        /// </summary>
+        /// <param name="userID">Идентификатор пользователя</param>
+        /// <param name="surname">Фамилия пользователя</param>
+        /// <param name="name">Имя пользователя</param>
+        /// <param name="patronymic">Отчество пользователя</param>
+        [HttpPut("userID={userID:int}/BaseInfo/Fullname/Update/surname={surname}&name={name}&patronymic={patronymic}")]
+        public IActionResult UpdateProfileFullname(int userID, string surname, string name, string? patronymic)
         {
             //TODO
             return Ok();
@@ -153,7 +194,7 @@ namespace api.Controllers
         /// </summary>
         /// <param name="userID">Идентификатор пользователя</param>
         /// <param name="langID">Идентификатор языка</param>
-        [HttpDelete("{userID:int}/Language/Delete/{langID:int}")]
+        [HttpDelete("userID={userID:int}/Language/Delete/langID={langID:int}")]
         public IActionResult RemoveLanguage(int userID, int langID)
         {
             if (!_profile.IsUserExist(userID)) return UserNotFound;
@@ -170,7 +211,7 @@ namespace api.Controllers
         /// <param name="userID">Идентификатор пользователя</param>
         /// <param name="typeID">Идентификатор категории жизненной позиции</param>
         /// <param name="posID">Идентификатор жизненной позиции</param>
-        [HttpDelete("{userID:int}/LifePosition/Delete/{typeID:int}/{posID:int}")]
+        [HttpDelete("userID={userID:int}/LifePosition/Delete/typeID={typeID:int}&posID={posID:int}")]
         public IActionResult RemoveLifePosition(int userID, int typeID, int posID)
         {
             if (!_profile.IsUserExist(userID)) return UserNotFound;

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-namespace database.context.Models.Data
+namespace database.context.main.Models.Data
 {
     /// <summary>
     /// Полная информация о возможных семейных положениях пользователей в системе

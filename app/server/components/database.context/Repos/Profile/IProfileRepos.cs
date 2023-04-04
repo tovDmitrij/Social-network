@@ -1,7 +1,7 @@
-﻿using database.context.Models.Profile;
-using database.context.Models.Profile.Languages;
-using database.context.Models.Profile.LifePositions;
-namespace database.context.Repos.Profile
+﻿using database.context.main.Models.Profile.BaseInfo;
+using database.context.main.Models.Profile.Languages;
+using database.context.main.Models.Profile.LifePositions;
+namespace database.context.main.Repos.Profile
 {
     /// <summary>
     /// Взаимодействие с профилем пользователей
@@ -22,7 +22,7 @@ namespace database.context.Repos.Profile
         /// Получить базовую информацию о профиле пользователя по его идентификатору
         /// </summary>
         /// <param name="id">Идентификатор пользователя</param>
-        public ProfileBaseInfoModel? GetProfileBaseInfo(int id);
+        public ProfileBaseInfoViewModel? GetProfileBaseInfo(int id);
 
         /// <summary>
         /// Изменить статус пользователя в профиле
@@ -99,7 +99,7 @@ namespace database.context.Repos.Profile
         /// Получить список выбранных языков пользователя
         /// </summary>
         /// <param name="userID">Идентификатор пользователя</param>
-        public IEnumerable<ProfileLanguageInfoModel>? GetLanguages(int userID);
+        public IEnumerable<ProfileLanguageViewModel>? GetLanguages(int userID);
 
         #endregion
 
@@ -147,7 +147,7 @@ namespace database.context.Repos.Profile
         /// Получить список жизненных позиций пользователя по его идентификатору
         /// </summary>
         /// <param name="userID">Идентификатор пользователя</param>
-        public IEnumerable<ProfileLifePositionsInfoModel>? GetLifePositions(int userID);
+        public IEnumerable<ProfileLifePositionViewModel>? GetLifePositions(int userID);
 
         #endregion
 

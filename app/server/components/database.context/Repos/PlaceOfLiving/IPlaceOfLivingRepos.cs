@@ -1,5 +1,5 @@
-﻿using database.context.Models.Data;
-namespace database.context.Repos.Cities
+﻿using database.context.main.Models.Data;
+namespace database.context.main.Repos.Cities
 {
     /// <summary>
     /// Взаимодействие с таблицами городов, регионов и стран мира

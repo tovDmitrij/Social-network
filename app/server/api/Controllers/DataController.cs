@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using database.context.Repos.Languages;
-using database.context.Repos.LifePositions;
-using database.context.Repos.Cities;
+using database.context.main.Repos.Languages;
+using database.context.main.Repos.LifePositions;
+using database.context.main.Repos.Cities;
 namespace api.Controllers
 {
     /// <summary>
@@ -41,7 +41,7 @@ namespace api.Controllers
         /// Получить информацию о языке по его идентификатору
         /// </summary>
         /// <param name="langID">Идентификатор языка</param>
-        [HttpGet("Language/{langID:int}/Get")]
+        [HttpGet("Language/Get/langID={langID:int}")]
         public IActionResult GetLanguage(int langID) => _language.IsLanguageExist(langID) ? 
             LanguageOk(_language.GetLanguage(langID)) : 
             LanguageNotFound;
@@ -68,7 +68,7 @@ namespace api.Controllers
         /// Получить информацию о жизненной позиции по её идентификатору
         /// </summary>
         /// <param name="posID">Идентификатор жизненной позиции</param>
-        [HttpGet("LifePositions/Position/{posID:int}/Get")]
+        [HttpGet("LifePositions/Position/Get/posID={posID:int}")]
         public IActionResult GetLifePosition(int posID) => _position.IsLifePositionExist(posID) ? 
             LifePositionOk(_position.GetLifePosition(posID)) : 
             LifePositionNotFound;
@@ -77,7 +77,7 @@ namespace api.Controllers
         /// Получить список жизненных позиций, определённых в системе, по их типу
         /// </summary>
         /// <param name="typeID">Идентификатор типа жизненных позиций</param>
-        [HttpGet("LifePositions/Type/{typeID:int}/Positions/Get")]
+        [HttpGet("LifePositions/Type/typeID={typeID:int}/Positions/Get")]
         public IActionResult GetLifePositionsByType(int typeID)
         {
             if (!_position.IsLifePositionTypeExist(typeID))
@@ -114,7 +114,7 @@ namespace api.Controllers
         /// Получить информацию о городе по его идентификатору
         /// </summary>
         /// <param name="cityID">Идентификатор города</param>
-        [HttpGet("City/{cityID:int}/Get")]
+        [HttpGet("City/Get/cityID={cityID:int}")]
         public IActionResult GetCity(int cityID) => _place.IsCityExist(cityID) ?
             CityOk(_place.GetCity(cityID)) :
             CityNotFound;
@@ -124,7 +124,7 @@ namespace api.Controllers
         /// </summary>
         /// <param name="cityID">Идентификатор города</param>
         /// <param name="regionID">Идентификатор региона</param>
-        [HttpGet("Region/{regionID:int}/City/{cityID:int}/Get")]
+        [HttpGet("Region/regionID={regionID:int}/City/Get/cityID={cityID:int}")]
         public IActionResult GetCityByRegion(int cityID,  int regionID)
         {
             if (!_place.IsCityExist(cityID)) return CityNotFound;
@@ -139,7 +139,7 @@ namespace api.Controllers
         /// </summary>
         /// <param name="cityID">Идентификатор города</param>
         /// <param name="countryID">Идентификатор страны</param>
-        [HttpGet("Country/{countryID:int}/City/{cityID:int}/Get")]
+        [HttpGet("Country/countryID={countryID:int}/City/Get/cityID={cityID:int}")]
         public IActionResult GetCityByCountry(int cityID, int countryID)
         {
             if (!_place.IsCityExist(cityID)) return CityNotFound;
@@ -165,7 +165,7 @@ namespace api.Controllers
         /// Получить список городов по идентификатору региона
         /// </summary>
         /// <param name="regionID">Идентификатор региона</param>
-        [HttpGet("Region/{regionID:int}/Cities/Get")]
+        [HttpGet("Region/regionID={regionID:int}/Cities/Get")]
         public IActionResult GetCitiesByRegion(int regionID)
         {
             if (!_place.IsRegionExist(regionID)) return RegionNotFound;
@@ -180,7 +180,7 @@ namespace api.Controllers
         /// Получить список городов по идентификатору страны
         /// </summary>
         /// <param name="countryID">Идентификатор страны</param>
-        [HttpGet("Country/{countryID:int}/Cities/Get")]
+        [HttpGet("Country/countryID={countryID:int}/Cities/Get")]
         public IActionResult GetCitiesByCountry(int countryID)
         {
             if (!_place.IsCountryExist(countryID)) return CountryNotFound;
@@ -197,7 +197,7 @@ namespace api.Controllers
         /// Получить информацию по региону по его идентификатору
         /// </summary>
         /// <param name="regionID">Идентификатор региона</param>
-        [HttpGet("Region/{regionID:int}/Get")]
+        [HttpGet("Region/Get/regionID={regionID:int}")]
         public IActionResult GetRegion(int regionID) => _place.IsRegionExist(regionID) ?
             RegionOk(_place.GetRegion(regionID)) :
             RegionNotFound;
@@ -207,7 +207,7 @@ namespace api.Controllers
         /// </summary>
         /// <param name="regionID">Идентификатор региона</param>
         /// <param name="countryID">Идентификатор страны</param>
-        [HttpGet("Country/{countryID:int}/Region/{regionID:int}/Get")]
+        [HttpGet("Country/countryID={countryID:int}/Region/Get/regionID={regionID:int}")]
         public IActionResult GetRegionByCountry(int regionID, int countryID)
         {
             if (!_place.IsCountryExist(countryID)) return CountryNotFound;
@@ -233,7 +233,7 @@ namespace api.Controllers
         /// Получить список регионов по идентификатору страны
         /// </summary>
         /// <param name="countryID">Идентификатор страны</param>
-        [HttpGet("Country/{countryID:int}/Regions/Get")]
+        [HttpGet("Country/countryID={countryID:int}/Regions/Get")]
         public IActionResult GetRegionsByCountry(int countryID)
         {
             if (!_place.IsCountryExist(countryID)) return CountryNotFound;
@@ -250,7 +250,7 @@ namespace api.Controllers
         /// Получить информацию о стране по её идентификатору
         /// </summary>
         /// <param name="countryID">Идентификатор страны</param>
-        [HttpGet("Country/{countryID:int}/Get")]
+        [HttpGet("Country/Get/countryID={countryID:int}")]
         public IActionResult GetCountry(int countryID) => _place.IsCountryExist(countryID) ?
             CountryOk(_place.GetCountry(countryID)) :
             CountryNotFound;
