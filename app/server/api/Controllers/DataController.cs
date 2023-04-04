@@ -2,6 +2,7 @@
 using database.context.main.Repos.Languages;
 using database.context.main.Repos.LifePositions;
 using database.context.main.Repos.Cities;
+using database.context.main.Repos.FamilyStatuses;
 namespace api.Controllers
 {
     /// <summary>
@@ -26,11 +27,21 @@ namespace api.Controllers
         /// </summary>
         private readonly IPlaceOfLivingRepos _place;
 
-        public DataController(ILanguageRepos language, ILifePositionsRepos lifePositions, IPlaceOfLivingRepos placeOfLiving)
+        /// <summary>
+        /// Взаимодействие с таблицей семейных положений пользователей
+        /// </summary>
+        private readonly IFamilyStatusRepos _status;
+
+        public DataController(
+            ILanguageRepos language, 
+            ILifePositionsRepos lifePositions, 
+            IPlaceOfLivingRepos placeOfLiving,
+            IFamilyStatusRepos status)
         {
             _language = language;
             _position = lifePositions;
             _place = placeOfLiving;
+            _status = status;
         }
 
 
@@ -265,6 +276,33 @@ namespace api.Controllers
             return countries.Any() ?
                 CountriesOk(countries) :
                 CountriesNotFound;
+        }
+
+        #endregion
+
+
+
+        #region Семейные положения пользователей
+
+        /// <summary>
+        /// Получить информацию о семейном положении по его идентификатору
+        /// </summary>
+        /// <param name="statusID">Идентификатор статуса</param>
+        [HttpGet("FamilyStatus/Get/statusID={statusID:int}")]
+        public IActionResult GetFamilyStatus(int statusID) => _status.IsStatusExist(statusID) ?
+            FamilyStatusOk(_status.GetStatus(statusID)) :
+            FamilyStatusNotFound;
+
+        /// <summary>
+        /// Получить список семейных положений
+        /// </summary>
+        [HttpGet("FamilyStatuses/Get")]
+        public IActionResult GetFamilyStatuses()
+        {
+            var statuses = _status.GetStatuses();
+            return statuses.Any() ?
+                FamilyStatusesOk(statuses) :
+                FamilyStatusesNotFound;
         }
 
         #endregion

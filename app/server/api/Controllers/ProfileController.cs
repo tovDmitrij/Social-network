@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Text;
+using Microsoft.AspNetCore.Mvc;
 using database.context.main.Repos.Profile;
 using database.context.main.Repos.Languages;
 using database.context.main.Repos.LifePositions;
+using database.context.main.Repos.Cities;
+using database.context.main.Repos.FamilyStatuses;
 namespace api.Controllers
 {
     /// <summary>
@@ -26,11 +29,25 @@ namespace api.Controllers
         /// </summary>
         private readonly ILifePositionsRepos _position;
 
-        public ProfileController(IProfileRepos profile, ILanguageRepos language, ILifePositionsRepos lifePositions)
+        /// <summary>
+        /// Взаимодействие с таблицей мест проживания
+        /// </summary>
+        private readonly IPlaceOfLivingRepos _place;
+
+        private readonly IFamilyStatusRepos _status;
+
+        public ProfileController(
+            IProfileRepos profile, 
+            ILanguageRepos language, 
+            ILifePositionsRepos lifePositions, 
+            IPlaceOfLivingRepos place,
+            IFamilyStatusRepos status)
         {
             _profile = profile;
             _language = language;
             _position = lifePositions;
+            _place = place;
+            _status = status;
         }
 
 
@@ -129,8 +146,10 @@ namespace api.Controllers
         [HttpPut("userID={userID:int}/BaseInfo/Status/Update/status={status}")]
         public IActionResult UpdateProfileStatus(int userID, string status)
         {
-            //TODO
-            return Ok();
+            if (!_profile.IsUserExist(userID)) return UserNotFound;
+
+            _profile.ChangeStatus(userID, status);
+            return ProfileStatusUpdateOk;
         }
 
         /// <summary>
@@ -141,8 +160,10 @@ namespace api.Controllers
         [HttpPut("userID={userID:int}/BaseInfo/Avatar/Update/avatar={avatar}")]
         public IActionResult UpdateProfileAvatar(int userID, string avatar)
         {
-            //TODO
-            return Ok();
+            if (!_profile.IsUserExist(userID)) return UserNotFound;
+
+            _profile.ChangeAvatar(userID, Encoding.UTF8.GetBytes(avatar));
+            return ProfileAvatarUpdateOK;
         }
 
         /// <summary>
@@ -153,8 +174,11 @@ namespace api.Controllers
         [HttpPut("userID={userID:int}/BaseInfo/City/Update/cityID={cityID:int}")]
         public IActionResult UpdateProfileCity(int userID, int cityID) 
         {
-            //TODO
-            return Ok();
+            if (!_profile.IsUserExist(userID)) return UserNotFound;
+            if (!_place.IsCityExist(cityID)) return CityNotFound;
+
+            _profile.ChangeCity(userID, cityID);
+            return ProfileCityUpdateOK;
         }
 
         /// <summary>
@@ -165,8 +189,25 @@ namespace api.Controllers
         [HttpPut("userID={userID:int}/BaseInfo/FamilyStatus/Update/statusID={statusID:int}")]
         public IActionResult UpdateProfileFamilyStatus(int userID, int statusID) 
         {
-            //TODO
-            return Ok();
+            if (!_profile.IsUserExist(userID)) return UserNotFound;
+            if (!_status.IsStatusExist(statusID)) return FamilyStatusNotFound;
+
+            _profile.ChangeFamilyStatus(userID, statusID);
+            return ProfileStatusUpdateOk;
+        }
+
+        /// <summary>
+        /// Обновить дату рождения в профиел пользователя
+        /// </summary>
+        /// <param name="userID">Идентификатор пользователя</param>
+        /// <param name="date">Дата рождения</param>
+        [HttpPut("userID={userID:int}/BaseInfo/Birthdate/Update/date={date:datetime}")]
+        public IActionResult UpdateProfileBirthdate(int userID, DateTime date)
+        {
+            if (!_profile.IsUserExist(userID)) return UserNotFound;
+
+            _profile.ChangeBirthDate(userID, date);
+            return ProfileBirthdateUpdateOk;
         }
 
         /// <summary>
@@ -179,8 +220,10 @@ namespace api.Controllers
         [HttpPut("userID={userID:int}/BaseInfo/Fullname/Update/surname={surname}&name={name}&patronymic={patronymic}")]
         public IActionResult UpdateProfileFullname(int userID, string surname, string name, string? patronymic)
         {
-            //TODO
-            return Ok();
+            if (!_profile.IsUserExist(userID)) return UserNotFound;
+
+            _profile.ChangeFullname(userID, surname, name, patronymic);
+            return ProfileFullnameUpdateOK;
         }
 
         #endregion

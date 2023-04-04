@@ -21,10 +21,19 @@ namespace api.Controllers
         protected IActionResult ProfileLifePositionAddOk => StatusCode(200, new { status = "Новая жизненная позиция была успешно добавлена" });
         protected IActionResult ProfileLifePositionDeleteOk => StatusCode(200, new { status = "Удаление жизненной позиции прошло успешно" });
         protected IActionResult ProfileLifePositionsOk(dynamic data) => StatusCode(200, new { status = "Список жизненных позиций был успешно сформирован", data });
+        protected IActionResult ProfileStatusUpdateOk => StatusCode(200, new { status = "Статус пользователя в профиле был успешно обновлён" });
+        protected IActionResult ProfileAvatarUpdateOK => StatusCode(200, new { status = "Аватарка пользователя в профиле была успешно обновлена" });
+        protected IActionResult ProfileCityUpdateOK => StatusCode(200, new { status = "Горож пользователя в профиле был успешно обновлён" });
+        protected IActionResult ProfileFamilyStatusUpdateOK => StatusCode(200, new { status = "Семейное положение пользователя в профиле было успешно обновлено" });
+        protected IActionResult ProfileFullnameUpdateOK => StatusCode(200, new { status = "ФИО пользователя в профиле было успешно обновлено" });
+        protected IActionResult ProfileBirthdateUpdateOk => StatusCode(200, new { status = "Дата рождения пользователя в профиле была успешно обновлена" });
 
         protected IActionResult LanguageOk(dynamic data) => StatusCode(200, new { status = "Информация о языке была успешно сформирована", data });
         protected IActionResult LanguagesOk(dynamic data) => StatusCode(200, new { status = "Список языков был успешно сформирован", data });
-       
+
+        protected IActionResult FamilyStatusOk(dynamic data) => StatusCode(200, new { status = "Информация о семейном положении была успешно сформирована", data });
+        protected IActionResult FamilyStatusesOk(dynamic data) => StatusCode(200, new { status = "Список семейных положений был успешно сформирован", data });
+
         protected IActionResult LifePositionOk(dynamic data) => StatusCode(200, new { status = "Информация о жизненной позиции была успешно сформирована", data });
         protected IActionResult LifePositionsOk(dynamic data) => StatusCode(200, new { status = "Список жизненных позиций был успешно сформирован", data });
         
@@ -53,7 +62,10 @@ namespace api.Controllers
 
         protected IActionResult LanguageNotFound => StatusCode(404, new { status = "Языка с заданным идентификатором не существует" });
         protected IActionResult LanguagesNotFound => StatusCode(404, new { status = "Список языков пуст" });
-        
+
+        protected IActionResult FamilyStatusNotFound => StatusCode(404, new { status = "Семейного положения с заданным идентификатором не существует" });
+        protected IActionResult FamilyStatusesNotFound => StatusCode(404, new { status = "Список семейных положений пуст" });
+
         protected IActionResult LifePositionNotFound => StatusCode(404, new { status = "Жизненной позиции с заданным идентификатором не существует" });
         protected IActionResult LifePositionTypeNotFound => StatusCode(404, new { status = "Типа жизненной позиции с заданным идентификатором не существует" });
         protected IActionResult LifePositionByTypeNotFound => StatusCode(404, new { status = "Жизненной позиции в заданном типе не существует" });

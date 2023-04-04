@@ -2,6 +2,8 @@
 using database.context.main.Models.Profile.BaseInfo;
 using database.context.main.Models.Profile.Languages;
 using database.context.main.Models.Profile.LifePositions;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+
 namespace database.context.main.Repos.Profile
 {
     public sealed class ProfileRepos : BaseRepos, IProfileRepos
@@ -28,27 +30,44 @@ namespace database.context.main.Repos.Profile
 
         public void ChangeAvatar(int userID, byte[] avatar)
         {
-            throw new NotImplementedException();
+            var user = _db.TableProfileBaseInfo.Single(user => user.UserID == userID);
+            user.Avatar = avatar;
+            _db.TableProfileBaseInfo.Update(user);
+            _db.SaveChanges();
         }
-        
+
         public void ChangeCity(int userID, int cityID)
         {
-            throw new NotImplementedException();
+            var user = _db.TableProfileBaseInfo.Single(user => user.UserID == userID);
+            user.CityID = cityID;
+            _db.TableProfileBaseInfo.Update(user);
+            _db.SaveChanges();
         }
 
         public void ChangeFamilyStatus(int userID, int statusID)
         {
-            throw new NotImplementedException();
+            var user = _db.TableProfileBaseInfo.Single(user => user.UserID == userID);
+            user.FamilyStatusID = statusID;
+            _db.TableProfileBaseInfo.Update(user);
+            _db.SaveChanges();
         }
 
         public void ChangeBirthDate(int userID, DateTime date)
         {
-            throw new NotImplementedException();
+            var user = _db.TableProfileBaseInfo.Single(user => user.UserID == userID);
+            user.BirthDate = date;
+            _db.TableProfileBaseInfo.Update(user);
+            _db.SaveChanges();
         }
 
         public void ChangeFullname(int userID, string surname, string name, string patronymic)
         {
-            throw new NotImplementedException();
+            var user = _db.TableProfileBaseInfo.Single(user => user.UserID == userID);
+            user.Surname = surname;
+            user.Name = name;
+            user.Patronymic = patronymic;
+            _db.TableProfileBaseInfo.Update(user);
+            _db.SaveChanges();
         }
 
         #endregion
