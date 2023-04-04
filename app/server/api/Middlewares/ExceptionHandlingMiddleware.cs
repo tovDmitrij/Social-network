@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using System.Text.Json;
 using RabbitMQ.Client;
-using database.context.log;
+using database.context.logs;
 namespace api.Middlewares
 {
     /// <summary>

@@ -2,8 +2,8 @@
 using System.Text.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using database.context.log;
-using database.context.log.Repos;
+using database.context.logs;
+using database.context.logs.Repos;
 namespace api.logger.error
 {
     internal class Program

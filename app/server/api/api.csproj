@@ -15,8 +15,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\components\database.context.log\database.context.log.csproj" />
-    <ProjectReference Include="..\components\database.context\database.context.main.csproj" />
+    <ProjectReference Include="..\components\database.context.logs\database.context.logs.csproj" />
+    <ProjectReference Include="..\components\database.context.main\database.context.main.csproj" />
   </ItemGroup>
 
 </Project>
