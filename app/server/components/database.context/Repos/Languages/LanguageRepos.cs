@@ -1,9 +1,10 @@
-﻿using database.context.Models.Misc;
+﻿using database.context.Contexts;
+using database.context.Models.Misc;
 namespace database.context.Repos.Languages
 {
     public sealed class LanguageRepos : BaseRepos, ILanguageRepos
     {
-        public LanguageRepos(DataContext db) : base(db) { }
+        public LanguageRepos(MainContext db) : base(db) { }
 
         public bool IsLanguageExist(int langID) => _db.TableLanguages
             .Any(language => language.ID == langID);

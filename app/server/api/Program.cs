@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using api.Misc;
-using database.context;
+using database.context.Contexts;
 using database.context.Repos.User;
 using database.context.Repos.Profile;
 using database.context.Repos.Languages;
@@ -42,7 +42,7 @@ namespace api
             builder.Services.AddDistributedMemoryCache();
             builder.Services.AddSession(options => { options.IdleTimeout = TimeSpan.FromMinutes(30);});
             
-            builder.Services.AddDbContext<DataContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("social_network_user_admin")));
+            builder.Services.AddDbContext<MainContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("social_network_user_admin")));
             builder.Services.AddScoped<IAuthRepos, AuthRepos>();
             builder.Services.AddScoped<IProfileRepos, ProfileRepos>();
             builder.Services.AddScoped<ILanguageRepos, LanguageRepos>();

@@ -1,11 +1,12 @@
-﻿using database.context.Models.Profile;
+﻿using database.context.Contexts;
+using database.context.Models.Profile;
 using database.context.Models.Profile.Languages;
 using database.context.Models.Profile.LifePositions;
 namespace database.context.Repos.Profile
 {
     public sealed class ProfileRepos : BaseRepos, IProfileRepos
     {
-        public ProfileRepos(DataContext db) : base(db) { }
+        public ProfileRepos(MainContext db) : base(db) { }
 
         public bool IsUserExist(int id) => _db.TableUsers
             .Any(user => user.ID == id);

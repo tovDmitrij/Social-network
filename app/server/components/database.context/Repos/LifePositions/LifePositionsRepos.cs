@@ -1,9 +1,10 @@
-﻿using database.context.Models.Data;
+﻿using database.context.Contexts;
+using database.context.Models.Data;
 namespace database.context.Repos.LifePositions
 {
     public sealed class LifePositionsRepos : BaseRepos, ILifePositionsRepos
     {
-        public LifePositionsRepos(DataContext db) : base(db) { }
+        public LifePositionsRepos(MainContext db) : base(db) { }
 
         public bool IsLifePositionExist(int posID) => _db.ViewLifePositions
             .Any(position => position.PositionID == posID);

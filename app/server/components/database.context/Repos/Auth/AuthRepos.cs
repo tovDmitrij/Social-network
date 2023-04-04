@@ -1,10 +1,11 @@
-﻿using database.context.Models.Auth;
+﻿using database.context.Contexts;
+using database.context.Models.Auth;
 using misc.security;
 namespace database.context.Repos.User
 {
     public sealed class AuthRepos : BaseRepos, IAuthRepos
     {
-        public AuthRepos(DataContext db) : base(db) { }
+        public AuthRepos(MainContext db) : base(db) { }
 
         public bool IsAccountExist(string email, string password) => _db.TableUsers
             .Any(user => user.Email == email && user.Password == Security.HashPassword(email, password));

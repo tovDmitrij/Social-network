@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "misc.security", "server\com
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "database.context", "server\components\database.context\database.context.csproj", "{C56E2E4A-0302-4CC2-8870-DF74D5943134}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "api.logger", "server\components\api.logger\api.logger.csproj", "{51FEC4C4-77A2-4669-80EC-279D7653BEBC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,10 @@ Global
 		{C56E2E4A-0302-4CC2-8870-DF74D5943134}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C56E2E4A-0302-4CC2-8870-DF74D5943134}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C56E2E4A-0302-4CC2-8870-DF74D5943134}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51FEC4C4-77A2-4669-80EC-279D7653BEBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51FEC4C4-77A2-4669-80EC-279D7653BEBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51FEC4C4-77A2-4669-80EC-279D7653BEBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51FEC4C4-77A2-4669-80EC-279D7653BEBC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

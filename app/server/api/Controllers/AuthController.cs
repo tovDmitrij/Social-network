@@ -1,11 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
+﻿using System.Text;
+using System.Text.Json;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using RabbitMQ.Client;
 using api.Misc;
 using database.context.Repos.User;
 using database.context.Repos.Profile;
 using database.context.Models.Profile;
+using database.context.Models.Data;
 namespace api.Controllers
 {
     /// <summary>
@@ -13,7 +17,7 @@ namespace api.Controllers
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
-    public sealed class AuthController : ControllerBase
+    public sealed class AuthController : BaseController
     {
         /// <summary>
         /// Взаимодействие с аккаунтами пользователей

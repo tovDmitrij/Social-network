@@ -9,7 +9,7 @@ namespace api.Controllers
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
-    public sealed class ProfileController : ControllerBase
+    public sealed class ProfileController : BaseController
     {
         /// <summary>
         /// Взаимодействие с профилями пользователей

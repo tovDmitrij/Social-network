@@ -1,9 +1,10 @@
-﻿using database.context.Models.Data;
+﻿using database.context.Contexts;
+using database.context.Models.Data;
 namespace database.context.Repos.Cities
 {
     public sealed class PlaceOfLivingRepos : BaseRepos, IPlaceOfLivingRepos
     {
-        public PlaceOfLivingRepos(DataContext db) : base(db) { }
+        public PlaceOfLivingRepos(MainContext db) : base(db) { }
 
 
 

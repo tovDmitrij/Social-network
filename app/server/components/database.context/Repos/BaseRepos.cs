@@ -1,9 +1,10 @@
-﻿namespace database.context.Repos
+﻿using database.context.Contexts;
+namespace database.context.Repos
 {
     public abstract class BaseRepos
     {
-        protected readonly DataContext _db;
+        protected readonly MainContext _db;
 
-        public BaseRepos(DataContext db) => _db = db;
+        public BaseRepos(MainContext db) => _db = db;
     }
 }

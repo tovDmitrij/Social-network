@@ -5,12 +5,12 @@ using database.context.Models.Data;
 using database.context.Models.Profile;
 using database.context.Models.Profile.Languages;
 using database.context.Models.Profile.LifePositions;
-namespace database.context
+namespace database.context.Contexts
 {
     /// <summary>
-    /// Контекст базы данных социальной сети
+    /// Основной контекст базы данных социальной сети
     /// </summary>
-    public sealed class DataContext : DbContext
+    public sealed class MainContext : DbContext
     {
 
 
@@ -103,6 +103,6 @@ namespace database.context
 
 
 
-        public DataContext(DbContextOptions options) : base(options) { }
+        public MainContext(DbContextOptions options) : base(options) { }
     }
 }

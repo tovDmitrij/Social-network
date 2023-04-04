@@ -9,7 +9,7 @@ namespace api.Controllers
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
-    public sealed class DataController: ControllerBase
+    public sealed class DataController: BaseController
     {
         /// <summary>
         /// Взаимодействие с таблицей языков
