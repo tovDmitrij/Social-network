@@ -5,6 +5,8 @@ using database.context.main.Models.Profile.Languages;
 using database.context.main.Models.Profile.LifePositions;
 using database.context.main.Models.Profile.BaseInfo;
 using database.context.main.Models;
+using database.context.main.Models.Profile.Careers;
+
 namespace database.context.main
 {
     /// <summary>
@@ -57,6 +59,16 @@ namespace database.context.main
         /// Представление с подробной информацией о жизненных позициях пользователей
         /// </summary>
         public DbSet<ProfileLifePositionViewModel> ViewProfileLifePositions { get; set; }
+
+        /// <summary>
+        /// Таблица с карьерами пользователей
+        /// </summary>
+        public DbSet<ProfileCarrerModel> TableProfileCarrer { get; set; }
+
+        /// <summary>
+        /// Представление с подробной информацией о карьерах пользователей
+        /// </summary>
+        public DbSet<ProfileCarrerViewModel> ViewProfileCarrer { get; set; }
 
         #endregion
 

@@ -20,8 +20,8 @@ create table if not exists app_user_roles(
 );
 
 create table if not exists users(
-	id					serial						primary key,
-	role_id				integer default 1 not null	references app_user_roles(id),
+	id					serial				primary key,
+	role_id				integer not null	references app_user_roles(id),
 	email				text not null,
 	password			text not null,
 	registration_date	timestamp default current_timestamp not null
@@ -104,9 +104,9 @@ create table if not exists life_positions(
 );
 
 create table if not exists user_life_positions(
-	id					serial		primary key,
-	user_id				integer		references users(id),
-	life_position_id	integer		references life_positions(id),
+	id					serial				primary key,
+	user_id				integer not null	references users(id),
+	life_position_id	integer not null	references life_positions(id),
 	date				timestamp default current_timestamp not null
 );
 
@@ -116,9 +116,9 @@ create table if not exists languages(
 );
 
 create table if not exists user_profile_languages(
-	id 				serial 		primary key,
-	user_id			integer		references users(id),
-	language_id		integer		references languages(id),
+	id 				serial 				primary key,
+	user_id			integer not null	references users(id),
+	language_id		integer not null	references languages(id),
 	date 			timestamp default current_timestamp not null
 );
 
@@ -156,21 +156,21 @@ create table if not exists user_profile_main_info(
 	birthdate			date
 );
 
-create table if not exists user_profile_career(
-	id				serial		primary key,
-	user_id			integer		references users(id),
-	city_id			integer		references cities(id),
-	company_name	text,
+create table if not exists user_profile_carrer(
+	id				serial				primary key,
+	user_id			integer not null	references users(id),
+	city_id			integer not null	references cities(id),
+	company			text not null,
 	job				text,
 	date_from		date,
 	date_to			date
 );
 
 create table if not exists user_profile_military_services(
-	id				serial		primary key,
-	user_id 		integer 	references users(id),
-	country_id 		integer 	references countries(id),
-	military_unit 	text,
+	id				serial				primary key,
+	user_id 		integer not null	references users(id),
+	country_id 		integer not null	references countries(id),
+	military_unit 	text not null,
 	date_from 		date,
 	date_to 		date
 );
@@ -434,35 +434,42 @@ create or replace view view_profile_life_positions as
 create or replace view view_life_positions as
 	select lp.id, lp.name position_name, lp.type_id, lps.name type_name
 	from life_positions lp
-		left join life_position_types lps on lp.type_id = lps.id
+		left join life_position_types lps on lp.type_id = lps.id;
 		
 --Представление, содержащее информацию о местах проживания
 create or replace view view_place_of_living as
 	select c.id city_id, c.name city_name, r.id region_id, r.name region_name, cr.id country_id, cr.name country_name
 	from cities c
 		left join regions r on c.region_id = r.id
-		left join countries cr on r.country_id = cr.id
+		left join countries cr on r.country_id = cr.id;
+		
+--Представление, содержащее информацию о карьере пользователя
+create or replace view view_profile_carrer as
+	select upc.user_id, c.name city_name, upc.company, upc.job, upc.date_from, upc.date_to
+	from user_profile_carrer upc
+		left join cities c on upc.city_id = c.id;
 		
 		
 
 ------------------------
 -- СОЗДАНИЕ ТРИГГЕРОВ --
 ------------------------
---tbd
+create or replace function add_user() returns trigger as
+	$$
+		begin
+			select id from app_user_roles into new.role_id
+			where name = 'Пользователь';
+			return new;
+		end;
+	$$ language plpgsql;
+create or replace trigger insert_user before insert on users for each row
+	execute function add_user();
+	
+	
 
-
-
-----------------------------
--- СОЗДАНИЕ ПОЛЬЗОВАТЕЛЕЙ --
-----------------------------
+---------------------------
+-- СОЗДАНИЕ ПОЛЬЗОВАТЕЛЯ --
+---------------------------
 create user user_default with password 'jwu7iSQ';
 revoke all privileges on database social_network from user_default;
 GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO user_default;
-
-create user user_moderator with password 'g2Wu18x';
-revoke all privileges on database social_network from user_moderator;
-GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO user_moderator;
-
-create user user_admin with password '52iJs*x';
-revoke all privileges on database social_network from user_admin;
-GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO user_admin;

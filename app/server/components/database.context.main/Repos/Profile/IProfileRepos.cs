@@ -1,4 +1,5 @@
 ﻿using database.context.main.Models.Profile.BaseInfo;
+using database.context.main.Models.Profile.Careers;
 using database.context.main.Models.Profile.Languages;
 using database.context.main.Models.Profile.LifePositions;
 namespace database.context.main.Repos.Profile
@@ -148,6 +149,54 @@ namespace database.context.main.Repos.Profile
         /// </summary>
         /// <param name="userID">Идентификатор пользователя</param>
         public IEnumerable<ProfileLifePositionViewModel>? GetLifePositions(int userID);
+
+        #endregion
+
+
+
+        #region Карьера
+
+        /// <summary>
+        /// Добавить новую карьеру в профиль пользователя
+        /// </summary>
+        /// <param name="userID">Идентификатор пользователя</param>
+        /// <param name="cityID">Идентификатор города</param>
+        /// <param name="company">Наименование компании</param>
+        /// <param name="job">Наименование должности</param>
+        /// <param name="dateFrom">Дата начала карьеры</param>
+        /// <param name="dateTo">Дата окончания</param>
+        public void AddCarrer(int userID, int cityID, string company, string? job, DateTime? dateFrom, DateTime? dateTo);
+        
+        /// <summary>
+        /// Удалить карьеру из профиля пользователя
+        /// </summary>
+        /// <param name="userID">Идентификатор пользователя</param>
+        /// <param name="carrerID">Идентификатор карьеры</param>
+        public void RemoveCarrer(int userID, int carrerID);
+
+        /// <summary>
+        /// Метод, проверяющий наличие карьеры в профиле пользователя
+        /// </summary>
+        /// <param name="userID">Идентификатор пользователя</param>
+        /// <param name="carrerID">Идентификатор карьеры</param>
+        public bool IsCarrerAdded(int userID, int carrerID);
+
+        /// <summary>
+        /// Метод, проверяющий наличие карьеры в профиле пользователя
+        /// </summary>
+        /// <param name="userID">Идентификатор пользователя</param>
+        /// <param name="cityID">Идентификатор города</param>
+        /// <param name="company">Наименование компании</param>
+        /// <param name="job">Наименование должности</param>
+        /// <param name="dateFrom">Дата начала карьеры</param>
+        /// <param name="dateTo">Дата окончания</param>
+        public bool IsCarrerAdded(int userID, int cityID, string company, string? job, DateTime? dateFrom, DateTime? dateTo);
+
+        /// <summary>
+        /// Получить список карьер пользователя по его идентификатору
+        /// </summary>
+        /// <param name="userID">Идентификатор пользователя</param>
+        public IEnumerable<ProfileCarrerViewModel>? GetCarrers(int userID);
 
         #endregion
 

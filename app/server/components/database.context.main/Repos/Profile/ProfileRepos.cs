@@ -1,9 +1,7 @@
-﻿using database.context.main;
-using database.context.main.Models.Profile.BaseInfo;
+﻿using database.context.main.Models.Profile.BaseInfo;
+using database.context.main.Models.Profile.Careers;
 using database.context.main.Models.Profile.Languages;
 using database.context.main.Models.Profile.LifePositions;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-
 namespace database.context.main.Repos.Profile
 {
     public sealed class ProfileRepos : BaseRepos, IProfileRepos
@@ -81,9 +79,7 @@ namespace database.context.main.Repos.Profile
 
         public void AddLanguage(int userID, int langID)
         {
-            _db.TableProfileLanguages.Add(new(
-                userID,
-                langID));
+            _db.TableProfileLanguages.Add(new(userID, langID));
             _db.SaveChanges();
         }
 
@@ -112,9 +108,7 @@ namespace database.context.main.Repos.Profile
 
         public void AddLifePosition(int userID, int posID)
         {
-            _db.TableProfileLifePositions.Add(new(
-                userID, 
-                posID));
+            _db.TableProfileLifePositions.Add(new(userID, posID));
             _db.SaveChanges();
         }
 
@@ -137,6 +131,35 @@ namespace database.context.main.Repos.Profile
 
         public IEnumerable<ProfileLifePositionViewModel>? GetLifePositions(int userID) => _db.ViewProfileLifePositions
             .Where(position => position.UserID == userID);
+
+        #endregion
+
+
+
+        #region Карьера
+
+        public void AddCarrer(int userID, int cityID, string company, string? job, DateTime? dateFrom, DateTime? dateTo)
+        {
+            _db.TableProfileCarrer.Add(new(userID, cityID, company, job, dateFrom, dateTo));
+            _db.SaveChanges();
+        }
+
+        public void RemoveCarrer(int userID, int carrerID)
+        {
+            _db.TableProfileCarrer.Remove(_db.TableProfileCarrer
+                .First(carrer => 
+                    carrer.UserID == userID && carrer.ID == carrerID));
+            _db.SaveChanges();
+        }
+
+        public bool IsCarrerAdded(int userID, int carrerID) => _db.TableProfileCarrer
+            .Any(carrer => carrer.UserID == userID && carrer.ID == carrerID);
+
+        public bool IsCarrerAdded(int userID, int cityID, string company, string? job, DateTime? dateFrom, DateTime? dateTo) => _db.TableProfileCarrer
+            .Any(c => c.UserID == userID && c.CityID == cityID && c.Company == company && c.Job == job && c.DateFrom == dateFrom && c.DateTo == dateTo);
+
+        public IEnumerable<ProfileCarrerViewModel>? GetCarrers(int userID) => _db.ViewProfileCarrer
+            .Where(carrer => carrer.UserID == userID);
 
         #endregion
 

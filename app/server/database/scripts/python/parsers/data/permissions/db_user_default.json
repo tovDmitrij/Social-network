@@ -658,6 +658,45 @@
             "attributes": [
                 "is_commentable"
             ]
+        },
+        {
+            "dmlCommand": "insert",
+            "objectName": "app_group_banlists"
+        },
+        {
+            "dmlCommand": "delete",
+            "objectName": "app_group_banlists"
+        },
+        {
+            "dmlCommand": "insert",
+            "objectName": "app_user_banlists"
+        },
+        {
+            "dmlCommand": "delete",
+            "objectName": "app_user_banlists"
+        },
+        {
+            "dmlCommand": "insert",
+            "objectName": "app_conversation_banlists"
+        },
+        {
+            "dmlCommand": "delete",
+            "objectName": "app_conversation_banlists"
+        },
+        {
+            "dmlCommand": "delete",
+            "objectName": "app_ban_requests"
+        },
+        {
+            "dmlCommand": "update",
+            "objectName": "users",
+            "attributes": [
+                "role_id"
+            ]
+        },
+        {
+            "dmlCommand": "select",
+            "objectName": "app_logs"
         }
     ]
 }

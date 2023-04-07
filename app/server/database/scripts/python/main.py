@@ -14,18 +14,4 @@ xlsx.GetXLSXData(os.path.join(ABS_PATH, "parsers\\data\\countries.xlsx"), enums.
 xlsx.GetXLSXData(os.path.join(ABS_PATH, "parsers\\data\\regions.xlsx"), enums.DataType.REGIONS)
 xlsx.GetXLSXData(os.path.join(ABS_PATH, "parsers\\data\\cities.xlsx"), enums.DataType.CITIES)
 json.InsertData(os.path.join(ABS_PATH, "parsers\\data\\db_baseInfo.json"))
-
-
-
-#region Выдача прав
-
-json.GrantPermissions(os.path.join(ABS_PATH, "parsers\\data\\permissions\\db_user_default.json"),"user_default")
-
-json.GrantPermissions(os.path.join(ABS_PATH, "parsers\\data\\permissions\\db_user_default.json"),"user_moderator")
-json.GrantPermissions(os.path.join(ABS_PATH, "parsers\\data\\permissions\\db_user_moderator.json"),"user_moderator")
-
-json.GrantPermissions(os.path.join(ABS_PATH, "parsers\\data\\permissions\\db_user_default.json"),"user_admin")
-json.GrantPermissions(os.path.join(ABS_PATH, "parsers\\data\\permissions\\db_user_moderator.json"),"user_admin")
-json.GrantPermissions(os.path.join(ABS_PATH, "parsers\\data\\permissions\\db_user_admin.json"),"user_admin")
-
-#endregion
+#json.GrantPermissions(os.path.join(ABS_PATH, "parsers\\data\\permissions\\db_user_default.json"),"user_default")

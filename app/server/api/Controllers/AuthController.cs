@@ -13,7 +13,7 @@ namespace api.Controllers
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
-    public sealed class AuthController : BaseController
+    public sealed class AuthController : ControllerBase
     {
         /// <summary>
         /// Взаимодействие с аккаунтами пользователей
@@ -39,17 +39,19 @@ namespace api.Controllers
         /// <param name="surname">Фамилия пользователя</param>
         /// <param name="name">Имя пользователя</param>
         /// <param name="patronymic">Отчество пользователя</param>
+        [ProducesResponseType(typeof(string), 200)]
+        [ProducesResponseType(typeof(string), 406)]
         [HttpPost("SignUp/email={email}&password={password}&surname={surname}&name={name}&patronymic={patronymic}")]
         public IActionResult SignUp(string email, string password, string surname, string name, string? patronymic)
         {
             switch (_auth.IsEmailBusy(email))
             {
                 case true:
-                    return EmailIsNotAcceptable;
+                    return StatusCode(406, new { status = "Почта уже занята другим пользователем" });
 
                 case false:
                     _auth.Add(email, password, surname, name, patronymic);
-                    return SignUpOk;
+                    return StatusCode(200, new { status = "Новый аккаунт был успешно зарегистрирован" });
             }
         }
 
@@ -58,6 +60,8 @@ namespace api.Controllers
         /// </summary>
         /// <param name="email">Почта пользователя</param>
         /// <param name="password">Пароль пользоватея</param>
+        [ProducesResponseType(typeof(string), 200)]
+        [ProducesResponseType(typeof(string), 404)]
         [HttpPost("SignIn/email={email}&password={password}")]
         public IActionResult SignIn(string email, string password)
         {
@@ -75,11 +79,10 @@ namespace api.Controllers
                             },
                             expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(30)),
                             signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha512));
-
-                    return SignInOk(user.ID, new JwtSecurityTokenHandler().WriteToken(token));
+                    return StatusCode(200, new { status = "Аккаунт был успешно найден", id = user.ID, token = new JwtSecurityTokenHandler().WriteToken(token) });
 
                 case false:
-                    return SignInNotFound;
+                    return StatusCode(404, new { status = "Аккаунта с заданной почтой и паролем не существует" });
             }
         }
     }
