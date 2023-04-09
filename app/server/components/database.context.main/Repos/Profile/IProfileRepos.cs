@@ -166,6 +166,17 @@ namespace database.context.main.Repos.Profile
         /// <param name="dateFrom">Дата начала карьеры</param>
         /// <param name="dateTo">Дата окончания</param>
         public void AddCarrer(int userID, int cityID, string company, string? job, DateTime? dateFrom, DateTime? dateTo);
+
+        /// <summary>
+        /// Обновить информацию о карьере
+        /// </summary>
+        /// <param name="carrerID">Идентификатор карьеры</param>
+        /// <param name="cityID">Идентификатор города</param>
+        /// <param name="company">Наименование компании</param>
+        /// <param name="job">Наименование должности</param>
+        /// <param name="dateFrom">Дата начала карьеры</param>
+        /// <param name="dateTo">Дата окончания</param>
+        public void UpdateCarrer(int carrerID, int cityID, string company, string? job, DateTime? dateFrom, DateTime? dateTo);
         
         /// <summary>
         /// Удалить карьеру из профиля пользователя

@@ -22,7 +22,7 @@ namespace api
             #region builder
 
             var builder = WebApplication.CreateBuilder(args);
-            builder.Services.AddCors();
+            builder.Services.AddControllers();
             builder.Services.AddAuthorization();
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
@@ -38,7 +38,7 @@ namespace api
                         ValidateIssuerSigningKey = true
                     };
                 });
-            builder.Services.AddControllers();
+            builder.Services.AddCors();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddDistributedMemoryCache();

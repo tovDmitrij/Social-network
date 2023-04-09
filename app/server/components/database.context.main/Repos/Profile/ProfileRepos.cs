@@ -115,7 +115,7 @@ namespace database.context.main.Repos.Profile
         public void RemoveLifePosition(int userID, int posID)
         {
             _db.TableProfileLifePositions.Remove(
-                _db.TableProfileLifePositions.First(position => 
+                _db.TableProfileLifePositions.Single(position => 
                     position.UserID == userID && position.PositionID == posID));
             _db.SaveChanges();
         }
@@ -141,6 +141,18 @@ namespace database.context.main.Repos.Profile
         public void AddCarrer(int userID, int cityID, string company, string? job, DateTime? dateFrom, DateTime? dateTo)
         {
             _db.TableProfileCarrer.Add(new(userID, cityID, company, job, dateFrom, dateTo));
+            _db.SaveChanges();
+        }
+
+        public void UpdateCarrer(int carrerID, int cityID, string company, string? job, DateTime? dateFrom, DateTime? dateTo)
+        {
+            var carrer = _db.TableProfileCarrer.Single(carrer => carrer.ID == carrerID);
+            carrer.CityID = cityID;
+            carrer.Company = company;
+            carrer.Job = job;
+            carrer.DateFrom = dateFrom;
+            carrer.DateTo = dateTo;
+            _db.TableProfileCarrer.Update(carrer);
             _db.SaveChanges();
         }
 

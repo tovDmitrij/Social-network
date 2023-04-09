@@ -14,7 +14,7 @@ namespace database.context.main.Models.Profile.Languages
         /// Идентификатор языка
         /// </summary>
         [Required]
-        [Column("id")]
+        [Column("language_id")]
         public int LanguageID { get; set; }
 
         /// <summary>
@@ -28,8 +28,8 @@ namespace database.context.main.Models.Profile.Languages
         /// Наименование языка
         /// </summary>
         [Required]
-        [Column("name")]
-        public string Name { get; set; }
+        [Column("language_name")]
+        public string LanguageName { get; set; }
 
         /// <summary>
         /// Дата добавления языка в профиль
@@ -38,11 +38,11 @@ namespace database.context.main.Models.Profile.Languages
         [Column("date")]
         public DateTime Date { get; set; }
 
-        public ProfileLanguageViewModel(int id, int user_id, string name, DateTime date)
+        public ProfileLanguageViewModel(int user_id, int language_id, string language_name, DateTime date)
         {
-            LanguageID = id;
             UserID = user_id;
-            Name = name;
+            LanguageID = language_id;
+            LanguageName = language_name;
             Date = date;
         }
 

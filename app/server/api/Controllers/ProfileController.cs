@@ -6,10 +6,6 @@ using database.context.main.Repos.Languages;
 using database.context.main.Repos.LifePositions;
 using database.context.main.Repos.Cities;
 using database.context.main.Repos.FamilyStatuses;
-using database.context.main.Models.Profile.BaseInfo;
-using database.context.main.Models.Profile.LifePositions;
-using database.context.main.Models.Profile.Languages;
-using database.context.main.Models.Profile.Careers;
 namespace api.Controllers
 {
     /// <summary>
@@ -65,8 +61,6 @@ namespace api.Controllers
         /// Получить базовую информацию о профиле пользователя по его идентификатору
         /// </summary>
         /// <param name="userID">Идентификатор пользователя</param>
-        [ProducesResponseType(typeof(ProfileBaseInfoViewModel), 200)]
-        [ProducesResponseType(typeof(string), 404)]
         [HttpGet("userID={userID:int}/BaseInfo/Get")]
         public IActionResult GetBaseProfileInfo(int userID) => _profile.IsUserExist(userID) ?
             StatusCode(200, new { status = "Базовая информация о профиле пользователе была успешно сформирована", data = _profile.GetProfileBaseInfo(userID) }) :
@@ -76,10 +70,8 @@ namespace api.Controllers
         /// Получить список языков пользователя по его идентификатору
         /// </summary>
         /// <param name="userID">Идентификатор пользователя</param>
-        [ProducesResponseType(typeof(IEnumerable<ProfileLanguageViewModel>), 200)]
-        [ProducesResponseType(typeof(string), 404)]
         [HttpGet("userID={userID:int}/Languages/Get")]
-        public IActionResult GetLanguageInfo(int userID)
+        public IActionResult GetLanguagesInfo(int userID)
         {
             if (!_profile.IsUserExist(userID)) 
                 return StatusCode(404, new { status = "Пользователя с заданным идентификатором не существует" });
@@ -94,8 +86,6 @@ namespace api.Controllers
         /// Получить список жизненных позиций пользователя по его идентификатору
         /// </summary>
         /// <param name="userID">Идентификатор пользователя</param>
-        [ProducesResponseType(typeof(IEnumerable<ProfileLifePositionViewModel>), 200)]
-        [ProducesResponseType(typeof(string), 404)]
         [HttpGet("userID={userID:int}/LifePositions/Get")]
         public IActionResult GetLifePositionsInfo(int userID) 
         {
@@ -112,10 +102,8 @@ namespace api.Controllers
         /// Получить список карьер пользователя по его идентификатору
         /// </summary>
         /// <param name="userID">Идентификатор пользователя</param>
-        [ProducesResponseType(typeof(IEnumerable<ProfileCarrerViewModel>), 200)]
-        [ProducesResponseType(typeof(string),404)]
         [HttpGet("userID={userID:int}/Carrers/Get")]
-        public IActionResult GetCarrerInfo(int userID)
+        public IActionResult GetCarrersInfo(int userID)
         {
             if (!_profile.IsUserExist(userID)) 
                 return StatusCode(404, new { status = "Пользователя с заданным идентификатором не существует" });
@@ -137,8 +125,6 @@ namespace api.Controllers
         /// </summary>
         /// <param name="userID">Идентификатор пользователя</param>
         /// <param name="langID">Идентификатор языка</param>
-        [ProducesResponseType(typeof(string), 200)]
-        [ProducesResponseType(typeof(string), 404)]
         [HttpPost("userID={userID:int}/Language/Add/langID={langID:int}")]
         public IActionResult AddLanguage(int userID, int langID)
         {
@@ -159,8 +145,6 @@ namespace api.Controllers
         /// <param name="userID">Идентификатор пользователя</param>
         /// <param name="typeID">Идентификатор типа ЖП</param>
         /// <param name="posID">Идентификатор ЖП</param>
-        [ProducesResponseType(typeof(string), 200)]
-        [ProducesResponseType(typeof(string), 404)]
         [HttpPost("userID={userID:int}/LifePosition/Add/typeID={typeID:int}&posID={posID:int}")]
         public IActionResult AddLifePosition(int userID, int typeID, int posID)
         {
@@ -184,16 +168,13 @@ namespace api.Controllers
         /// <param name="job">Наименование должности</param>
         /// <param name="dateFrom">Дата начала работы</param>
         /// <param name="dateTo">Дата окончания</param>
-        [ProducesResponseType(typeof(string), 200)]
-        [ProducesResponseType(typeof(string), 404)]
-        [ProducesResponseType(typeof(string), 406)]
         [HttpPost("userID={userID:int}/Carrer/Add/cityID={cityID:int}&company={company}&job={job}&dateFrom={dateFrom:datetime}&dateTo={dateTo:datetime}")]
         public IActionResult AddCarrer(int userID, int cityID, string company, string? job, DateTime? dateFrom, DateTime? dateTo)
         {
             if (!_profile.IsUserExist(userID))
                 return StatusCode(404, new { status = "Пользователя с заданным идентификатором не существует" });
             if (_profile.IsCarrerAdded(userID, cityID, company, job, dateFrom, dateTo))
-                return StatusCode(406, new { status = "Такая карьера была уже добавлена" });
+                return StatusCode(406, new { status = "Такая карьера уже была добавлена" });
 
             _profile.AddCarrer(userID, cityID, company, job, dateFrom, dateTo);
             return StatusCode(200, new { status = "Новая карьера была успешно добавлена" });
@@ -210,8 +191,6 @@ namespace api.Controllers
         /// </summary>
         /// <param name="userID">Идентификатор пользователя</param>
         /// <param name="status">Статус пользователя</param>
-        [ProducesResponseType(typeof(string), 200)]
-        [ProducesResponseType(typeof(string), 404)]
         [HttpPut("userID={userID:int}/BaseInfo/Status/Update/status={status}")]
         public IActionResult UpdateProfileStatus(int userID, string status)
         {
@@ -227,8 +206,6 @@ namespace api.Controllers
         /// </summary>
         /// <param name="userID">Идентфикатор пользователя</param>
         /// <param name="avatar">Аватарка</param>
-        [ProducesResponseType(typeof(string), 200)]
-        [ProducesResponseType(typeof(string), 404)]
         [HttpPut("userID={userID:int}/BaseInfo/Avatar/Update/avatar={avatar}")]
         public IActionResult UpdateProfileAvatar(int userID, string avatar)
         {
@@ -244,8 +221,6 @@ namespace api.Controllers
         /// </summary>
         /// <param name="userID">Идентификатор пользователя</param>
         /// <param name="cityID">Идентификатор города</param>
-        [ProducesResponseType(typeof(string), 200)]
-        [ProducesResponseType(typeof(string), 404)]
         [HttpPut("userID={userID:int}/BaseInfo/City/Update/cityID={cityID:int}")]
         public IActionResult UpdateProfileCity(int userID, int cityID) 
         {
@@ -263,8 +238,6 @@ namespace api.Controllers
         /// </summary>
         /// <param name="userID">Идентификатор пользователя</param>
         /// <param name="statusID">Идентификатор статуса</param>
-        [ProducesResponseType(typeof(string), 200)]
-        [ProducesResponseType(typeof(string), 404)]
         [HttpPut("userID={userID:int}/BaseInfo/FamilyStatus/Update/statusID={statusID:int}")]
         public IActionResult UpdateProfileFamilyStatus(int userID, int statusID) 
         {
@@ -282,8 +255,6 @@ namespace api.Controllers
         /// </summary>
         /// <param name="userID">Идентификатор пользователя</param>
         /// <param name="date">Дата рождения</param>
-        [ProducesResponseType(typeof(string), 200)]
-        [ProducesResponseType(typeof(string), 404)]
         [HttpPut("userID={userID:int}/BaseInfo/Birthdate/Update/date={date:datetime}")]
         public IActionResult UpdateProfileBirthdate(int userID, DateTime date)
         {
@@ -301,8 +272,6 @@ namespace api.Controllers
         /// <param name="surname">Фамилия пользователя</param>
         /// <param name="name">Имя пользователя</param>
         /// <param name="patronymic">Отчество пользователя</param>
-        [ProducesResponseType(typeof(string), 200)]
-        [ProducesResponseType(typeof(string), 404)]
         [HttpPut("userID={userID:int}/BaseInfo/Fullname/Update/surname={surname}&name={name}&patronymic={patronymic}")]
         public IActionResult UpdateProfileFullname(int userID, string surname, string name, string? patronymic)
         {
@@ -311,6 +280,18 @@ namespace api.Controllers
 
             _profile.ChangeFullname(userID, surname, name, patronymic);
             return StatusCode(200, new { status = "ФИО пользователя в профиле было успешно обновлено" });
+        }
+
+        [HttpPut("userID={userID:int}/Carrer/{carrerID:int}/Update/cityID={cityID:int}&company={company}&job={job}&dateFrom={dateFrom:datetime}&dateTo={dateTo:datetime}")]
+        public IActionResult UpdateProfileCarrer(int userID, int carrerID, int cityID, string company, string? job, DateTime? dateFrom, DateTime? dateTo)
+        {
+            if (!_profile.IsUserExist(userID))
+                return StatusCode(404, new { status = "Пользователя с заданным идентификатором не существует" });
+            if (!_profile.IsCarrerAdded(userID, carrerID))
+                return StatusCode(404, new { status = "Карьеры с заданными параметрами не существует" });
+
+            _profile.UpdateCarrer(carrerID, cityID, company, job, dateFrom, dateTo);
+            return StatusCode(200, new { status = "Обновление информации о карьере прошло успешно" });
         }
 
         #endregion
@@ -324,8 +305,6 @@ namespace api.Controllers
         /// </summary>
         /// <param name="userID">Идентификатор пользователя</param>
         /// <param name="langID">Идентификатор языка</param>
-        [ProducesResponseType(typeof(string), 200)]
-        [ProducesResponseType(typeof(string), 404)]
         [HttpDelete("userID={userID:int}/Language/Delete/langID={langID:int}")]
         public IActionResult RemoveLanguage(int userID, int langID)
         {
@@ -346,8 +325,6 @@ namespace api.Controllers
         /// <param name="userID">Идентификатор пользователя</param>
         /// <param name="typeID">Идентификатор категории жизненной позиции</param>
         /// <param name="posID">Идентификатор жизненной позиции</param>
-        [ProducesResponseType(typeof(string), 200)]
-        [ProducesResponseType(typeof(string), 404)]
         [HttpDelete("userID={userID:int}/LifePosition/Delete/typeID={typeID:int}&posID={posID:int}")]
         public IActionResult RemoveLifePosition(int userID, int typeID, int posID)
         {
@@ -362,8 +339,6 @@ namespace api.Controllers
             return StatusCode(200, new { status = "Удаление жизненной позиции прошло успешно" });
         }
 
-        [ProducesResponseType(typeof(string), 200)]
-        [ProducesResponseType(typeof(string), 404)]
         [HttpDelete("userID={userID:int}/Carrer/Delete/carrerID={carrerID:int}")]
         public IActionResult RemoveCarrer(int userID, int  carrerID)
         {

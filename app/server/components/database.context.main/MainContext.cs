@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using database.context.main.Models;
 using database.context.main.Models.Misc;
 using database.context.main.Models.Data;
 using database.context.main.Models.Profile.Languages;
 using database.context.main.Models.Profile.LifePositions;
 using database.context.main.Models.Profile.BaseInfo;
-using database.context.main.Models;
 using database.context.main.Models.Profile.Careers;
-
+using database.context.main.Models.Profile.MilitaryServices;
 namespace database.context.main
 {
     /// <summary>
@@ -34,41 +34,50 @@ namespace database.context.main
         /// Таблица с базовой информацией о профилях пользователей
         /// </summary>
         public DbSet<ProfileBaseInfoModel> TableProfileBaseInfo { get; set; }
-
         /// <summary>
         /// Представление с базовой информацией о профилях пользователей
         /// </summary>
         public DbSet<ProfileBaseInfoViewModel> ViewProfileBaseInfo { get; set; }
 
+
         /// <summary>
         /// Таблица с выбранными пользователями языками в профиле
         /// </summary>
         public DbSet<ProfileLanguageModel> TableProfileLanguages { get; set; }
-
         /// <summary>
         /// Представление с подробной информацией о выбранных пользователями языками в профиле
         /// </summary>
         public DbSet<ProfileLanguageViewModel> ViewProfileLanguages { get; set; }
 
+
         /// <summary>
         /// Таблица с жизненными позициями пользователей
         /// </summary>
         public DbSet<ProfileLifePositionModel> TableProfileLifePositions { get; set; }
-
         /// <summary>
         /// Представление с подробной информацией о жизненных позициях пользователей
         /// </summary>
         public DbSet<ProfileLifePositionViewModel> ViewProfileLifePositions { get; set; }
 
+
         /// <summary>
         /// Таблица с карьерами пользователей
         /// </summary>
         public DbSet<ProfileCarrerModel> TableProfileCarrer { get; set; }
-
         /// <summary>
         /// Представление с подробной информацией о карьерах пользователей
         /// </summary>
         public DbSet<ProfileCarrerViewModel> ViewProfileCarrer { get; set; }
+
+
+        /// <summary>
+        /// Таблица с военными службами пользователей
+        /// </summary>
+        public DbSet<ProfileMilitaryServiceModel> TableProfileMilitaryService { get; set; }
+        /// <summary>
+        /// Представление с подробной информацией о военных службах пользователей
+        /// </summary>
+        public DbSet<ProfileMilitaryServiceViewModel> ViewProfileMilitaryService { get; set; }
 
         #endregion
 

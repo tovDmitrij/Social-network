@@ -21,8 +21,15 @@ namespace database.context.main.Models.Profile.Careers
         /// Идентификатор города
         /// </summary>
         [Required]
+        [Column("city_id")]
+        public int CityID { get; set; }
+
+        /// <summary>
+        /// Наименование города
+        /// </summary>
+        [Required]
         [Column("city_name")]
-        public string City { get; set; }
+        public string CityName { get; set; }
 
         /// <summary>
         /// Наименование компании
@@ -49,10 +56,11 @@ namespace database.context.main.Models.Profile.Careers
         [Column("date_to")]
         public DateTime? DateTo { get; set; }
 
-        public ProfileCarrerViewModel(int user_id, string city_name, string company, string? job, DateTime? dateFrom, DateTime? dateTo)
+        public ProfileCarrerViewModel(int user_id, int city_id, string city_name, string company, string? job, DateTime? dateFrom, DateTime? dateTo)
         {
             UserID = user_id;
-            City = city_name;
+            CityID = city_id;
+            CityName = city_name;
             Company = company;
             Job = job;
             DateFrom = dateFrom;
