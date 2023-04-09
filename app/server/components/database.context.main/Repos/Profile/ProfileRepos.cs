@@ -2,6 +2,7 @@
 using database.context.main.Models.Profile.Careers;
 using database.context.main.Models.Profile.Languages;
 using database.context.main.Models.Profile.LifePositions;
+using database.context.main.Models.Profile.MilitaryServices;
 namespace database.context.main.Repos.Profile
 {
     public sealed class ProfileRepos : BaseRepos, IProfileRepos
@@ -172,6 +173,50 @@ namespace database.context.main.Repos.Profile
 
         public IEnumerable<ProfileCarrerViewModel>? GetCarrers(int userID) => _db.ViewProfileCarrer
             .Where(carrer => carrer.UserID == userID);
+
+        #endregion
+
+
+
+        #region Военная служба
+
+        public void AddMilitaryService(int userID, int countryID, string militaryUnit, DateTime? dateFrom, DateTime? dateTo)
+        {
+            _db.TableProfileMilitaryService.Add(new(
+                userID,
+                countryID,
+                militaryUnit,
+                dateFrom,
+                dateTo));
+            _db.SaveChanges();
+        }
+
+        public void UpdateMilitaryService(int serviceID, int countryID, string militaryUnit, DateTime? dateFrom, DateTime? dateTo)
+        {
+            var service = _db.TableProfileMilitaryService.Single(service => service.ID == serviceID);
+            service.CountryID = countryID;
+            service.MilitaryUnit = militaryUnit;
+            service.DateFrom = dateFrom;
+            service.DateTo = dateTo;
+            _db.TableProfileMilitaryService.Update(service);
+            _db.SaveChanges();
+        }
+
+        public void RemoveMilitaryService(int userID, int serviceID)
+        {
+            _db.TableProfileMilitaryService.Remove(_db.TableProfileMilitaryService
+                .Single(service => service.UserID == userID && service.ID == serviceID));
+            _db.SaveChanges();
+        }
+
+        public bool IsMilitaryServiceAdded(int userID, int serviceID) => _db.TableProfileMilitaryService
+            .Any(service => service.UserID == userID && service.ID == serviceID);
+
+        public bool IsMilitaryServiceAdded(int userID, int countryID, string militaryUnit, DateTime? dateFrom, DateTime? dateTo) => _db.TableProfileMilitaryService
+            .Any(s => s.UserID == userID && s.CountryID == countryID && s.MilitaryUnit == militaryUnit && s.DateFrom == dateFrom && s.DateTo == dateTo);
+
+        public IEnumerable<ProfileMilitaryServiceViewModel>? GetMilitaryServices(int userID) => _db.ViewProfileMilitaryService
+            .Where(service => service.UserID == userID);
 
         #endregion
 

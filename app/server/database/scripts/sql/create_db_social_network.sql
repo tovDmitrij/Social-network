@@ -445,19 +445,17 @@ create or replace view view_place_of_living as
 		
 --Представление, содержащее информацию о карьере пользователя
 create or replace view view_profile_carrer as
-	select u.id user_id, c.id city_id, c.name city_name, upc.company, upc.job, upc.date_from, upc.date_to
+	select upc.id, u.id user_id, c.id city_id, c.name city_name, upc.company, upc.job, upc.date_from, upc.date_to
 	from users u
 		right join user_profile_carrer upc on upc.user_id = u.id
 		left join cities c on upc.city_id = c.id;
 
 --Представление, содержащее информацию о военной службе пользователя
 create or replace view view_profile_military_services as
-	select u.id user_id, c.id country_id, c.name country_name, upms.military_unit, upms.date_from, upms.date_to
+	select upms.id, u.id user_id, c.id country_id, c.name country_name, upms.military_unit, upms.date_from, upms.date_to
 	from users u
 		right join user_profile_military_services upms on upms.user_id = u.id
 		left join countries c on c.id = upms.country_id;
-		
---Представление, содер
 
 		
 

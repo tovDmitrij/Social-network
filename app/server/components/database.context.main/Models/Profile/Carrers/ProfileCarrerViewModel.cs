@@ -6,10 +6,16 @@ namespace database.context.main.Models.Profile.Careers
     /// <summary>
     /// Подробная информация о карьере пользователя
     /// </summary>
-    [Keyless]
     [Table("view_profile_carrer")]
     public sealed class ProfileCarrerViewModel
     {
+        /// <summary>
+        /// Идентификатор карьеры
+        /// </summary>
+        [Key]
+        [Column("id")]
+        public int ID { get; set; }
+
         /// <summary>
         /// Идентификатор пользователя
         /// </summary>
@@ -56,8 +62,9 @@ namespace database.context.main.Models.Profile.Careers
         [Column("date_to")]
         public DateTime? DateTo { get; set; }
 
-        public ProfileCarrerViewModel(int user_id, int city_id, string city_name, string company, string? job, DateTime? dateFrom, DateTime? dateTo)
+        public ProfileCarrerViewModel(int id, int user_id, int city_id, string city_name, string company, string? job, DateTime? dateFrom, DateTime? dateTo)
         {
+            ID = id;
             UserID = user_id;
             CityID = city_id;
             CityName = city_name;

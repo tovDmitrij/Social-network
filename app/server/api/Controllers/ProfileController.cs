@@ -114,6 +114,22 @@ namespace api.Controllers
                 StatusCode(404, new { status = "Список карьер пуст" });
         }
 
+        /// <summary>
+        /// Получить список ВС пользователя по его идентификатору
+        /// </summary>
+        /// <param name="userID">Идентификатор пользователя</param>
+        [HttpGet("userID={userID:int}/Militaries/Get")]
+        public IActionResult GetMilitaryServicesInfo(int userID)
+        {
+            if (!_profile.IsUserExist(userID))
+                return StatusCode(404, new { status = "Пользователя с заданным идентификатором не существует" });
+
+            var services = _profile.GetMilitaryServices(userID);
+            return services.Any() ?
+                StatusCode(200, new { status = "Список ВС был успешно сформирован", data = services }) :
+                StatusCode(404, new { status = "Список ВС пуст" });
+        }
+
         #endregion
 
 
@@ -173,11 +189,35 @@ namespace api.Controllers
         {
             if (!_profile.IsUserExist(userID))
                 return StatusCode(404, new { status = "Пользователя с заданным идентификатором не существует" });
+            if (!_place.IsCityExist(cityID))
+                return StatusCode(404, new { status = "Города с заданным идентификатором не существует" });
             if (_profile.IsCarrerAdded(userID, cityID, company, job, dateFrom, dateTo))
                 return StatusCode(406, new { status = "Такая карьера уже была добавлена" });
 
             _profile.AddCarrer(userID, cityID, company, job, dateFrom, dateTo);
             return StatusCode(200, new { status = "Новая карьера была успешно добавлена" });
+        }
+
+        /// <summary>
+        /// Добавить ВС в список ВС пользователя
+        /// </summary>
+        /// <param name="userID">Идентификатор пользователя</param>
+        /// <param name="countryID">Идентификатор страны</param>
+        /// <param name="unit">Место проведения ВС</param>
+        /// <param name="dateFrom">Дата начала ВС</param>
+        /// <param name="dateTo">Дата окончания ВС</param>
+        [HttpPost("userID={userID:int}/Military/Add/countryID={countryID:int}&unit={unit}&dateFrom={dateFrom:datetime}&dateTo={dateTo:datetime}")]
+        public IActionResult AddMilitaryService(int userID, int countryID, string unit, DateTime? dateFrom, DateTime? dateTo)
+        {
+            if (!_profile.IsUserExist(userID))
+                return StatusCode(404, new { status = "Пользователя с заданным идентификатором не существует" });
+            if (!_place.IsCountryExist(countryID))
+                return StatusCode(404, new { status = "Страны с заданным идентификатором не существует" });
+            if (_profile.IsMilitaryServiceAdded(userID, countryID, unit, dateFrom, dateTo))
+                return StatusCode(406, new { status = "Такая ВС уже добавлена в профиль пользователя" });
+
+            _profile.AddMilitaryService(userID, countryID, unit, dateFrom, dateTo);
+            return StatusCode(200, new { status = "Новая ВС была успешно добавлена" });
         }
 
         #endregion
@@ -282,16 +322,51 @@ namespace api.Controllers
             return StatusCode(200, new { status = "ФИО пользователя в профиле было успешно обновлено" });
         }
 
-        [HttpPut("userID={userID:int}/Carrer/{carrerID:int}/Update/cityID={cityID:int}&company={company}&job={job}&dateFrom={dateFrom:datetime}&dateTo={dateTo:datetime}")]
+        /// <summary>
+        /// Обновить карьеру в профиле пользователя
+        /// </summary>
+        /// <param name="userID">Идентификатор пользователя</param>
+        /// <param name="carrerID">Идентификатор карьеры</param>
+        /// <param name="cityID">Идентификатор города</param>
+        /// <param name="company">Наименование компании</param>
+        /// <param name="job">Наименование должности</param>
+        /// <param name="dateFrom">Дата начала карьеры</param>
+        /// <param name="dateTo">Дата окончания</param>
+        [HttpPut("userID={userID:int}/Carrer/carrerID={carrerID:int}/Update/cityID={cityID:int}&company={company}&job={job}&dateFrom={dateFrom:datetime}&dateTo={dateTo:datetime}")]
         public IActionResult UpdateProfileCarrer(int userID, int carrerID, int cityID, string company, string? job, DateTime? dateFrom, DateTime? dateTo)
         {
             if (!_profile.IsUserExist(userID))
                 return StatusCode(404, new { status = "Пользователя с заданным идентификатором не существует" });
+            if (!_place.IsCityExist(cityID))
+                return StatusCode(404, new { status = "Города с заданным идентификатором не существует" });
             if (!_profile.IsCarrerAdded(userID, carrerID))
                 return StatusCode(404, new { status = "Карьеры с заданными параметрами не существует" });
 
             _profile.UpdateCarrer(carrerID, cityID, company, job, dateFrom, dateTo);
             return StatusCode(200, new { status = "Обновление информации о карьере прошло успешно" });
+        }
+
+        /// <summary>
+        /// Обновить ВС в профиле пользователя
+        /// </summary>
+        /// <param name="userID">Идентификатор пользователя</param>
+        /// <param name="serviceID">Идентификатор ВС</param>
+        /// <param name="countryID">Идентификатор страны</param>
+        /// <param name="unit">Место проведения ВС</param>
+        /// <param name="dateFrom">Дата начала ВС</param>
+        /// <param name="dateTo">Дата окончания ВС</param>
+        [HttpPut("userID={userID:int}/Military/serviceID={serviceID:int}/Update/countryID={countryID:int}&unit={unit}&dateFrom={dateFrom:datetime}&dateTo={dateTo:datetime}")]
+        public IActionResult UpdateProfileMilitaryService(int userID, int serviceID, int countryID, string unit, DateTime? dateFrom, DateTime? dateTo)
+        {
+            if (!_profile.IsUserExist(userID))
+                return StatusCode(404, new { status = "Пользователя с заданным идентификатором не существует" });
+            if (!_place.IsCountryExist(countryID))
+                return StatusCode(404, new { status = "Страны с заданным идентификатором не существует" });
+            if (!_profile.IsMilitaryServiceAdded(userID, countryID))
+                return StatusCode(404, new { status = "ВС с заданными параметрами не существует" });
+
+            _profile.UpdateMilitaryService(serviceID, countryID, unit, dateFrom, dateTo);
+            return StatusCode(200, new { status = "Обновление информации о ВС прошло успешно" });
         }
 
         #endregion
@@ -339,6 +414,11 @@ namespace api.Controllers
             return StatusCode(200, new { status = "Удаление жизненной позиции прошло успешно" });
         }
 
+        /// <summary>
+        /// Удалить из профиля пользователя некоторую карьеру
+        /// </summary>
+        /// <param name="userID">Идентификатор пользователя</param>
+        /// <param name="carrerID">Идентификатор карьеры</param>
         [HttpDelete("userID={userID:int}/Carrer/Delete/carrerID={carrerID:int}")]
         public IActionResult RemoveCarrer(int userID, int  carrerID)
         {
@@ -349,6 +429,23 @@ namespace api.Controllers
 
             _profile.RemoveCarrer(userID, carrerID);
             return StatusCode(200, new { status = "Удаление карьеры прошло успешно" });
+        }
+
+        /// <summary>
+        /// Удалить из профиля пользователя некоторую ВС
+        /// </summary>
+        /// <param name="userID">Идентификатор пользователя</param>
+        /// <param name="serviceID">Идентификатор ВС</param>
+        [HttpDelete("userID={userID:int}/Military/Delete/serviceID={serviceID:int}")]
+        public IActionResult RemoveMilitaryService(int userID, int serviceID)
+        {
+            if (!_profile.IsUserExist(userID))
+                return StatusCode(404, new { status = "Пользователя с заданным идентификатором не существует" });
+            if (!_profile.IsMilitaryServiceAdded(userID, serviceID))
+                return StatusCode(404, new { status = "ВС с заданными параметрами не существует" });
+
+            _profile.RemoveMilitaryService(userID, serviceID);
+            return StatusCode(200, new { status = "Удаление ВС прошло успешно" });
         }
 
         #endregion

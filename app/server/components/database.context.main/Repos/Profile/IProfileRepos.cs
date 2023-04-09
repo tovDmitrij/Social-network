@@ -2,6 +2,7 @@
 using database.context.main.Models.Profile.Careers;
 using database.context.main.Models.Profile.Languages;
 using database.context.main.Models.Profile.LifePositions;
+using database.context.main.Models.Profile.MilitaryServices;
 namespace database.context.main.Repos.Profile
 {
     /// <summary>
@@ -208,6 +209,62 @@ namespace database.context.main.Repos.Profile
         /// </summary>
         /// <param name="userID">Идентификатор пользователя</param>
         public IEnumerable<ProfileCarrerViewModel>? GetCarrers(int userID);
+
+        #endregion
+
+
+
+        #region Военная служба
+
+        /// <summary>
+        /// Добавить ВС в профиль пользователя
+        /// </summary>
+        /// <param name="userID">Идентификатор пользователя</param>
+        /// <param name="countryID">Идентификатор страны</param>
+        /// <param name="militaryUnit">Наименование военной части</param>
+        /// <param name="dateFrom">Дата начала ВС</param>
+        /// <param name="dateTo">Дата конца ВС</param>
+        public void AddMilitaryService(int userID, int countryID, string militaryUnit, DateTime? dateFrom, DateTime? dateTo);
+
+        /// <summary>
+        /// Обновить информацию о ВС пользователя
+        /// </summary>
+        /// <param name="serviceID">Идентификатор ВС</param>
+        /// <param name="countryID">Идентификатор страны</param>
+        /// <param name="militaryUnit">Наименование военной части</param>
+        /// <param name="dateFrom">Дата начала ВС</param>
+        /// <param name="dateTo">Дата конца ВС</param>
+        public void UpdateMilitaryService(int serviceID, int countryID, string militaryUnit, DateTime? dateFrom, DateTime? dateTo);
+        
+        /// <summary>
+        /// Удалить ВС у пользователя
+        /// </summary>
+        /// <param name="userID">Идентификатор пользователя</param>
+        /// <param name="serviceID">Идентификатор военной службы</param>
+        public void RemoveMilitaryService(int userID, int serviceID);
+
+        /// <summary>
+        /// Метод, проверяющий наличие ВС у пользователя
+        /// </summary>
+        /// <param name="userID">Идентификатор пользователя</param>
+        /// <param name="serviceID">Идентификатор военной службы</param>
+        public bool IsMilitaryServiceAdded(int userID, int serviceID);
+
+        /// <summary>
+        /// Метод, проверяющий наличие ВС у пользователя
+        /// </summary>
+        /// <param name="userID">Идентификатор пользователя</param>
+        /// <param name="countryID">Идентификатор страны</param>
+        /// <param name="militaryUnit">Наименование военной части</param>
+        /// <param name="dateFrom">Дата начала ВС</param>
+        /// <param name="dateTo">Дата конца ВС</param>
+        public bool IsMilitaryServiceAdded(int userID, int countryID, string militaryUnit, DateTime? dateFrom, DateTime? dateTo);
+
+        /// <summary>
+        /// Получить список военных служб пользователя
+        /// </summary>
+        /// <param name="userID">Идентификатор пользователя</param>
+        public IEnumerable<ProfileMilitaryServiceViewModel>? GetMilitaryServices(int userID);
 
         #endregion
 
