@@ -28,13 +28,12 @@ namespace api.Middlewares
                 {
                     using (var channel = connection.CreateModel())
                     {
-                        const string exchangeName = "direct_logs";
                         channel.ExchangeDeclare(
-                            exchange: exchangeName,
+                            exchange: "direct_logs",
                             type: ExchangeType.Direct);
 
                         channel.BasicPublish(
-                            exchange: exchangeName,
+                            exchange: "direct_logs",
                             routingKey: "error",
                             mandatory: false,
                             basicProperties: null,

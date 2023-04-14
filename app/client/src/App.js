@@ -1,72 +1,32 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react'
+import { BrowserRouter } from 'react-router-dom'
+import AuthContext from './components/context/AuthContext'
+import AppRouter from './components/AppRouter'
+import HeaderNavbar from './components/UI/navbars/header/HeaderNavbar'
+import FooterNavbar from './components/UI/navbars/footer/FooterNavbar'
 
 
-export default class App extends Component {
-    static displayName = App.name;
+function App() {
+    const [isAuth, setIsAuth] = useState(false)
+    const [isLoading, setLoading] = useState(true)
 
-    constructor(props) {
-        super(props);
-        this.state = { forecasts: [], loading: true };
-    }
+    useEffect(() => {
+        if (sessionStorage.getItem('token')){
+            setIsAuth(true)
+        }
+        setLoading(false)
+    }, [])
 
-    componentDidMount() {
-        this.populateWeatherData();
-    }
-
-    static renderForecastsTable(forecasts) {
-        return (
-            <table className='table table-striped' aria-labelledby="tabelLabel">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Temp. (C)</th>
-                        <th>Temp. (F)</th>
-                        <th>Summary</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {forecasts.map(forecast =>
-                        <tr key={forecast.date}>
-                            <td>{forecast.date}</td>
-                            <td>{forecast.temperatureC}</td>
-                            <td>{forecast.temperatureF}</td>
-                            <td>{forecast.summary}</td>
-                        </tr>
-                    )}
-                </tbody>
-            </table>
-        );
-    }
-
-    render() {
-        let contents = this.state.loading
-            ? <p><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationreact">https://aka.ms/jspsintegrationreact</a> for more details.</em></p>
-            : App.renderForecastsTable(this.state.forecasts);
-
-        return (
-            <div>
-                <h1 id="tabelLabel" >Weather forecast</h1>
-                <p>This component demonstrates fetching data from the server.</p>
-                {contents}
-            </div>
-        );
-    }
-
-    async populateWeatherData() {
-        const response = await fetch(
-            'signUp', {
-                method: "POST",
-                headers: {
-                    "Accept": "application/json",
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    email: "123456",
-                    password: "12345"
-                })
-            }
-        );
-        const data = await response.json();
-        //this.setState({ forecasts: data, loading: false });
-    }
+    return (
+         <AuthContext.Provider value={{isAuth, setIsAuth, isLoading}}>
+            <BrowserRouter>
+                <HeaderNavbar />
+                <AppRouter />
+                <FooterNavbar />
+            </BrowserRouter>
+         </AuthContext.Provider>
+    )
 }
+
+
+export default App;

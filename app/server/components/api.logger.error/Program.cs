@@ -40,7 +40,6 @@ namespace api.logger.error
                     {
                         using (var channel = connection.CreateModel())
                         {
-                            const string exchangeName = "direct_logs";
                             channel.ExchangeDeclare(
                                 exchange: "direct_logs",
                                 type: ExchangeType.Direct);

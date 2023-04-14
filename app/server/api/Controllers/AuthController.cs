@@ -1,7 +1,4 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.AspNetCore.Mvc;
 using api.Misc;
 using database.context.main.Repos.User;
 using database.context.main.Repos.Profile;
@@ -64,17 +61,7 @@ namespace api.Controllers
             {
                 case true:
                     var user = _profile.GetProfileBaseInfo(_auth.GetAccountInfo(email, password).ID);
-
-                    JwtSecurityToken token = new(
-                            issuer: AuthOptions.ISSUER,
-                            audience: AuthOptions.AUDIENCE,
-                            claims: new List<Claim> {
-                                new(ClaimTypes.Role, user.RoleTitle),
-                                new(ClaimTypes.Name, email)
-                            },
-                            expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(30)),
-                            signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha512));
-                    return StatusCode(200, new { status = "Аккаунт был успешно найден", id = user.ID, token = new JwtSecurityTokenHandler().WriteToken(token) });
+                    return StatusCode(200, new { status = "Аккаунт был успешно найден", id = user.ID, token = AuthOptions.CreateToken(user.ID.ToString(), user.RoleTitle) });
 
                 case false:
                     return StatusCode(404, new { status = "Аккаунта с заданной почтой и паролем не существует" });

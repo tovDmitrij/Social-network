@@ -1,0 +1,14 @@
+.main{
+    background-color: rgb(241, 0, 0);
+    border-radius: 15px;
+}
+
+.header{
+    font-size: large;
+    font-weight: bold;
+    padding: 5px;
+}
+
+.body{
+    padding: 5px;
+}
