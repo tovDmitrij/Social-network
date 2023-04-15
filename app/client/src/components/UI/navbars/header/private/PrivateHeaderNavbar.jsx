@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import styles from './PrivateHeaderNavbar.module.css'
-import HeaderBtn from '../../../buttons/header/HeaderBtn'
+import MenuBtn from '../../../buttons/menu/MenuBtn'
 import { privateRoutes } from '../../../../../router/Routes'
 
 
@@ -13,7 +13,7 @@ const PrivateHeaderNavbar = ({logOut}) => {
                 {privateRoutes.map((route) => (
                     <Link key={route.path} className={styles.links} to={route.path}>{route.title}</Link>
                 ))}
-                <HeaderBtn 
+                <MenuBtn 
                     className={styles.links} 
                     onClick={logOut}
                     children={"Выйти"}/>            

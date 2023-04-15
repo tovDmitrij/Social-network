@@ -2,6 +2,9 @@ import React from 'react'
 import styles from './FooterNavbar.module.css'
 
 
+/**
+ * Навигационная панель для подвала
+ */
 const FooterNavbar = () => {
     return (
         <footer className={`grid place-items-center ${styles.footer}`}>

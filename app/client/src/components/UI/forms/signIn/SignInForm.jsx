@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import FormInput from '../../inputs/form/FormInput'
-import FormBtn from '../../buttons/form/FormBtn'
+import MenuBtn from '../../buttons/menu/MenuBtn'
 import FormLabel from '../../labels/form/FormLabel'
 import styles from './SignInForm.module.css'
 
@@ -21,15 +21,13 @@ const SignInForm = ({accept, error}) => {
         e.preventDefault()
 
         const emailRegex = /[A-Za-zА-Яа-я0-9]+@[A-Za-z]+.[A-Za-z]+/g
-        const emailMatch = email.match(emailRegex)
-        if (emailMatch == null){
+        if (email.match(emailRegex) == null){
             error("Почта не валидная")
             return false;
         }
 
         const passRegex = /[\S+]{8,16}/g
-        const passMatch = password.match(passRegex)
-        if (passMatch == null){
+        if (password.match(passRegex) == null){
             error("Пароль не валидный")
             return false;
         }
@@ -65,7 +63,7 @@ const SignInForm = ({accept, error}) => {
             </div>
             
             <div className='grid place-items-center'>
-                <FormBtn 
+                <MenuBtn 
                     onClick={SignIn}
                     children={"Войти"}/>
             </div>

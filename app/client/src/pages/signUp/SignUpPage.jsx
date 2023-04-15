@@ -17,11 +17,11 @@ const SignUpPage = () => {
 
     /**
      * Регистрация пользователя в системе 
-     * @param {*} userInfo - почта и пароль пользователя
+     * @param {*} userInfo - ФИО, почта и пароль пользователя
      */
     const [SignUp, isLoading, error] = useFetching(async (userInfo) => {
         APIService.SignUpSubmit(userInfo).then(response => {
-            if(response.ok){
+            if (response.ok){
                 navigate("/signIn")
             }
             else{
@@ -35,6 +35,7 @@ const SignUpPage = () => {
     return(
         <div className={`grid place-self-center place-items-center gap-4 grid-cols-1 grid-rows-1 ${styles.myPage}`}>
             <SignUpForm accept={SignUp} error={setError} />
+
             {isLoading && <Loader /> }
             {error && <ErrorPanel error={error} /> }
             {responseError && <ErrorPanel error={responseError} /> }

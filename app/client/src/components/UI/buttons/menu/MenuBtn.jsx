@@ -3,7 +3,7 @@ import styles from './MenuBtn.module.css'
 
 
 /**
- * Кнопка vty.
+ * Кнопка для меню
  * @param {*} children - текст или иной объект для кнопки
  */
 const MenuBtn = ({children, ...props}) => {

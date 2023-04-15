@@ -12,6 +12,9 @@ import ErrorPanel from '../../../components/UI/plates/error/ErrorPanel'
 import MenuBtn from '../../../components/UI/buttons/menu/MenuBtn'
 
 
+/**
+ * Страница с профилем авторизованного пользователя в системе
+ */
 const ForeignProfilePage = () => {
     const navigate = useNavigate()
     const {isAuth, setIsAuth} = useContext(AuthContext)
@@ -20,23 +23,28 @@ const ForeignProfilePage = () => {
     const [fullName, setFullname] = useState('')
     const [status, setStatus] = useState('')
     const [avatar, setAvatar] = useState('')
-    const [birthDate, setBirthDate] = useState(new Date())
+    const [birthDate, setBirthDate] = useState('')
     const [family, setFamily] = useState('')
     const [city, setCity] = useState('')
 
+    /**
+     * Получить базовую информацию о профиле пользователя
+     */
     const [GetBaseInfo, isBaseLoading, error] = useFetching(async () => {
         APIService.GetAuthProfileBaseInfo().then(response => {
-            if(response.ok){
+            if (response.ok){
                 response.json().then((data) => {
                     setFullname(data.data.surname + ' ' + data.data.name + ' ' + data.data.patronymic)
                     setStatus(data.data.status)
                     setAvatar(data.data.avatar)
-                    setBirthDate(data.data.birthDate)
                     setFamily(data.data.familyStatus)
                     setCity(data.data.city)
+
+                    let date = new Date(data.data.birthDate)
+                    setBirthDate(`${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`)
                 })
             }
-            else if(response.status === 401){
+            else if (response.status === 401){
                 setIsAuth(false)
                 localStorage.clear()
                 navigate("/signIn")
@@ -62,28 +70,29 @@ const ForeignProfilePage = () => {
             <div className='grid col-span-6'>
                 <div className='grid gap-3 grid-rows-6 grid-cols-3'>
                     <div className='grid col-span-1 row-span-3 place-items-center'>
-                        <ProfileImage avatar={avatar} />
-                        <MenuBtn children='Редактировать профиль' />
-
-                        {isBaseLoading && <Loader /> }
+                        {isBaseLoading ? 
+                            <Loader /> : 
+                            <ProfileImage avatar={avatar} /> }
                         {error && <ErrorPanel error={error} /> }
                         {responseError && <ErrorPanel error={responseError} /> }
+
+                        <MenuBtn children='Редактировать профиль' />
                     </div>
 
                     <div className='col-span-2 row-span-3'>
-                        <ProfileInfo 
-                            fullName={fullName} 
-                            status={status} 
-                            family={family} 
-                            birthDate={birthDate}
-                            city={city} />
-                        
-                        {isBaseLoading && <Loader />}
+                        {isBaseLoading ? 
+                            <Loader /> :                         
+                            <ProfileInfo 
+                                fullName={fullName} 
+                                status={status} 
+                                family={family} 
+                                birthDate={birthDate}
+                                city={city} />}
                         {error && <ErrorPanel error={error} /> }
                         {responseError && <ErrorPanel error={responseError} /> }
                     </div>
 
-                    <div className='col-span-1 row-span-2 bg-slate-100'>
+                    <div className='col-span-1 row-span-2 bg-slate-50'>
                         Друзья
                     </div>
 

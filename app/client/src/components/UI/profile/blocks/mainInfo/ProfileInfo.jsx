@@ -10,7 +10,7 @@ import styles from './ProfileInfo.module.css'
  * @param {*} birthDate - Дата рождения
  * @param {*} city - Родной город
  */
-const ProfileInfo = ({fullName, status, family, birthDate}) => {
+const ProfileInfo = ({fullName, status, family, birthDate, city}) => {
     return (
         <div className={styles.profileBlock}>
             <div className={styles.fullName}>{fullName}</div>

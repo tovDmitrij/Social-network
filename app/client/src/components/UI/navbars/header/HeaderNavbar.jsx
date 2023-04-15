@@ -4,6 +4,9 @@ import PrivateHeaderNavbar from "./private/PrivateHeaderNavbar";
 import PublicHeaderNavbar from "./public/PublicHeaderNavbar";
 
 
+/**
+ * Навигационная панель для хэдера
+ */
 const HeaderNavbar = () => {
     const {isAuth, setIsAuth} = useContext(AuthContext)
 

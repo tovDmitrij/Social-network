@@ -1,8 +1,9 @@
 import React, {useState} from 'react'
 import FormInput from '../../inputs/form/FormInput'
-import FormBtn from '../../buttons/form/FormBtn'
+import MenuBtn from '../../buttons/menu/MenuBtn'
 import FormLabel from '../../labels/form/FormLabel'
 import styles from './SignUpForm.module.css'
+
 
 /**
  * Форма регистрации пользователя в системе
@@ -106,7 +107,7 @@ const SignUpForm = ({accept, error}) => {
             </div>
             
             <div className='grid place-items-center'>
-                <FormBtn 
+                <MenuBtn 
                     onClick={SignUp}
                     children={"Зарегистрироваться"}/>
             </div>

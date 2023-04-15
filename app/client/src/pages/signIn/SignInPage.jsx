@@ -23,7 +23,7 @@ const SignInPage = () => {
      */
     const [SignIn, isLoading, inputError] = useFetching(async (userInfo) => {
         APIService.SignInSubmit(userInfo).then(response => {
-            if(response.ok){
+            if (response.ok){
                 response.json().then((data) => {
                     setIsAuth(true)
                     localStorage.setItem('token', data.token) 
@@ -41,6 +41,7 @@ const SignInPage = () => {
     return(
         <div className={`grid place-self-center place-items-center gap-4 grid-cols-1 grid-rows-1 ${styles.myPage}`}>
             <SignInForm accept={SignIn} error={setError} />
+
             {isLoading && <Loader /> }
             {inputError && <ErrorPanel error={inputError} /> }
             {responseError && <ErrorPanel error={responseError} /> }
