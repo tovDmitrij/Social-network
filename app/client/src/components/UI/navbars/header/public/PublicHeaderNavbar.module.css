@@ -1,10 +1,17 @@
 .navbar {
+    position: fixed;
     width: 100%;
-    height: 50px;
+    height: 70px;
     display: flex;
     align-items: center;
     padding: 0 15px;
-    background: rgb(242, 242, 242);
+    background: rgb(255, 255, 255);
+    box-shadow: 1px 1px 7px black;
+}
+
+.navbar__logo {
+    padding-left: 100px;
+    width: 300px;
 }
 
 .navbar__links {

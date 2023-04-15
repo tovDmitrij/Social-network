@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using database.context.main.Repos.Languages;
 using database.context.main.Repos.LifePositions;
 using database.context.main.Repos.Cities;
@@ -9,6 +10,7 @@ namespace api.Controllers
     /// Получение различной статичной информации из системы
     /// </summary>
     [ApiController]
+    [Authorize]
     [Route("api/[controller]")]
     public sealed class DataController: ControllerBase
     {

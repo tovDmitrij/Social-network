@@ -12,7 +12,7 @@ namespace api.Controllers
     /// Взаимодействие с профилем пользователей
     /// </summary>
     [ApiController]
-    //[Authorize]
+    [Authorize]
     [ProducesResponseType(typeof(string), 401)]
     [Route("api/[controller]")]
     public sealed class ProfileController : ControllerBase

@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import FormInput from '../../inputs/form/FormInput'
 import FormBtn from '../../buttons/form/FormBtn'
+import FormLabel from '../../labels/form/FormLabel'
 import styles from './SignUpForm.module.css'
 
 /**
@@ -63,35 +64,57 @@ const SignUpForm = ({accept, error}) => {
     }
 
     return(
-        <form className={`grid place-items-center gap-4 grid-cols-1 grid-rows-4 ${styles.myForm}`}>
-            <h1 className={styles.myHeader}>Регистрация</h1>
-            <FormInput
-                type="text"
-                onChange={e => setSurname(e.target.value)}
-                placeholder='Введите фамилию'/>
-            <FormInput
-                type="text"
-                onChange={e => setName(e.target.value)}
-                placeholder='Введите имя'/>
-            <FormInput
-                type="text"
-                onChange={e => setPatronymic(e.target.value)}
-                placeholder='Введите отчество'/>
-            <FormInput 
-                type="email"
-                onChange={e => setEmail(e.target.value)}
-                placeholder='Введите логин'/>
-            <FormInput
-                type="password"
-                onChange={e => setPassword(e.target.value)}
-                placeholder='Введите пароль'/>
-            <FormInput
-                type="password"
-                onChange={e => setRepeatedPass(e.target.value)}
-                placeholder='Повторите пароль'/>
-            <FormBtn 
-                onClick={SignUp}
-                children={"Подтвердить"}/>
+        <form className={`grid grid-cols-1 ${styles.myForm}`}>
+            <div className='grid place-items-center'>
+                <h1 className={styles.myHeader}>Регистрация</h1>
+                <hr/>
+            </div>
+
+            <FormLabel title={'Фамилия'}/>
+            <div className='grid place-items-center'>
+                <FormInput
+                    type="text"
+                    onChange={e => setSurname(e.target.value)}
+                    placeholder='Введите фамилию...'/>
+            </div>
+
+            <FormLabel title={'Имя'}/>
+            <div className='grid place-items-center'>
+                <FormInput
+                    type="text"
+                    onChange={e => setName(e.target.value)}
+                    placeholder='Введите имя...'/>
+            </div>
+
+            <FormLabel title={'Отчество'}/>
+            <div className='grid place-items-center'>
+                <FormInput
+                    type="text"
+                    onChange={e => setPatronymic(e.target.value)}
+                    placeholder='Введите отчество'/>
+            </div>
+            
+            <FormLabel title={'Почта'}/>
+            <div className='grid place-items-center'>
+                <FormInput 
+                    type="email"
+                    onChange={e => setEmail(e.target.value)}
+                    placeholder='Введите почту...'/>
+            </div>
+
+            <FormLabel title={'Пароль'}/>
+            <div className='grid place-items-center'>
+                <FormInput
+                    type="password"
+                    onChange={e => setPassword(e.target.value)}
+                    placeholder='Введите пароль...'/>
+            </div>
+            
+            <div className='grid place-items-center'>
+                <FormBtn 
+                    onClick={SignUp}
+                    children={"Войти"}/>
+            </div>
         </form>
     )
 }

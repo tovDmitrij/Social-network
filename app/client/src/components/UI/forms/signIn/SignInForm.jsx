@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import FormInput from '../../inputs/form/FormInput'
 import FormBtn from '../../buttons/form/FormBtn'
+import FormLabel from '../../labels/form/FormLabel'
 import styles from './SignInForm.module.css'
 
 
@@ -41,19 +42,33 @@ const SignInForm = ({accept, error}) => {
     }
 
     return(
-        <form className={`grid place-items-center gap-4 grid-cols-1 grid-rows-4 ${styles.myForm}`}>
-            <h1 className={styles.myHeader}>Авторизация</h1>
-            <FormInput 
-                type="email"
-                onChange={e => setEmail(e.target.value)}
-                placeholder='Введите логин'/>
-            <FormInput
-                type="password"
-                onChange={e => setPassword(e.target.value)}
-                placeholder='Введите пароль'/>
-            <FormBtn 
-                onClick={SignIn}
-                children={"Подтвердить"}/>
+        <form className={`grid grid-cols-1 ${styles.myForm}`}>
+            <div className='grid place-items-center'>
+                <h1 className={styles.myHeader}>Вход</h1>
+                <hr/>
+            </div>
+
+            <FormLabel title={'Почта'}/>
+            <div className='grid place-items-center'>
+                <FormInput 
+                    type="email"
+                    onChange={e => setEmail(e.target.value)}
+                    placeholder='Введите почту...'/>
+            </div>
+
+            <FormLabel title={'Пароль'}/>
+            <div className='grid place-items-center'>
+                <FormInput
+                    type="password"
+                    onChange={e => setPassword(e.target.value)}
+                    placeholder='Введите пароль...'/>
+            </div>
+            
+            <div className='grid place-items-center'>
+                <FormBtn 
+                    onClick={SignIn}
+                    children={"Войти"}/>
+            </div>
         </form>
     )
 }

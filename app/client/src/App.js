@@ -11,7 +11,7 @@ function App() {
     const [isLoading, setLoading] = useState(true)
 
     useEffect(() => {
-        if (sessionStorage.getItem('token')){
+        if (sessionStorage.getItem('token') != null){
             setIsAuth(true)
         }
         setLoading(false)
@@ -21,7 +21,9 @@ function App() {
          <AuthContext.Provider value={{isAuth, setIsAuth, isLoading}}>
             <BrowserRouter>
                 <HeaderNavbar />
-                <AppRouter />
+                <div className='grid place-items-center'>
+                    <AppRouter />
+                </div>
                 <FooterNavbar />
             </BrowserRouter>
          </AuthContext.Provider>

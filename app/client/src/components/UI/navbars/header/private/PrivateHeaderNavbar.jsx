@@ -10,7 +10,7 @@ const PrivateHeaderNavbar = ({logOut}) => {
         <div className={styles.navbar}>
             <div className={styles.navbar__links}>
                 {privateRoutes.map((route) => (
-                    <Link className={styles.links} to={route.path}>{route.title}</Link>
+                    <Link key={route.path} className={styles.links} to={route.path}>{route.title}</Link>
                 ))}
                 <HeaderBtn 
                     className={styles.links} 

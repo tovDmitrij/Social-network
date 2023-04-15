@@ -17,6 +17,6 @@ export const privateRoutes = [
  */
 export const publicRoutes = [
     {path: '/signUp',   title: 'Регистрация',   element: SignUpPage},
-    {path: '/signIn',   title: 'Авторизация',   element: SignInPage},
+    {path: '/signIn',   title: 'Войти',         element: SignInPage},
     {path: '/help',     title: 'Помощь',        element: HelpPage}
 ]
