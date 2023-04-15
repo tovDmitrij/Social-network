@@ -6,7 +6,11 @@
     align-items: center;
     padding: 0 15px;
     background: rgb(255, 255, 255);
-    box-shadow: 1px 1px 7px black;
+    box-shadow: 1px 1px 5px rgb(200, 200, 200);   
+}
+
+img {
+    pointer-events: none;
 }
 
 .navbar__logo {

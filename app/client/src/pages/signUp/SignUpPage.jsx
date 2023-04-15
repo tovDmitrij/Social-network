@@ -33,7 +33,7 @@ const SignUpPage = () => {
     })
 
     return(
-        <div className={`grid place-items-center gap-4 grid-cols-1 grid-rows-1 ${styles.myPage}`}>
+        <div className={`grid place-self-center place-items-center gap-4 grid-cols-1 grid-rows-1 ${styles.myPage}`}>
             <SignUpForm accept={SignUp} error={setError} />
             {isLoading && <Loader /> }
             {error && <ErrorPanel error={error} /> }

@@ -55,7 +55,7 @@ namespace database.context.main.Models.Profile.BaseInfo
         /// Аватарка пользователя
         /// </summary>
         [Column("avatar")]
-        public byte[]? Avatar { get; set; }
+        public string? Avatar { get; set; }
 
         /// <summary>
         /// Статус пользователя в его профиле
@@ -81,7 +81,7 @@ namespace database.context.main.Models.Profile.BaseInfo
         [Column("family_status")]
         public string? FamilyStatus { get; set; }
 
-        public ProfileBaseInfoViewModel(int id, DateTime registration_date, string role_title, string surname, string name, string? patronymic, byte[] avatar, DateTime birthdate, string city, string family_status)
+        public ProfileBaseInfoViewModel(int id, DateTime registration_date, string role_title, string surname, string name, string? patronymic, string? avatar, DateTime birthdate, string city, string family_status)
         {
             ID = id;
             RoleTitle = role_title;

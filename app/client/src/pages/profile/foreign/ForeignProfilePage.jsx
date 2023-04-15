@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { useFetching } from '../../components/hooks/useFetching'
-import APIService from '../../API/APIService'
+import { useFetching } from '../../../components/hooks/useFetching'
+import APIService from '../../../API/APIService'
+import LeftNavbar from '../../../components/UI/navbars/leftbar/LeftNavbar'
+import styles from './ForeignProfilePage.module.css'
 
 
-const ProfilePage = () => {
+const ForeignProfilePage = () => {
     const params = useParams()
     //const [user, setUser] = useState({id: '', roleTitle: '', registrationDate: new Date(),surname: '', name: '', patronymic: ''})
     const [user, setUser] = useState('')
@@ -35,9 +37,17 @@ const ProfilePage = () => {
     }, [])
 
     return (
-        <div>ProfilePage {user}</div>
+        <div className={`grid grid-cols-12 ${styles.myPage}`}>
+            <LeftNavbar/>
+            <div>
+                ProfilePage {user}
+            </div>
+            <div>
+                RightNavbar
+            </div>
+        </div>
     )
 }
 
 
-export default ProfilePage
+export default ForeignProfilePage

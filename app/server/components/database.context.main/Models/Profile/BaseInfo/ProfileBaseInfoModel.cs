@@ -51,7 +51,7 @@ namespace database.context.main.Models.Profile.BaseInfo
         /// Аватарка пользователя
         /// </summary>
         [Column("avatar")]
-        public byte[]? Avatar { get; set; }
+        public string? Avatar { get; set; }
 
         /// <summary>
         /// Статус пользователя в его профиле
@@ -65,7 +65,7 @@ namespace database.context.main.Models.Profile.BaseInfo
         [Column("birthdate")]
         public DateTime? BirthDate { get; set; }
 
-        public ProfileBaseInfoModel(int user_id, int? family_status_id, int? city_id, string surname, string name, string? patronymic, byte[]? avatar, string? status, DateTime? birthdate)
+        public ProfileBaseInfoModel(int user_id, int? family_status_id, int? city_id, string surname, string name, string? patronymic, string? avatar, string? status, DateTime? birthdate)
         {
             UserID = user_id;
             FamilyStatusID = family_status_id;

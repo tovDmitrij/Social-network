@@ -61,7 +61,8 @@ namespace api.Controllers
             {
                 case true:
                     var user = _profile.GetProfileBaseInfo(_auth.GetAccountInfo(email, password).ID);
-                    return StatusCode(200, new { status = "Аккаунт был успешно найден", id = user.ID, token = AuthOptions.CreateToken(user.ID.ToString(), user.RoleTitle) });
+                    return StatusCode(200, new { status = "Аккаунт был успешно найден",
+                        token = AuthOptions.CreateToken(user.ID.ToString(), user.RoleTitle) });
 
                 case false:
                     return StatusCode(404, new { status = "Аккаунта с заданной почтой и паролем не существует" });

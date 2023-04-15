@@ -9,7 +9,7 @@ import styles from './ErrorPanel.module.css'
 const ErrorPanel = ({error}) => {
     return (
         <div className={`grid place-items-center grid-cols-1 grid-rows-1 ${styles.main}`}>
-            <h1 className={styles.header}>ОШИБКА</h1>
+            <h1 className={styles.header}><i className="fa-sharp fa-solid fa-circle-exclamation"></i> ОШИБКА</h1>
             <p className={styles.body}>{error}</p>
         </div>
     )

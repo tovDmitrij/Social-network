@@ -4,6 +4,7 @@ import AuthContext from './components/context/AuthContext'
 import AppRouter from './components/AppRouter'
 import HeaderNavbar from './components/UI/navbars/header/HeaderNavbar'
 import FooterNavbar from './components/UI/navbars/footer/FooterNavbar'
+import styles from './App.module.css'
 
 
 function App() {
@@ -11,7 +12,7 @@ function App() {
     const [isLoading, setLoading] = useState(true)
 
     useEffect(() => {
-        if (sessionStorage.getItem('token') != null){
+        if (localStorage.getItem('token') != null){
             setIsAuth(true)
         }
         setLoading(false)
@@ -21,7 +22,7 @@ function App() {
          <AuthContext.Provider value={{isAuth, setIsAuth, isLoading}}>
             <BrowserRouter>
                 <HeaderNavbar />
-                <div className='grid place-items-center'>
+                <div className={`grid ${styles.main}`}>
                     <AppRouter />
                 </div>
                 <FooterNavbar />

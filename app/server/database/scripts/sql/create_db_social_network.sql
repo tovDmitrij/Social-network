@@ -1,12 +1,6 @@
 --------------------------
 -- СОЗДАНИЕ БАЗЫ ДАННЫХ --
 --------------------------
-create database social_network with
-    owner = postgres
-    encoding = 'UTF8'
-    connection limit = -1
-    IS_TEMPLATE = False;
-	
 create table if not exists app_rules(
 	id		serial			primary key,
 	title	text not null,
@@ -151,7 +145,7 @@ create table if not exists user_profile_main_info(
 	surname				text not null,
 	name				text not null,
 	patronymic			text,
-	avatar				bytea,
+	avatar				text,
 	status				text,
 	birthdate			date
 );
@@ -478,6 +472,6 @@ create or replace trigger insert_user before insert on users for each row
 ---------------------------
 -- СОЗДАНИЕ ПОЛЬЗОВАТЕЛЯ --
 ---------------------------
-create user user_default with password 'jwu7iSQ';
+/*create user user_default with password 'jwu7iSQ';
 revoke all privileges on database social_network from user_default;
-GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO user_default;
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO user_default;*/

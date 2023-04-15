@@ -1,0 +1,8 @@
+.profileImg{
+    max-width: auto;
+    max-height: auto;
+    padding: 10px;
+    box-shadow: 1px 1px 5px rgb(200, 200, 200);   
+    border-radius: 15px;
+    background-color: white;
+}

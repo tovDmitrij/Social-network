@@ -27,7 +27,7 @@ namespace database.context.main.Repos.Profile
             _db.SaveChanges();
         }
 
-        public void ChangeAvatar(int userID, byte[] avatar)
+        public void ChangeAvatar(int userID, string avatar)
         {
             var user = _db.TableProfileBaseInfo.Single(user => user.UserID == userID);
             user.Avatar = avatar;

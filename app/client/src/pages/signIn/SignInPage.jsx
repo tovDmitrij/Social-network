@@ -26,8 +26,8 @@ const SignInPage = () => {
             if(response.ok){
                 response.json().then((data) => {
                     setIsAuth(true)
-                    sessionStorage.setItem('token', data.token)   
-                    navigate("/help")             
+                    localStorage.setItem('token', data.token) 
+                    navigate("/news")             
                 })
             }
             else{
@@ -39,7 +39,7 @@ const SignInPage = () => {
     })
 
     return(
-        <div className={`grid place-items-center gap-4 grid-cols-1 grid-rows-1 ${styles.myPage}`}>
+        <div className={`grid place-self-center place-items-center gap-4 grid-cols-1 grid-rows-1 ${styles.myPage}`}>
             <SignInForm accept={SignIn} error={setError} />
             {isLoading && <Loader /> }
             {inputError && <ErrorPanel error={inputError} /> }

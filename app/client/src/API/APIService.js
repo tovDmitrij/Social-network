@@ -36,16 +36,30 @@ export default class APIService {
     }
 
     /**
+     * Получение базовой информации о профиле авторизованного пользователя
+     * @returns response
+     */
+    static async GetAuthProfileBaseInfo() {
+        return await fetch(`${url}Profile/BaseInfo/Get`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem('token')
+            }
+        })
+    }
+
+    /**
      * Получение базовой информации о профиле пользователя
      * @param {*} user - идентификатор пользователя 
      * @returns response
      */
     static async GetProfileBaseInfo(user) {
-        return await fetch(`${url}Profile/userID=${user.id}/BaseInfo/Get`, {
+        return await fetch(`${url}Profile/id=${user.id}/BaseInfo/Get`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer " + sessionStorage.getItem('token')
+                "Authorization": "Bearer " + localStorage.getItem('token')
             }
         })
     }

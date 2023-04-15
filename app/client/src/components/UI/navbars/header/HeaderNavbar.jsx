@@ -9,13 +9,10 @@ const HeaderNavbar = () => {
 
     const LogOut = () => {
         setIsAuth(false)
-        sessionStorage.removeItem('id')
-        sessionStorage.removeItem('token')
+        localStorage.clear()
     }
 
-    return (
-        isAuth ? <PrivateHeaderNavbar logOut={LogOut} /> : <PublicHeaderNavbar />
-    )
+    return(isAuth ? <PrivateHeaderNavbar logOut={LogOut} /> : <PublicHeaderNavbar />)
 }
 
 

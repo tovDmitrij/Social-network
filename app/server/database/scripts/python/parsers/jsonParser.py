@@ -70,3 +70,4 @@ def GrantPermissions(path: str, user: str):
                 db_info.DATABASE_CONNECTION.commit()
             except Exception as e:
                 print(f"\033[91m>>>{e}\033[0m")
+                return

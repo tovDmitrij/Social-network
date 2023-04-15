@@ -15,7 +15,6 @@ const SignUpForm = ({accept, error}) => {
     const [patronymic, setPatronymic] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [repeatedPass, setRepeatedPass] = useState('')
 
     /**
      * Подтверждение формы регистрации
@@ -44,12 +43,8 @@ const SignUpForm = ({accept, error}) => {
         }
 
         const passRegex = /[\S+]{8,16}/g
-        if (password.match(passRegex) == null || repeatedPass.match(passRegex) == null){
+        if (password.match(passRegex) == null){
             error("Пароль не валидный")
-            return false;
-        }
-        if (password !== repeatedPass){
-            error('Пароли не совпадают')
             return false;
         }
 
@@ -91,7 +86,7 @@ const SignUpForm = ({accept, error}) => {
                 <FormInput
                     type="text"
                     onChange={e => setPatronymic(e.target.value)}
-                    placeholder='Введите отчество'/>
+                    placeholder='Введите отчество...'/>
             </div>
             
             <FormLabel title={'Почта'}/>
@@ -113,7 +108,7 @@ const SignUpForm = ({accept, error}) => {
             <div className='grid place-items-center'>
                 <FormBtn 
                     onClick={SignUp}
-                    children={"Войти"}/>
+                    children={"Зарегистрироваться"}/>
             </div>
         </form>
     )

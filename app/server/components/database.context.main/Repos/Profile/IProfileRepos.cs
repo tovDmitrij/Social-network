@@ -38,7 +38,7 @@ namespace database.context.main.Repos.Profile
         /// </summary>
         /// <param name="userID">Идентификатор пользователя</param>
         /// <param name="avatar">Аватарка пользователя</param>
-        public void ChangeAvatar(int userID, byte[] avatar);
+        public void ChangeAvatar(int userID, string avatar);
 
         /// <summary>
         /// Изменить родной город пользователя в профиле
