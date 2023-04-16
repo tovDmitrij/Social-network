@@ -3,7 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-namespace api.Misc
+namespace api.service.auth.Misc
 {
     /// <summary>
     /// Настройки генерации токена

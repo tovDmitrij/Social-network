@@ -9,9 +9,12 @@ const ProfileSettingsPage = () => {
 
     const [GetLangs, isLangLoading, langError] = useFetching(async () => {
         APIService.GetLanguageList().then(response => {
-            response.json().then((data) => {
-                console.log(data.data)
-            })
+            console.log(response)
+            if (response.ok){
+                response.json().then((data) => {
+                    console.log(data.data)
+                })
+            }
         })
     })
 

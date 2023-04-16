@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\database.context.logs\database.context.logs.csproj" />
+    <ProjectReference Include="..\components\database.context.logs\database.context.logs.csproj" />
   </ItemGroup>
 
 </Project>

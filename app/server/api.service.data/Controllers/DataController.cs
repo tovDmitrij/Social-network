@@ -4,7 +4,7 @@ using database.context.main.Repos.Languages;
 using database.context.main.Repos.LifePositions;
 using database.context.main.Repos.Cities;
 using database.context.main.Repos.FamilyStatuses;
-namespace api.Controllers
+namespace api.service.data.Controllers
 {
     /// <summary>
     /// Получение различной статичной информации из системы
@@ -12,7 +12,7 @@ namespace api.Controllers
     [ApiController]
     [Authorize]
     [Route("api/[controller]")]
-    public sealed class DataController: ControllerBase
+    public sealed class DataController : ControllerBase
     {
         /// <summary>
         /// Взаимодействие с таблицей языков
@@ -35,8 +35,8 @@ namespace api.Controllers
         private readonly IFamilyStatusRepos _status;
 
         public DataController(
-            ILanguageRepos language, 
-            ILifePositionsRepos lifePositions, 
+            ILanguageRepos language,
+            ILifePositionsRepos lifePositions,
             IPlaceOfLivingRepos placeOfLiving,
             IFamilyStatusRepos status)
         {
@@ -93,7 +93,7 @@ namespace api.Controllers
         [HttpGet("LifePositions/Type/typeID={typeID:int}/Positions/Get")]
         public IActionResult GetLifePositionsByType(int typeID)
         {
-            if (!_position.IsLifePositionTypeExist(typeID)) 
+            if (!_position.IsLifePositionTypeExist(typeID))
                 return StatusCode(404, new { status = "Типа жизненной позиции с заданным идентификатором не существует" });
 
             var positions = _position.GetLifePositions(typeID);
@@ -136,13 +136,13 @@ namespace api.Controllers
         /// <param name="cityID">Идентификатор города</param>
         /// <param name="regionID">Идентификатор региона</param>
         [HttpGet("Region/regionID={regionID:int}/City/cityID={cityID:int}/Get")]
-        public IActionResult GetCityByRegion(int cityID,  int regionID)
+        public IActionResult GetCityByRegion(int cityID, int regionID)
         {
-            if (!_place.IsCityExist(cityID)) 
+            if (!_place.IsCityExist(cityID))
                 return StatusCode(404, new { status = "Города с заданным идентификатором не существует" });
-            if (!_place.IsRegionExist(regionID)) 
+            if (!_place.IsRegionExist(regionID))
                 return StatusCode(404, new { status = "Региона с заданным идентификатором не существует" });
-            if (!_place.IsCityExistInRegion(cityID, regionID)) 
+            if (!_place.IsCityExistInRegion(cityID, regionID))
                 return StatusCode(404, new { status = "Города в регионе с заданным идентификатором не существует" });
 
             return StatusCode(200, new { status = "Информация о городе была успешно сформирована", data = _place.GetCity(cityID) });
@@ -156,11 +156,11 @@ namespace api.Controllers
         [HttpGet("Country/countryID={countryID:int}/City/Get/cityID={cityID:int}")]
         public IActionResult GetCityByCountry(int cityID, int countryID)
         {
-            if (!_place.IsCityExist(cityID)) 
+            if (!_place.IsCityExist(cityID))
                 return StatusCode(404, new { status = "Города с заданным идентификатором не существует" });
-            if (!_place.IsCountryExist(countryID)) 
+            if (!_place.IsCountryExist(countryID))
                 return StatusCode(404, new { status = "Страны с заданным идентификатором не существует" });
-            if (!_place.IsCityExistInCountry(cityID, countryID)) 
+            if (!_place.IsCityExistInCountry(cityID, countryID))
                 return StatusCode(404, new { status = "Города в стране с заданным идентификатором не существует" });
 
             return StatusCode(200, new { status = "Информация о городе была успешно сформирована", data = _place.GetCity(cityID) });
@@ -185,7 +185,7 @@ namespace api.Controllers
         [HttpGet("Region/regionID={regionID:int}/Cities/Get")]
         public IActionResult GetCitiesByRegion(int regionID)
         {
-            if (!_place.IsRegionExist(regionID)) 
+            if (!_place.IsRegionExist(regionID))
                 return StatusCode(404, new { status = "Региона с заданным идентификатором не существует" });
 
             var cities = _place.GetCitiesByRegion(regionID);
@@ -201,7 +201,7 @@ namespace api.Controllers
         [HttpGet("Country/countryID={countryID:int}/Cities/Get")]
         public IActionResult GetCitiesByCountry(int countryID)
         {
-            if (!_place.IsCountryExist(countryID)) 
+            if (!_place.IsCountryExist(countryID))
                 return StatusCode(404, new { status = "Страны с заданным идентификатором не существует" });
 
             var cities = _place.GetCitiesByCountry(countryID);
@@ -229,11 +229,11 @@ namespace api.Controllers
         [HttpGet("Country/countryID={countryID:int}/Region/Get/regionID={regionID:int}")]
         public IActionResult GetRegionByCountry(int regionID, int countryID)
         {
-            if (!_place.IsCountryExist(countryID)) 
+            if (!_place.IsCountryExist(countryID))
                 return StatusCode(404, new { status = "Страны с заданным идентификатором не существует" });
-            if (!_place.IsRegionExist(regionID)) 
+            if (!_place.IsRegionExist(regionID))
                 return StatusCode(404, new { status = "Региона с заданным идентификатором не существует" });
-            if (!_place.IsRegionExistInCountry(regionID, countryID)) 
+            if (!_place.IsRegionExistInCountry(regionID, countryID))
                 return StatusCode(404, new { status = "Региона в стране с заданным идентификатором не существует" });
 
             return StatusCode(200, new { status = "Информация о регионе была успешно сформирована", data = _place.GetRegion(regionID) });
@@ -258,7 +258,7 @@ namespace api.Controllers
         [HttpGet("Country/countryID={countryID:int}/Regions/Get")]
         public IActionResult GetRegionsByCountry(int countryID)
         {
-            if (!_place.IsCountryExist(countryID)) 
+            if (!_place.IsCountryExist(countryID))
                 return StatusCode(404, new { status = "Страны с заданным идентификатором не существует" });
 
             var regions = _place.GetRegionsByCountry(countryID);

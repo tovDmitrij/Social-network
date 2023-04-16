@@ -1,16 +1,15 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using api.Misc;
-using api.Middlewares;
+using api.service.profile.Middlewares;
+using api.service.profile.Misc;
 using database.context.main;
-using database.context.main.Repos.User;
-using database.context.main.Repos.Profile;
-using database.context.main.Repos.Languages;
-using database.context.main.Repos.LifePositions;
 using database.context.main.Repos.Cities;
 using database.context.main.Repos.FamilyStatuses;
-namespace api
+using database.context.main.Repos.Languages;
+using database.context.main.Repos.LifePositions;
+using database.context.main.Repos.Profile;
+namespace api.service.profile
 {
     public class Program
     {
@@ -42,10 +41,9 @@ namespace api
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddDistributedMemoryCache();
-            builder.Services.AddSession(options => { options.IdleTimeout = TimeSpan.FromMinutes(30);});
-            
+            builder.Services.AddSession(options => { options.IdleTimeout = TimeSpan.FromMinutes(30); });
+
             builder.Services.AddDbContext<MainContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("social_network_user_admin")));
-            builder.Services.AddScoped<IAuthRepos, AuthRepos>();
             builder.Services.AddScoped<IProfileRepos, ProfileRepos>();
             builder.Services.AddScoped<ILanguageRepos, LanguageRepos>();
             builder.Services.AddScoped<ILifePositionsRepos, LifePositionsRepos>();

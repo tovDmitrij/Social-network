@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using api.Misc;
+using api.service.auth.Misc;
 using database.context.main.Repos.User;
 using database.context.main.Repos.Profile;
-namespace api.Controllers
+namespace api.service.auth.Controllers
 {
     /// <summary>
     /// Аутентификация пользователя в системе

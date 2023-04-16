@@ -1,8 +1,7 @@
 ﻿using System.Text;
 using System.Text.Json;
 using RabbitMQ.Client;
-using database.context.logs;
-namespace api.Middlewares
+namespace api.service.data.Middlewares
 {
     /// <summary>
     /// МиддлВаря-обработчик ошибок
@@ -37,7 +36,9 @@ namespace api.Middlewares
                             routingKey: "error",
                             mandatory: false,
                             basicProperties: null,
-                            body: Encoding.UTF8.GetBytes(JsonSerializer.Serialize<LogModel>(new(ex.Message, ex.Source, ex.StackTrace))));
+                            body: Encoding.UTF8.GetBytes(JsonSerializer.Serialize(
+                                new { ex.Message, ex.Source, ex.StackTrace},
+                                new JsonSerializerOptions() { WriteIndented=true})));
                     }
                 }
             }

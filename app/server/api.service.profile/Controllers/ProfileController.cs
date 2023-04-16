@@ -5,8 +5,8 @@ using database.context.main.Repos.Languages;
 using database.context.main.Repos.LifePositions;
 using database.context.main.Repos.Cities;
 using database.context.main.Repos.FamilyStatuses;
-using api.Misc;
-namespace api.Controllers
+using api.service.profile.Misc;
+namespace api.service.profile.Controllers
 {
     /// <summary>
     /// Взаимодействие с профилем пользователей
