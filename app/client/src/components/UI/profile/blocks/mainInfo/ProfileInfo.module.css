@@ -1,6 +1,7 @@
 .profileBlock{
     max-width: auto;
-    max-height: auto;
+    max-height: 300px;
+    overflow-y: auto;
     padding: 10px;
     box-shadow: 1px 1px 5px rgb(200, 200, 200);   
     border-radius: 15px;
@@ -10,4 +11,36 @@
 .fullName{
     font-weight: bold;
     font-size: large;
+}
+
+.langs{
+    position: relative;
+    margin-bottom: 5px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.langInput{
+    position: absolute;
+    opacity: 0;
+    z-index: -1;
+}
+
+.langLabel{
+    position: relative;
+    display: block;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.langItems{
+    max-height: 0;
+    overflow: hidden;
+    -webkit-transition: max-height .35s;
+    -o-transition: max-height .35s;
+    transition: max-height .35s;
+}
+
+.langInput:checked ~ .langItems {
+    max-height: 100vh;
 }

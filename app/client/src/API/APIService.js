@@ -3,6 +3,7 @@
  */
 const url = 'https://localhost:7008/api/'
 
+
 /**
  * Сервис, предоставляющий возможность отправлять запросы к API соцсети
  */
@@ -10,7 +11,6 @@ export default class APIService {
     /**
      * Подтверждение авторизации пользователя в системе
      * @param {*} user - почта и пароль
-     * @returns response
      */
     static async SignInSubmit(user) {
         return await fetch(`${url}Auth/SignIn/email=${user.email}&password=${user.password}`, {
@@ -24,7 +24,6 @@ export default class APIService {
     /**
      * Подтверждение регистрации пользователя в системе
      * @param {*} user - почта, пароль и ФИО
-     * @returns response
      */
     static async SignUpSubmit(user) {
         return await fetch(`${url}Auth/SignUp/email=${user.email}&password=${user.password}&surname=${user.surname}&name=${user.name}&patronymic=${user.patronymic}`, {
@@ -37,7 +36,6 @@ export default class APIService {
 
     /**
      * Получение базовой информации о профиле авторизованного пользователя
-     * @returns response
      */
     static async GetAuthProfileBaseInfo() {
         return await fetch(`${url}Profile/BaseInfo/Get`, {
@@ -48,6 +46,60 @@ export default class APIService {
             }
         })
     }
+
+    /**
+     * Получить список языков в профиле авторизованного пользователя
+     */
+    static async GetAuthProfileLanguageInfo() {
+        return await fetch(`${url}Profile/Languages/Get`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem('token')
+            }
+        })
+    }
+
+    /**
+     * Получить список жизненных позиций авторизованного пользователя
+     */
+    static async GetAuthProfileLifePositionsInfo() {
+        return await fetch(`${url}Profile/LifePositions/Get`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem('token')
+            }
+        })
+    }
+
+    /**
+     * Получить информацию о военной службе пользователя
+     */
+    static async GetAuthProfileMilitaryInfo() {
+        return await fetch(`${url}Profile/Militaries/Get`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem('token')
+            }
+        }) 
+    }
+
+    /**
+     * Получить информацию о карьере пользователя
+     */
+    static async GetAuthProfileCarrerInfo() {
+        return await fetch(`${url}Profile/Carrers/Get`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem('token')
+            }
+        })
+    }
+
+
 
     /**
      * Получение базовой информации о профиле пользователя

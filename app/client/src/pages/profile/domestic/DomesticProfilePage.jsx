@@ -6,6 +6,7 @@ import APIService from '../../../API/APIService'
 import styles from './DomesticProfilePage.module.css'
 import LeftNavbar from '../../../components/UI/navbars/leftbar/LeftNavbar'
 import ProfileImage from '../../../components/UI/profile/blocks/image/ProfileImage'
+import ProfileBaseInfo from '../../../components/UI/profile/blocks/baseInfo/ProfileBaseInfo'
 import ProfileInfo from '../../../components/UI/profile/blocks/mainInfo/ProfileInfo'
 import Loader from '../../../components/UI/loaders/Loader'
 import ErrorPanel from '../../../components/UI/plates/error/ErrorPanel'
@@ -27,10 +28,12 @@ const ForeignProfilePage = () => {
     const [family, setFamily] = useState('')
     const [city, setCity] = useState('')
 
-    /**
-     * Получить базовую информацию о профиле пользователя
-     */
-    const [GetBaseInfo, isBaseLoading, error] = useFetching(async () => {
+    const [languages, setLang] = useState([])
+    const [positions, setPos] = useState([])
+    const [carrers, setCarrer] = useState([])
+    const [militaries, setMilitary] = useState([])
+
+    const [GetBaseInfo, isBaseLoading, baseError] = useFetching(async () => {
         APIService.GetAuthProfileBaseInfo().then(response => {
             if (response.ok){
                 response.json().then((data) => {
@@ -51,7 +54,95 @@ const ForeignProfilePage = () => {
             }
             else{
                 response.json().then((data) => {
-                    setError(data.status)
+                    console.log(data.status)
+                })
+            }
+        }).catch(err => { setError(err.status) })
+    })
+
+    const [GetLanguageInfo, isLangLoading, langError] = useFetching(async () => {
+        APIService.GetAuthProfileLanguageInfo().then(response => {
+            if (response.ok){
+                response.json().then((data) => {
+                    data.data.forEach((item) => {
+                        languages.push(item)
+                    })
+                })
+            }
+            else if (response.status === 401){
+                setIsAuth(false)
+                localStorage.clear()
+                navigate("/signIn")
+            }
+            else{
+                response.json().then((data) => {
+                    console.log(data.status)
+                })
+            }
+        }).catch(err => { setError(err.status) })
+    })
+
+    const [GetPositionInfo, isPosLoading, posError] = useFetching(async () => {
+        APIService.GetAuthProfileLifePositionsInfo().then(response => {
+            if (response.ok){
+                response.json().then((data) => {
+                    data.data.forEach((item) => {
+                        positions.push(item)
+                    })
+                })
+            }
+            else if (response.status === 401){
+                setIsAuth(false)
+                localStorage.clear()
+                navigate("/signIn")
+            }
+            else{
+                response.json().then((data) => {
+                    console.log(data.status)
+                })
+            }
+        }).catch(err => { setError(err.status) })
+    })
+
+    const [GetCarrerInfo, isCarrerLoading, carrerError] = useFetching(async () => {
+        APIService.GetAuthProfileCarrerInfo().then(response => {
+            if (response.ok){
+                response.json().then((data) => {
+                    data.data.forEach((item) => {
+                        carrers.push(item)
+                    })
+                })
+            }
+            else if (response.status === 401){
+                setIsAuth(false)
+                localStorage.clear()
+                navigate("/signIn")
+            }
+            else{
+                response.json().then((data) => {
+                    console.log(data.status)
+                })
+            }
+        }).catch(err => { setError(err.status) })
+    })
+
+    const [GetMilitaryInfo, isMilitaryLoading, militaryError] = useFetching(async () => {
+        APIService.GetAuthProfileMilitaryInfo().then(response => {
+            if (response.ok){
+                response.json().then((data) => {
+                    data.data.forEach((item) => {
+                        militaries.push(item)
+                    })
+                })
+            }
+            else if (response.status === 401){
+                setIsAuth(false)
+                localStorage.clear()
+                navigate("/signIn")
+            }
+            else{
+                response.json().then((data) => {
+                    console.log(data.status)
                 })
             }
         }).catch(err => { setError(err.status) })
@@ -59,6 +150,10 @@ const ForeignProfilePage = () => {
 
     useEffect(() => {
         GetBaseInfo()
+        GetLanguageInfo()
+        GetPositionInfo()
+        GetCarrerInfo()
+        GetMilitaryInfo()
     }, [])
 
     return (
@@ -69,26 +164,34 @@ const ForeignProfilePage = () => {
 
             <div className='grid col-span-6'>
                 <div className='grid gap-3 grid-rows-6 grid-cols-3'>
-                    <div className='grid col-span-1 row-span-3 place-items-center'>
-                        {isBaseLoading ? 
-                            <Loader /> : 
-                            <ProfileImage avatar={avatar} /> }
-                        {error && <ErrorPanel error={error} /> }
-                        {responseError && <ErrorPanel error={responseError} /> }
 
+                    <div className='grid col-span-1 row-span-3'>
+                        {isBaseLoading ? <Loader /> : <ProfileImage avatar={avatar} /> }
                         <MenuBtn children='Редактировать профиль' />
                     </div>
 
                     <div className='col-span-2 row-span-3'>
                         {isBaseLoading ? 
                             <Loader /> :                         
-                            <ProfileInfo 
+                            <ProfileBaseInfo 
                                 fullName={fullName} 
-                                status={status} 
+                                status={status} />}
+                        
+                        {isBaseLoading ? <Loader /> :
+                            isLangLoading ? <Loader /> :
+                            isPosLoading ? <Loader /> :
+                            isCarrerLoading ? <Loader /> :
+                            isMilitaryLoading ? <Loader /> :
+                            <ProfileInfo
                                 family={family} 
                                 birthDate={birthDate}
-                                city={city} />}
-                        {error && <ErrorPanel error={error} /> }
+                                city={city}
+                                langs={languages}
+                                positions={positions}
+                                carrers={carrers}
+                                militaries={militaries} />
+                        }
+
                         {responseError && <ErrorPanel error={responseError} /> }
                     </div>
 

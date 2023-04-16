@@ -41,7 +41,7 @@ namespace database.context.main.Models.Profile.Careers
         /// Наименование компании
         /// </summary>
         [Required]
-        [Column("company_name")]
+        [Column("company")]
         public string Company { get; set; }
 
         /// <summary>

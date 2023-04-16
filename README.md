@@ -36,7 +36,7 @@
 
 <div align="center">
 
-![Main](https://user-images.githubusercontent.com/86602542/229361443-10c56148-343b-4f3c-ba13-57898b9cbbc0.svg)
+![social_network_db_design](https://user-images.githubusercontent.com/86602542/232307611-4e7a0c6a-8fb0-4fdf-9953-63192ece3f09.svg)
 
 </div>
 
@@ -48,13 +48,13 @@
 ### :earth_asia: Языки
 ```
 C#
+JavaScript
 Pl/pgSQL
-TypeScript
 Python
 ```
 ### :desktop_computer: Фронтенд
 ```
-ReactTs
+ReactJs
 ```
 ### :hammer_and_wrench: Бекэнд
 ```
@@ -67,7 +67,7 @@ PostgreSQL 15
 ### :scroll: Прочее
 ```
 RabbitMQ
-Docker
+Docker (?)
 Selenium
 Beautiful Soup
 Entity Framework
