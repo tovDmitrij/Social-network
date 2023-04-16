@@ -99,7 +99,15 @@ export default class APIService {
         })
     }
 
-
+    static async GetLanguageList(){
+        return await fetch(`${url}Data/Languages/Get`, {
+            method: "GET",
+            headers: {
+                "Content-type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem('token')
+            }
+        })
+    }
 
     /**
      * Получение базовой информации о профиле пользователя

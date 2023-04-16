@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useFetching } from '../../../components/hooks/useFetching'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import AuthContext from '../../../components/context/AuthContext'
 import APIService from '../../../API/APIService'
 import styles from './DomesticProfilePage.module.css'
@@ -43,8 +43,10 @@ const ForeignProfilePage = () => {
                     setFamily(data.data.familyStatus)
                     setCity(data.data.city)
 
-                    let date = new Date(data.data.birthDate)
-                    setBirthDate(`${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`)
+                    if (data.data.birthDate !== null){
+                        let date = new Date(data.data.birthDate)
+                        setBirthDate(`${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`)
+                    }
                 })
             }
             else if (response.status === 401){
@@ -167,7 +169,12 @@ const ForeignProfilePage = () => {
 
                     <div className='grid col-span-1 row-span-3'>
                         {isBaseLoading ? <Loader /> : <ProfileImage avatar={avatar} /> }
-                        <MenuBtn children='Редактировать профиль' />
+                        
+                        <div className='grid place-items-center'>
+                            <Link to='/profile/settings'>
+                                <MenuBtn children='Редактировать профиль' />
+                            </Link>
+                        </div>
                     </div>
 
                     <div className='col-span-2 row-span-3'>

@@ -42,7 +42,7 @@ namespace api.Misc
                     new(ClaimTypes.Name, userID),
                     new(ClaimTypes.Role, userTitle)
                 },
-                expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(30)),
+                expires: DateTime.UtcNow.Add(TimeSpan.FromHours(24)),
                 signingCredentials: new SigningCredentials(GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha512));
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
