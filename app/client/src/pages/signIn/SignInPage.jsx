@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useFetching } from '../../components/hooks/useFetching'
 import AuthContext from '../../components/context/AuthContext'
@@ -37,6 +37,10 @@ const SignInPage = () => {
             }
         }).catch(err => { setError(err.status) })
     })
+
+    useEffect(() => {
+        document.title = "Авторизация"
+    }, [])
 
     return(
         <div className={`grid place-self-center place-items-center gap-4 grid-cols-1 grid-rows-1 ${styles.myPage}`}>

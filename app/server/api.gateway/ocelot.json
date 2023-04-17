@@ -29,7 +29,7 @@
     },
     {
       "UpstreamPathTemplate": "/api/Auth/{everything}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+      "UpstreamHttpMethod": [ "Get", "Post" ],
       "DownstreamPathTemplate": "/api/Auth/{everything}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [

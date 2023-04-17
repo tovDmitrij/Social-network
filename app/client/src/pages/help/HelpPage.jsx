@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import styles from './HelpPage.module.css'
 import LeftNavbar from '../../components/UI/navbars/leftbar/LeftNavbar'
 import AuthContext from '../../components/context/AuthContext'
@@ -9,6 +9,10 @@ import AuthContext from '../../components/context/AuthContext'
  */
 const HelpPage = () => {
     const {isAuth, setIsAuth} = useContext(AuthContext)
+
+    useEffect(() => {
+        document.title = "Справочник"
+    }, [])
 
     return (
         <div className={`grid grid-cols-12 ${styles.myPage}`}>

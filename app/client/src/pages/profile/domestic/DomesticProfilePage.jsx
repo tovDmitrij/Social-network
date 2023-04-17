@@ -158,6 +158,10 @@ const ForeignProfilePage = () => {
         GetMilitaryInfo()
     }, [])
 
+    useEffect(() => {
+        document.title = `${fullName}`
+    }, [fullName])
+
     return (
         <div className={`grid grid-cols-12 ${styles.myPage}`}>
             <div className='grid col-span-3'>

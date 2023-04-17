@@ -4,7 +4,6 @@ import APIService from '../../API/APIService'
 import {useFetching} from '../../components/hooks/useFetching'
 
 const ProfileSettingsPage = () => {
-
     const [languages, setLang] = useState([])
 
     const [GetLangs, isLangLoading, langError] = useFetching(async () => {
@@ -19,6 +18,7 @@ const ProfileSettingsPage = () => {
     })
 
     useEffect(() => {
+        document.title = "Настройки профиля"
         GetLangs()
     }, [])
 
