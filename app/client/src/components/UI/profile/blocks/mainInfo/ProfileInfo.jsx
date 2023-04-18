@@ -36,7 +36,7 @@ const ProfileInfo = ({family, birthDate, city, langs, positions, carrers, milita
                 </div>
             }
 
-            {langs.length != 0 && 
+            {langs.length !== 0 && 
                 <div>
                     <label>Языки: </label>
                     {langs.map((lang) => (
@@ -47,7 +47,7 @@ const ProfileInfo = ({family, birthDate, city, langs, positions, carrers, milita
                 </div>
             }
 
-            {positions.length != 0 &&
+            {positions.length !== 0 &&
                 <div className={styles.langs}>
                     <hr/>
                     <input id="langsTab" className={styles.langInput} type='checkbox' />
@@ -64,7 +64,7 @@ const ProfileInfo = ({family, birthDate, city, langs, positions, carrers, milita
                 </div>
             }
 
-            {carrers.length != 0 &&
+            {carrers.length !== 0 &&
                 <div className={styles.langs}>
                     <hr/>
                     <input id="carrersTab" className={styles.langInput} type='checkbox' />
@@ -78,7 +78,7 @@ const ProfileInfo = ({family, birthDate, city, langs, positions, carrers, milita
                 </div>
             }
 
-            {militaries.length != 0 &&
+            {militaries.length !== 0 &&
                 <div>
                     <hr/>
                     <input id="militariesTab" className={styles.langInput} type='checkbox' />

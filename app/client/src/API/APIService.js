@@ -109,6 +109,86 @@ export default class APIService {
         })
     }
 
+    static async PutProfileStatus(status) {
+        return await fetch(`${url}Profile/BaseInfo/Status/Update/status=${status}`, {
+            method: "PUT",
+            headers: {
+                "Content-type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem('token')
+            }
+        })
+    }
+
+    static async PutProfileBirthdate(date) {
+        return await fetch(`${url}Profile/BaseInfo/Birthdate/Update/date=${date}`, {
+            method: "PUT",
+            headers: {
+                "Content-type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem('token')
+            }
+        })
+    }
+
+    static async AddProfileLanguage(lang) {
+        return await fetch(`${url}Profile/Language/Add/id=${lang}`, {
+            method: "POST",
+            headers: {
+                "Content-type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem('token')
+            } 
+        })
+    }
+
+    static async DeleteProfileLanguage(lang) {
+        return await fetch(`${url}Profile/Language/Delete/id=${lang}`, {
+            method: "DELETE",
+            headers: {
+                "Content-type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem('token')
+            } 
+        })
+    }
+
+    static async GetFamilyStatuses() {
+        return await fetch(`${url}Data/FamilyStatuses/Get`, {
+            method: "GET",
+            headers: {
+                "Content-type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem('token')
+            }  
+        })
+    }
+
+    static async UpdateProfileFamilyStatus(status) {
+        return await fetch(`${url}Profile/BaseInfo/FamilyStatus/Update/statusID=${status}`, {
+            method: "PUT",
+            headers: {
+                "Content-type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem('token')
+            }  
+        })
+    }
+
+    static async GetCities() {
+        return await fetch(`${url}Data/Cities/Get`, {
+            method: "GET",
+            headers: {
+                "Content-type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem('token')
+            } 
+        })
+    }
+
+    static async UpdateProfileCity(city) {
+        return await fetch(`${url}Profile/BaseInfo/City/Update/cityID=${city}`, {
+            method: "PUT",
+            headers: {
+                "Content-type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem('token')
+            } 
+        })
+    }
+
     /**
      * Получение базовой информации о профиле пользователя
      * @param {*} user - идентификатор пользователя 

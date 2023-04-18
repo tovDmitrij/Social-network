@@ -217,7 +217,7 @@ namespace api.service.profile.Controllers
                 return StatusCode(406, new { status = "Язык уже добавлен в список языков пользователя" });
 
             _profile.AddLanguage(userID, langID);
-            return StatusCode(200, new { status = "Новая жизненная позиция была успешно добавлена" });
+            return StatusCode(200, new { status = "Новый язык был успешно добавлен" });
         }
 
         /// <summary>

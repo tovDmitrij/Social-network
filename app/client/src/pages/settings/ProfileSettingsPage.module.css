@@ -3,3 +3,21 @@
     margin-top: 100px;
     margin-bottom: 30px;
 }
+
+.myPanel {
+    box-shadow: 1px 1px 5px rgb(200, 200, 200);   
+    border-radius: 15px;
+    background-color: white;
+    margin-bottom: 10px;
+}
+
+.myInput{
+    background-color: rgb(241, 241, 241);
+    margin: 10px;
+    border-radius: 15px;
+}
+
+.myLabel {
+    margin: 10px;
+    font-weight: bold;
+}

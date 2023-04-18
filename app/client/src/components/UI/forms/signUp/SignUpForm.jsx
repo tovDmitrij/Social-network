@@ -37,7 +37,7 @@ const SignUpForm = ({accept, error}) => {
             return false;
         }
 
-        const emailRegex = /[A-Za-zА-Яа-я0-9]+@[A-Za-z]+.[A-Za-z]+/g
+        const emailRegex = /[A-Za-zА-Яа-я0-9]+@[A-Za-z]+\.[A-Za-z]+/g
         if (email.match(emailRegex) == null){
             error("Почта не валидная")
             return false;
