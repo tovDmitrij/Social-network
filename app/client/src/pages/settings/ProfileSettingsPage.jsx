@@ -4,6 +4,7 @@ import APIService from '../../API/APIService'
 import {useFetching} from '../../components/hooks/useFetching'
 import LeftNavbar from '../../components/UI/navbars/leftbar/LeftNavbar'
 import Loader from '../../components/UI/loaders/Loader'
+import SuccessPanel from '../../components/UI/plates/success/SuccessPanel'
 
 
 const ProfileSettingsPage = () => {
@@ -15,7 +16,7 @@ const ProfileSettingsPage = () => {
     const [profileLangID, setProfileLangID] = useState(-1)
     const [profileLangs, setProfLangs] = useState([])
 
-    const [familyStatus, setFamily] = useState({'id': 0, 'name': ''})
+    const [familyStatus, setFamily] = useState({'id': -1, 'name': ''})
     const [familyStatuses, setFamilyStatus] = useState([])
 
     const [profileCity, setProfileCity] = useState('')
@@ -80,6 +81,14 @@ const ProfileSettingsPage = () => {
         })
     })
 
+    const [GetCities, isCitiesLoading, citiesError] = useFetching(async () => {
+        APIService.GetCities().then(response => {
+            response.json().then((data) => {
+                setCities(data.data)
+            })
+        })
+    })
+
     const [SetFamilyStatus, isFamilyLoading, newError] = useFetching(async () => {
         APIService.UpdateProfileFamilyStatus(familyStatus.id).then(response => {
             response.json().then((data) => {
@@ -123,15 +132,7 @@ const ProfileSettingsPage = () => {
             })
         })
     })
-    
-    const [GetCities, isCitiesLoading, citiesError] = useFetching(async () => {
-        APIService.GetCities().then(response => {
-            response.json().then((data) => {
-                setCities(data.data)
-            })
-        })
-    })
-    
+        
     const [SetCity, isCityLoading, cityError] = useFetching(async () => {
         APIService.UpdateProfileCity(cityID).then(response => {
             response.json().then((data) => {
@@ -162,19 +163,27 @@ const ProfileSettingsPage = () => {
         setFamily(currentStatus)
     }
     useEffect(() => {
-        SetFamilyStatus()
+        if (familyStatus.id !== -1){
+            SetFamilyStatus()
+        }
     }, [familyStatus])
 
     useEffect(() => {
-        DeleteLang()
+        if (profileLangID !== -1){
+            DeleteLang()
+        }
     }, [profileLangID])
 
     useEffect(() => {
-        SetLang()
+        if (langID !== -1) {
+            SetLang()
+        }
     }, [langID])
 
     useEffect(() => {
-        SetCity()
+        if (cityID !== -1) {
+            SetCity()
+        }
     }, [cityID])
 
     return (
@@ -188,6 +197,7 @@ const ProfileSettingsPage = () => {
                     <label className={styles.myLabel}>Статус</label>
                     {isBaseLoading ? <Loader /> : <input className={styles.myInput} type="text" onChange={e => setStatus(e.target.value)} defaultValue={status} />}
                     <button className={styles.myInput} onClick={SetStatus}>Подтвердить</button>
+                    {}
                 </div>
 
                 <div className={`grid ${styles.myPanel}`}>
@@ -199,8 +209,8 @@ const ProfileSettingsPage = () => {
                         {isStatusLoading ? <Loader /> : 
                             familyStatuses.map((status) => (
                                 status.name === familyStatus.name ? 
-                                <option key={status.id} value={status.id}>{status.name}</option> :
-                                <option selected key={status.id} value={status.id}>{status.name}</option>
+                                <option selected key={status.id} value={status.id}>{status.name}</option> :
+                                <option key={status.id} value={status.id}>{status.name}</option>
                             ))}
                     </select>
                 </div>
