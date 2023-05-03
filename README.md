@@ -2,7 +2,7 @@
 
 <div align="center">
 
-*pic coming soon*
+![image](https://user-images.githubusercontent.com/86602542/235859323-1f708ec3-22ab-43c0-ba05-516c92959164.png)
 
 </div>
 
