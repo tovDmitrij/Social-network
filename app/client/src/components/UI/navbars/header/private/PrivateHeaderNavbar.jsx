@@ -10,11 +10,10 @@ const PrivateHeaderNavbar = ({logOut}) => {
         <div className={`'grid grid-row-1 grid-cols-2 ${styles.navbar}`}>
             <img className={styles.navbar__logo} src='/images/logo.webp' />
             <div className={styles.navbar__links}>
-                {privateRoutes.map((route) => (
+                {/* {privateRoutes.map((route) => (
                     <Link key={route.path} className={styles.links} to={route.path}>{route.title}</Link>
-                ))}
+                ))} */}
                 <MenuBtn 
-                    className={styles.links} 
                     onClick={logOut}
                     children={"Выйти"}/>            
             </div>

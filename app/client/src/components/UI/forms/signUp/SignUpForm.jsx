@@ -1,4 +1,5 @@
 import React, {useState} from 'react'
+import { Link } from 'react-router-dom'
 import FormInput from '../../inputs/form/FormInput'
 import MenuBtn from '../../buttons/menu/MenuBtn'
 import FormLabel from '../../labels/form/FormLabel'
@@ -110,6 +111,14 @@ const SignUpForm = ({accept, error}) => {
                 <MenuBtn 
                     onClick={SignUp}
                     children={"Зарегистрироваться"}/>
+            </div>
+
+            <div className='grid place-items-center text-slate-500 mt-5'>
+                <label>Есть аккаунт?</label>
+                <Link to='/signIn'>
+                    <MenuBtn
+                        children={"Войти"}/>
+                </Link>
             </div>
         </form>
     )

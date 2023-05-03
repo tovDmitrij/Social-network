@@ -3,6 +3,7 @@ import FormInput from '../../inputs/form/FormInput'
 import MenuBtn from '../../buttons/menu/MenuBtn'
 import FormLabel from '../../labels/form/FormLabel'
 import styles from './SignInForm.module.css'
+import { Link } from 'react-router-dom'
 
 
 /**
@@ -61,11 +62,19 @@ const SignInForm = ({accept, error}) => {
                     onChange={e => setPassword(e.target.value)}
                     placeholder='Введите пароль...'/>
             </div>
-            
+
             <div className='grid place-items-center'>
                 <MenuBtn 
                     onClick={SignIn}
                     children={"Войти"}/>
+            </div>
+
+            <div className='grid place-items-center text-slate-500 mt-5'>
+                <label>Нет аккаунта?</label>
+                <Link to='/signUp'>
+                    <MenuBtn
+                        children={"Зарегистрировать"}/>
+                </Link>
             </div>
         </form>
     )

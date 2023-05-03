@@ -14,9 +14,9 @@ import MenuBtn from '../../../components/UI/buttons/menu/MenuBtn'
 
 
 /**
- * Страница с профилем авторизованного пользователя в системе
+ * Страница с профилем пользователя в системе
  */
-const ForeignProfilePage = () => {
+const DomesticProfilePage = () => {
     const navigate = useNavigate()
     const {isAuth, setIsAuth} = useContext(AuthContext)
     const [responseError, setError] = useState('')
@@ -222,4 +222,4 @@ const ForeignProfilePage = () => {
 }
 
 
-export default ForeignProfilePage
+export default DomesticProfilePage
