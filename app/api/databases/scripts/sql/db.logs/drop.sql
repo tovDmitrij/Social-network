@@ -1,0 +1,1 @@
+drop table if exists app_error_logs;

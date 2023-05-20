@@ -1,5 +1,9 @@
 * text=auto
 
-*.sql			        linguist-language=PLpgSQL
-aspnetcore-https.js     linguist-detectable=false
-aspnetcore-react.js     linguist-detectable=false
+*.sql       linguist-language=PLpgSQL
+drop.sql    linguist-detectable=false
+insert.sql  linguist-detectable=false
+
+
+
+dump.sql    linguist-detectable=false
