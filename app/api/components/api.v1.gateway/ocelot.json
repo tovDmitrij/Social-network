@@ -4,9 +4,9 @@
   },
   "Routes": [
     {
-      "UpstreamPathTemplate": "/api/Data/{everything}",
+      "UpstreamPathTemplate": "/api/v1/Dictionary/{everything}",
       "UpstreamHttpMethod": [ "Get" ],
-      "DownstreamPathTemplate": "/api/Data/{everything}",
+      "DownstreamPathTemplate": "/api/v1/Dictionary/{everything}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
@@ -16,26 +16,14 @@
       ]
     },
     {
-      "UpstreamPathTemplate": "/api/Profile/{everything}",
+      "UpstreamPathTemplate": "/api/v1/Profile/{everything}",
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
-      "DownstreamPathTemplate": "/api/Profile/{everything}",
+      "DownstreamPathTemplate": "/api/v1/Profile/{everything}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
           "Port": 7164
-        }
-      ]
-    },
-    {
-      "UpstreamPathTemplate": "/api/Auth/{everything}",
-      "UpstreamHttpMethod": [ "Post" ],
-      "DownstreamPathTemplate": "/api/Auth/{everything}",
-      "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 7123
         }
       ]
     }

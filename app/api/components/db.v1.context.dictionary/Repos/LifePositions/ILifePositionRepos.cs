@@ -4,7 +4,7 @@ namespace db.v1.context.dictionary.Repos.LifePositions
     /// <summary>
     /// Взаимодействие с таблицей жизненных позиций
     /// </summary>
-    public interface ILifePositionsRepos
+    public interface ILifePositionRepos
     {
         /// <summary>
         /// Метод, проверяющий существование жизненной позиции

@@ -4,7 +4,7 @@ namespace db.v1.context.dictionary.Repos.Languages
     /// <summary>
     /// Взаимодействие с таблицей языков платформы
     /// </summary>
-    public sealed class LanguageRepos : ILanguageRepos
+    internal sealed class LanguageRepos : ILanguageRepos
     {
         /// <summary>
         /// База данных словаря

@@ -17,6 +17,11 @@ namespace db.v1.context.auth
         /// </summary>
         public DbSet<UserViewModel> ViewUsers { get; set; }
 
+        /// <summary>
+        /// Таблица с токенами пользователей
+        /// </summary>
+        public DbSet<UserTokenModel> TableTokens { get; set; }
+
         public AuthContext(DbContextOptions options) : base(options) { }
     }
 }

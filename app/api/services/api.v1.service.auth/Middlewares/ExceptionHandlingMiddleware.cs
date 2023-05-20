@@ -8,8 +8,19 @@ namespace api.v1.service.auth.Middlewares
     /// </summary>
     public sealed class ExceptionHandlingMiddleware : IDisposable
     {
+        /// <summary>
+        /// Обрабатываемый запрос
+        /// </summary>
         private readonly RequestDelegate _next;
+
+        /// <summary>
+        /// Подключение к брокеру сообщений
+        /// </summary>
         private readonly IConnection _connection;
+
+        /// <summary>
+        /// Канал связи с сервисом логирования ошибок
+        /// </summary>
         private readonly IModel _channel;
 
         public ExceptionHandlingMiddleware(RequestDelegate next) 
@@ -21,6 +32,9 @@ namespace api.v1.service.auth.Middlewares
             _channel = _connection.CreateModel();
         }
 
+        /// <summary>
+        /// Вызов запрашиваемого эндпоинта и его обработка
+        /// </summary>
         public async Task InvokeAsync(HttpContext context)
         {
             try
@@ -34,22 +48,19 @@ namespace api.v1.service.auth.Middlewares
                 _channel.ExchangeDeclare(
                     exchange: "direct_logs",
                     type: ExchangeType.Direct);
-
                 _channel.BasicPublish(
                     exchange: "direct_logs",
                     routingKey: "error",
-                    mandatory: false,
-                    basicProperties: null,
                     body: Encoding.UTF8.GetBytes(JsonSerializer.Serialize(
-                        new { ex.Message, ex.Source, ex.StackTrace},
-                        new JsonSerializerOptions() { WriteIndented=true})));
+                        new { ex.Message, ex.Source, ex.StackTrace },
+                        new JsonSerializerOptions() { WriteIndented = true })));
             }
         }
 
         public void Dispose()
         {
-            _channel.Dispose();
-            _connection.Dispose();
+            _channel.Close();
+            _connection.Close();
         }
     }
 }

@@ -1,14 +1,10 @@
+using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using api.service.profile.Middlewares;
-using api.service.profile.Misc;
-using database.context.main;
-using database.context.main.Repos.Cities;
-using database.context.main.Repos.FamilyStatuses;
-using database.context.main.Repos.Languages;
-using database.context.main.Repos.LifePositions;
-using database.context.main.Repos.Profile;
+using db.v1.context.profiles.Repos;
+using db.v1.context.profiles;
 namespace api.service.profile
 {
     public class Program
@@ -21,6 +17,7 @@ namespace api.service.profile
             #region builder
 
             var builder = WebApplication.CreateBuilder(args);
+            var config = builder.Configuration;
             builder.Services.AddControllers();
             builder.Services.AddAuthorization();
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -28,27 +25,27 @@ namespace api.service.profile
                 {
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        ValidateIssuer = true,
-                        ValidIssuer = AuthOptions.ISSUER,
-                        ValidateAudience = true,
-                        ValidAudience = AuthOptions.AUDIENCE,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JwtSettings:Key"]!)),
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
                         ValidateLifetime = true,
-                        IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
                         ValidateIssuerSigningKey = true
                     };
                 });
-            builder.Services.AddCors();
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy(
+                    name: "AllOrigins",
+                    policy =>
+                    {
+                        policy.AllowAnyMethod().AllowAnyHeader().SetIsOriginAllowed(origin => true).AllowCredentials();
+                    });
+            });
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            builder.Services.AddDistributedMemoryCache();
-            builder.Services.AddSession(options => { options.IdleTimeout = TimeSpan.FromMinutes(30); });
 
-            builder.Services.AddDbContext<MainContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("social_network_user_admin")));
-            builder.Services.AddScoped<IProfileRepos, ProfileRepos>();
-            builder.Services.AddScoped<ILanguageRepos, LanguageRepos>();
-            builder.Services.AddScoped<ILifePositionsRepos, LifePositionsRepos>();
-            builder.Services.AddScoped<IPlaceOfLivingRepos, PlaceOfLivingRepos>();
-            builder.Services.AddScoped<IFamilyStatusRepos, FamilyStatusRepos>();
+            builder.Services.AddDbContext<ProfileContext>(options => options.UseNpgsql(config.GetConnectionString("default")));
+            builder.Services.AddSingleton<IProfileRepos, ProfileRepos>();
 
             #endregion
 
@@ -63,17 +60,11 @@ namespace api.service.profile
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-            app.UseCors(builder => builder
-                .AllowAnyMethod()
-                .AllowAnyHeader()
-                .SetIsOriginAllowed(origin => true)
-                .AllowCredentials()
-            );
+            app.UseCors("AllOrigins");
             app.UseMiddleware<ExceptionHandlingMiddleware>();
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseSession();
             app.MapControllers();
             app.Run();
 

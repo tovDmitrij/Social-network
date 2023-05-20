@@ -2,8 +2,9 @@
 using System.Text.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using database.context.logs;
-using database.context.logs.Repos;
+using db.v1.context.logs;
+using db.v1.context.logs.Repos;
+using db.v1.context.logs.Models;
 namespace api.logger.error
 {
     internal class Program
@@ -53,7 +54,7 @@ namespace api.logger.error
                             var consumer = new EventingBasicConsumer(channel);
                             consumer.Received += (sender, args) =>
                             {
-                                _logger.Log(JsonSerializer.Deserialize<LogModel>(Encoding.UTF8.GetString(args.Body.ToArray())));
+                                _logger.Log(JsonSerializer.Deserialize<LogModel>(Encoding.UTF8.GetString(args.Body.ToArray()))!);
                                 PrintMessage();
                             };
 

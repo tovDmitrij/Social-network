@@ -4,7 +4,7 @@ namespace db.v1.context.dictionary.Repos.Places
     /// <summary>
     /// Взаимодействие с таблицами городов, регионов и стран мира
     /// </summary>
-    public sealed class PlaceRepos : IPlaceRepos
+    internal sealed class PlaceRepos : IPlaceRepos
     {
         /// <summary>
         /// База данных словаря

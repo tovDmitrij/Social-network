@@ -4,7 +4,7 @@ namespace db.v1.context.dictionary.Repos.FamilyStatuses
     /// <summary>
     /// Взаимодействие с таблицей семейных положений
     /// </summary>
-    public sealed class FamilyStatusRepos : IFamilyStatusRepos
+    internal sealed class FamilyStatusRepos : IFamilyStatusRepos
     {
         /// <summary>
         /// База данных словаря

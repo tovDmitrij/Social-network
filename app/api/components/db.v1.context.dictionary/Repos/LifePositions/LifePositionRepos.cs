@@ -4,14 +4,14 @@ namespace db.v1.context.dictionary.Repos.LifePositions
     /// <summary>
     /// Взаимодействие с таблицей жизненных позиций
     /// </summary>
-    public sealed class LifePositionsRepos : ILifePositionsRepos
+    internal sealed class LifePositionRepos : ILifePositionRepos
     {
         /// <summary>
         /// База данных словаря
         /// </summary>
         private readonly DictionaryContext _db;
 
-        public LifePositionsRepos(DictionaryContext db) => _db = db;
+        public LifePositionRepos(DictionaryContext db) => _db = db;
 
         public bool IsLifePositionExist(int posID) => _db.ViewLifePositions
             .Any(pos => pos.PositionID == posID);

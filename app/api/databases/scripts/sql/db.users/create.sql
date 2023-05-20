@@ -11,6 +11,13 @@ create table if not exists users(
 	registration_date	timestamp default current_timestamp not null
 );
 
+create table if not exists user_tokens(
+	user_id 		integer 			primary key references users(id),
+	refresh_token 	text not null,
+	create_date 	timestamp not null,
+	expire_date 	timestamp not null
+);
+
 
 
 create or replace view view_users as

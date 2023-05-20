@@ -1,11 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using database.context.main.Repos.Profile;
-using database.context.main.Repos.Languages;
-using database.context.main.Repos.LifePositions;
-using database.context.main.Repos.Cities;
-using database.context.main.Repos.FamilyStatuses;
-using api.service.profile.Misc;
+using db.v1.context.profiles.Repos;
 namespace api.service.profile.Controllers
 {
     /// <summary>
@@ -21,36 +16,7 @@ namespace api.service.profile.Controllers
         /// </summary>
         private readonly IProfileRepos _profile;
 
-        /// <summary>
-        /// Взаимодействие с таблицей языков
-        /// </summary>
-        private readonly ILanguageRepos _language;
-
-        /// <summary>
-        /// Взаимодействие с таблицей жизненных позиций
-        /// </summary>
-        private readonly ILifePositionsRepos _position;
-
-        /// <summary>
-        /// Взаимодействие с таблицей мест проживания
-        /// </summary>
-        private readonly IPlaceOfLivingRepos _place;
-
-        private readonly IFamilyStatusRepos _status;
-
-        public ProfileController(
-            IProfileRepos profile, 
-            ILanguageRepos language, 
-            ILifePositionsRepos lifePositions, 
-            IPlaceOfLivingRepos place,
-            IFamilyStatusRepos status)
-        {
-            _profile = profile;
-            _language = language;
-            _position = lifePositions;
-            _place = place;
-            _status = status;
-        }
+        public ProfileController(IProfileRepos profile) => _profile = profile;
 
 
 
