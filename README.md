@@ -2,7 +2,7 @@
 
 <div align="center">
 
-*pic coming soon*
+![image](https://user-images.githubusercontent.com/86602542/235859323-1f708ec3-22ab-43c0-ba05-516c92959164.png)
 
 </div>
 
@@ -42,7 +42,13 @@
 
 ## :game_die: Архитектура приложения
 
-*pic coming soon*
+<div align="center">
+
+![Main2](https://user-images.githubusercontent.com/86602542/235857134-a2648238-faac-4c32-b9dd-29205147655e.svg)
+
+</div>
+
+Используется микросервисная архитектура. Вся SQL-логика выносится в отдельный слой репозиториев.
 
 ## :computer: Стек технологий
 ### :earth_asia: Языки
@@ -67,10 +73,11 @@ PostgreSQL 15
 ### :scroll: Прочее
 ```
 RabbitMQ
-Docker (?)
+Entity Framework
+Tailwind
 Selenium
 Beautiful Soup
-Entity Framework
-SignalR
-Tailwind
+SignalR (?)
+Docker (?)
+Neo4j (?)
 ```
