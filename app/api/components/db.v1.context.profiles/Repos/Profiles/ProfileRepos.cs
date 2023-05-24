@@ -1,9 +1,9 @@
-﻿using db.v1.context.profiles.Models.BaseInfo;
-using db.v1.context.profiles.Models.Careers;
-using db.v1.context.profiles.Models.Languages;
-using db.v1.context.profiles.Models.LifePositions;
-using db.v1.context.profiles.Models.MilitaryServices;
-namespace db.v1.context.profiles.Repos
+﻿using db.v1.context.profiles.Models.Profiles.BaseInfo;
+using db.v1.context.profiles.Models.Profiles.Carrers;
+using db.v1.context.profiles.Models.Profiles.Languages;
+using db.v1.context.profiles.Models.Profiles.LifePositions;
+using db.v1.context.profiles.Models.Profiles.MilitaryServices;
+namespace db.v1.context.profiles.Repos.Profiles
 {
     /// <summary>
     /// Взаимодействие с профилем пользователей
@@ -20,6 +20,9 @@ namespace db.v1.context.profiles.Repos
 
 
         #region Основная информация
+
+        public bool IsProfileExist(int id) => _db.TableProfileBaseInfo
+            .Any(profile => profile.UserID == id);
 
         public ProfileBaseInfoViewModel? GetProfileBaseInfo(int id) => _db.ViewProfileBaseInfo
             .FirstOrDefault(user => user.ID == id);
@@ -64,11 +67,25 @@ namespace db.v1.context.profiles.Repos
             _db.SaveChanges();
         }
 
-        public void ChangeFullname(int userID, string surname, string name, string patronymic)
+        public void ChangeSurname(int userID, string surname)
         {
             var user = _db.TableProfileBaseInfo.Single(user => user.UserID == userID);
             user.Surname = surname;
+            _db.TableProfileBaseInfo.Update(user);
+            _db.SaveChanges();
+        }
+
+        public void ChangeName(int userID, string name)
+        {
+            var user = _db.TableProfileBaseInfo.Single(user => user.UserID == userID);
             user.Name = name;
+            _db.TableProfileBaseInfo.Update(user);
+            _db.SaveChanges();
+        }
+
+        public void ChangePatronymic(int userID, string patronymic)
+        {
+            var user = _db.TableProfileBaseInfo.Single(user => user.UserID == userID);
             user.Patronymic = patronymic;
             _db.TableProfileBaseInfo.Update(user);
             _db.SaveChanges();
@@ -92,7 +109,7 @@ namespace db.v1.context.profiles.Repos
         public void RemoveLanguage(int userID, int langID)
         {
             _db.TableProfileLanguages.Remove(
-                _db.TableProfileLanguages.First(language => 
+                _db.TableProfileLanguages.First(language =>
                     language.LanguageID == langID && language.UserID == userID));
             _db.SaveChanges();
         }
@@ -121,7 +138,7 @@ namespace db.v1.context.profiles.Repos
         public void RemoveLifePosition(int userID, int posID)
         {
             _db.TableProfileLifePositions.Remove(
-                _db.TableProfileLifePositions.Single(position => 
+                _db.TableProfileLifePositions.Single(position =>
                     position.UserID == userID && position.PositionID == posID));
             _db.SaveChanges();
         }
@@ -165,7 +182,7 @@ namespace db.v1.context.profiles.Repos
         public void RemoveCarrer(int userID, int carrerID)
         {
             _db.TableProfileCarrer.Remove(_db.TableProfileCarrer
-                .First(carrer => 
+                .First(carrer =>
                     carrer.UserID == userID && carrer.ID == carrerID));
             _db.SaveChanges();
         }

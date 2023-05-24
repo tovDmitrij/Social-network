@@ -30,6 +30,9 @@ namespace api.service.profile.Middlewares
             var factory = new ConnectionFactory() { HostName = "localhost" };
             _connection = factory.CreateConnection();
             _channel = _connection.CreateModel();
+            _channel.ExchangeDeclare(
+                 exchange: "direct_logs",
+                 type: ExchangeType.Direct);
         }
 
         /// <summary>
@@ -43,24 +46,29 @@ namespace api.service.profile.Middlewares
             }
             catch (Exception ex)
             {
-                await context.Response.WriteAsJsonAsync(new { statusCode = 500, status = "Произошла непредвиденная ошибка. Повторите позже" });
+                await context.Response.WriteAsJsonAsync(new 
+                { 
+                    statusCode = 500, 
+                    status = "Произошла непредвиденная ошибка. Повторите позже" 
+                });
 
-                _channel.ExchangeDeclare(
-                    exchange: "direct_logs",
-                    type: ExchangeType.Direct);
                 _channel.BasicPublish(
                     exchange: "direct_logs",
                     routingKey: "error",
                     body: Encoding.UTF8.GetBytes(JsonSerializer.Serialize(
                         new { ex.Message, ex.Source, ex.StackTrace },
                         new JsonSerializerOptions() { WriteIndented = true })));
+                return;
             }
         }
 
         public void Dispose()
         {
-            _channel.Close();
-            _connection.Close();
+            if (_connection.IsOpen)
+            {
+                _channel.Close();
+                _connection.Close();
+            }
         }
     }
 }

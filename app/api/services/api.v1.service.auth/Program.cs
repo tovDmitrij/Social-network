@@ -2,7 +2,6 @@ using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using MassTransit;
 using api.v1.service.auth.Middlewares;
 using db.v1.context.auth.Repos;
 using db.v1.context.auth;

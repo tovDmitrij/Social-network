@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-namespace db.v1.context.profiles.Models.BaseInfo
+namespace db.v1.context.profiles.Models.Profiles.BaseInfo
 {
     /// <summary>
     /// Базовая информация о профиле пользователя с подробностями

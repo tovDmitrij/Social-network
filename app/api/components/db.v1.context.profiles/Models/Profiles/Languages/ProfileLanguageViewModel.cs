@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-namespace db.v1.context.profiles.Models.Languages
+namespace db.v1.context.profiles.Models.Profiles.Languages
 {
     /// <summary>
     /// Подробная информация о языке пользователя

@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using db.v1.context.profiles.Repos;
+using db.v1.context.profiles.Wrappers;
+using misc.jwt;
 namespace api.service.profile.Controllers
 {
     /// <summary>
-    /// Взаимодействие с профилем пользователей
+    /// Взаимодействие с профилем пользователя
     /// </summary>
     [ApiController]
     [Authorize]
@@ -12,80 +13,101 @@ namespace api.service.profile.Controllers
     public sealed class ProfileController : ControllerBase
     {
         /// <summary>
-        /// Взаимодействие с профилями пользователей
+        /// Взаимодействие с БД профилей пользователей
         /// </summary>
-        private readonly IProfileRepos _profile;
+        private readonly IProfileWrapper _db;
 
-        public ProfileController(IProfileRepos profile) => _profile = profile;
+        private int GetAuthUserID => AuthToken.GetUserID(HttpContext.Request.Headers);
 
+        public ProfileController(IProfileWrapper db) => _db = db;
 
 
         #region GET
 
         /// <summary>
-        /// Получить базовую информацию о профиле пользователя
+        /// Получить базовую информацию о профиле авторизованного пользователя
         /// </summary>
-        [HttpGet("BaseInfo/Get")]
+        [HttpGet("Base")]
         public IActionResult GetBaseProfileInfo() => StatusCode(200, new
         {
             status = "Базовая информация о профиле пользователе была успешно сформирована",
-            data = _profile.GetProfileBaseInfo(AuthOptions.GetUserID(HttpContext))
+            data = _db.Profiles.GetProfileBaseInfo(GetAuthUserID)
         });
 
         /// <summary>
-        /// Получить список языков пользователя
+        /// Получить список языков авторизованного пользователя
         /// </summary>
-        [HttpGet("Languages/Get")]
+        [HttpGet("Languages")]
         public IActionResult GetLanguagesInfo()
         {
-            int userID = AuthOptions.GetUserID(HttpContext);
-
-            var languages = _profile.GetLanguages(userID);
+            var languages = _db.Profiles.GetLanguages(GetAuthUserID);
             return languages.Any() ?
-                StatusCode(200, new { status = "Список языков пользователя был успешно сформирован", data = languages }) :
-                StatusCode(404, new { status = "Список языков пуст" });
+                StatusCode(200, new 
+                { 
+                    status = "Список языков пользователя был успешно сформирован", 
+                    data = languages 
+                }) :
+                StatusCode(404, new 
+                { 
+                    status = "Список языков пуст" 
+                });
         }
 
         /// <summary>
-        /// Получить список жизненных позиций пользователя
+        /// Получить список жизненных позиций авторизованного пользователя
         /// </summary>
-        [HttpGet("LifePositions/Get")]
+        [HttpGet("LifePositions")]
         public IActionResult GetLifePositionsInfo()
         {
-            int userID = AuthOptions.GetUserID(HttpContext);
-
-            var positions = _profile.GetLifePositions(userID);
+            var positions = _db.Profiles.GetLifePositions(GetAuthUserID);
             return positions.Any() ?
-                StatusCode(200, new { status = "Список жизненных позиций был успешно сформирован", data = positions }) :
-                StatusCode(404, new { status = "Список жизненных позиций пуст" });
+                StatusCode(200, new 
+                { 
+                    status = "Список жизненных позиций был успешно сформирован", 
+                    data = positions 
+                }) :
+                StatusCode(404, new 
+                { 
+                    status = "Список жизненных позиций пуст" 
+                });
         }
 
         /// <summary>
-        /// Получить список карьер пользователя
+        /// Получить список карьер авторизованного пользователя
         /// </summary>
-        [HttpGet("Carrers/Get")]
+        [HttpGet("Carrers")]
         public IActionResult GetCarrersInfo()
         {
-            int userID = AuthOptions.GetUserID(HttpContext);
-
-            var carrers = _profile.GetCarrers(userID);
+            var carrers = _db.Profiles.GetCarrers(GetAuthUserID);
             return carrers.Any() ?
-                StatusCode(200, new { status = "Список карьер был успешно сформирован", data = carrers }) :
-                StatusCode(404, new { status = "Список карьер пуст" });
+                StatusCode(200, new 
+                { 
+                    status = "Список карьер был успешно сформирован", 
+                    data = carrers 
+                }) :
+                StatusCode(404, new 
+                { 
+                    status = "Список карьер пуст" 
+                });
         }
 
         /// <summary>
-        /// Получить список ВС пользователя
+        /// Получить список ВС авторизованного пользователя
         /// </summary>
-        [HttpGet("Militaries/Get")]
+        [HttpGet("Militaries")]
         public IActionResult GetMilitaryServicesInfo()
         {
-            int userID = AuthOptions.GetUserID(HttpContext);
-
-            var services = _profile.GetMilitaryServices(userID);
+            var services = _db.Profiles.GetMilitaryServices(GetAuthUserID);
             return services.Any() ?
-                StatusCode(200, new { status = "Список ВС был успешно сформирован", data = services }) :
-                StatusCode(404, new { status = "Список ВС пуст" });
+                StatusCode(200, new 
+                { 
+                    status = "Список ВС был успешно сформирован", 
+                    data = services 
+                }) :
+                StatusCode(404, new 
+                { 
+                    status = "Список ВС пуст" 
+                });
         }
 
 
@@ -93,73 +115,128 @@ namespace api.service.profile.Controllers
         /// Получить базовую информацию о профиле пользователя по его идентификатору
         /// </summary>
         /// <param name="userID">Идентификатор пользователя</param>
-        [HttpGet("id={userID:int}/BaseInfo/Get")]
-        public IActionResult GetBaseProfileInfo(int userID) => _profile.IsUserExist(userID) ?
-            StatusCode(200, new { status = "Базовая информация о профиле пользователе была успешно сформирована", data = _profile.GetProfileBaseInfo(userID) }) :
-            StatusCode(404, new { status = "Пользователя с заданным идентификатором не существует" });
+        [HttpGet("Base/{userID:int}")]
+        public IActionResult GetBaseProfileInfo(int userID) => _db.Profiles.IsProfileExist(userID) ?
+            StatusCode(200, new 
+            { 
+                status = "Базовая информация о профиле пользователе была успешно сформирована", 
+                data = _db.Profiles.GetProfileBaseInfo(userID) 
+            }) :
+            StatusCode(404, new 
+            { 
+                status = "Пользователя с заданным идентификатором не существует" 
+            });
 
         /// <summary>
         /// Получить список языков пользователя по его идентификатору
         /// </summary>
         /// <param name="userID">Идентификатор пользователя</param>
-        [HttpGet("id={userID:int}/Languages/Get")]
+        [HttpGet("Languages/{userID:int}")]
         public IActionResult GetLanguagesInfo(int userID)
         {
-            if (!_profile.IsUserExist(userID)) 
-                return StatusCode(404, new { status = "Пользователя с заданным идентификатором не существует" });
+            if (!_db.Profiles.IsProfileExist(userID))
+            {
+                return StatusCode(404, new 
+                { 
+                    status = "Пользователя с заданным идентификатором не существует" 
+                });
+            }
 
-            var languages = _profile.GetLanguages(userID);
+            var languages = _db.Profiles.GetLanguages(userID);
             return languages.Any() ?
-                StatusCode(200, new { status = "Список языков пользователя был успешно сформирован", data = languages }) :
-                StatusCode(404, new { status = "Список языков пуст" });
+                StatusCode(200, new 
+                { 
+                    status = "Список языков пользователя был успешно сформирован", 
+                    data = languages 
+                }) :
+                StatusCode(404, new 
+                { 
+                    status = "Список языков пуст" 
+                });
         }
 
         /// <summary>
         /// Получить список жизненных позиций пользователя по его идентификатору
         /// </summary>
         /// <param name="userID">Идентификатор пользователя</param>
-        [HttpGet("id={userID:int}/LifePositions/Get")]
+        [HttpGet("LifePositions/{userID:int}")]
         public IActionResult GetLifePositionsInfo(int userID) 
         {
-            if (!_profile.IsUserExist(userID)) 
-                return StatusCode(404, new { status = "Пользователя с заданным идентификатором не существует" });
-            
-            var positions = _profile.GetLifePositions(userID);
+            if (!_db.Profiles.IsProfileExist(userID))
+            {
+                return StatusCode(404, new
+                {
+                    status = "Пользователя с заданным идентификатором не существует"
+                });
+            }
+
+            var positions = _db.Profiles.GetLifePositions(userID);
             return positions.Any() ?
-                StatusCode(200, new { status = "Список жизненных позиций был успешно сформирован", data = positions }) :
-                StatusCode(404, new { status = "Список жизненных позиций пуст" });
+                StatusCode(200, new 
+                { 
+                    status = "Список жизненных позиций был успешно сформирован", 
+                    data = positions 
+                }) :
+                StatusCode(404, new 
+                { 
+                    status = "Список жизненных позиций пуст" 
+                });
         }
 
         /// <summary>
         /// Получить список карьер пользователя по его идентификатору
         /// </summary>
         /// <param name="userID">Идентификатор пользователя</param>
-        [HttpGet("id={userID:int}/Carrers/Get")]
+        [HttpGet("Carrers/{userID:int}")]
         public IActionResult GetCarrersInfo(int userID)
         {
-            if (!_profile.IsUserExist(userID)) 
-                return StatusCode(404, new { status = "Пользователя с заданным идентификатором не существует" });
+            if (!_db.Profiles.IsProfileExist(userID))
+            {
+                return StatusCode(404, new
+                {
+                    status = "Пользователя с заданным идентификатором не существует"
+                });
+            }
 
-            var carrers = _profile.GetCarrers(userID);
+            var carrers = _db.Profiles.GetCarrers(userID);
             return carrers.Any() ?
-                StatusCode(200, new { status = "Список карьер был успешно сформирован", data = carrers }) :
-                StatusCode(404, new { status = "Список карьер пуст" });
+                StatusCode(200, new 
+                { 
+                    status = "Список карьер был успешно сформирован", 
+                    data = carrers 
+                }) :
+                StatusCode(404, new 
+                { 
+                    status = "Список карьер пуст" 
+                });
         }
 
         /// <summary>
         /// Получить список ВС пользователя по его идентификатору
         /// </summary>
         /// <param name="userID">Идентификатор пользователя</param>
-        [HttpGet("id={userID:int}/Militaries/Get")]
+        [HttpGet("Militaries/{userID:int}")]
         public IActionResult GetMilitaryServicesInfo(int userID)
         {
-            if (!_profile.IsUserExist(userID))
-                return StatusCode(404, new { status = "Пользователя с заданным идентификатором не существует" });
+            if (!_db.Profiles.IsProfileExist(userID))
+            {
+                return StatusCode(404, new
+                {
+                    status = "Пользователя с заданным идентификатором не существует"
+                });
+            }
 
-            var services = _profile.GetMilitaryServices(userID);
+            var services = _db.Profiles.GetMilitaryServices(userID);
             return services.Any() ?
-                StatusCode(200, new { status = "Список ВС был успешно сформирован", data = services }) :
-                StatusCode(404, new { status = "Список ВС пуст" });
+                StatusCode(200, new 
+                { 
+                    status = "Список ВС был успешно сформирован", 
+                    data = services 
+                }) :
+                StatusCode(404, new
+                { 
+                    status = "Список ВС пуст" 
+                });
         }
 
         #endregion
@@ -169,83 +246,132 @@ namespace api.service.profile.Controllers
         #region POST
 
         /// <summary>
-        /// Добавить язык в список языков пользователя
+        /// Добавить язык в список языков авторизованного пользователя
         /// </summary>
         /// <param name="langID">Идентификатор языка</param>
-        [HttpPost("Language/Add/id={langID:int}")]
-        public IActionResult AddLanguage(int langID)
+        [HttpPost("Languages")]
+        public IActionResult AddLanguage([FromBody] int langID)
         {
-            int userID = AuthOptions.GetUserID(HttpContext);
+            int userID = GetAuthUserID;
 
-            if (!_language.IsLanguageExist(langID)) 
-                return StatusCode(404, new { status = "Языка с заданным идентификатором не существует" }); ;
-            if (_profile.IsLanguageAdded(userID, langID)) 
-                return StatusCode(406, new { status = "Язык уже добавлен в список языков пользователя" });
+            if (!_db.Langs.IsLanguageExist(langID))
+            {
+                return StatusCode(404, new 
+                { 
+                    status = "Языка с заданным идентификатором не существует" 
+                });
+            }
+            if (_db.Profiles.IsLanguageAdded(userID, langID))
+            {
+                return StatusCode(406, new 
+                { 
+                    status = "Язык уже добавлен в список языков пользователя" 
+                });
+            }
 
-            _profile.AddLanguage(userID, langID);
-            return StatusCode(200, new { status = "Новый язык был успешно добавлен" });
+            _db.Profiles.AddLanguage(userID, langID);
+            return StatusCode(200, new 
+            { 
+                status = "Новый язык был успешно добавлен" 
+            });
         }
 
         /// <summary>
-        /// Добавить жизненную позицию (ЖП) в список ЖП пользователя
+        /// Добавить жизненную позицию (ЖП) в список ЖП авторизованного пользователя
         /// </summary>
         /// <param name="typeID">Идентификатор типа ЖП</param>
         /// <param name="posID">Идентификатор ЖП</param>
-        [HttpPost("LifePosition/Add/typeID={typeID:int}&posID={posID:int}")]
-        public IActionResult AddLifePosition(int typeID, int posID)
+        [HttpPost("LifePositions")]
+        public IActionResult AddLifePosition([FromBody] int typeID, [FromBody] int posID)
         {
-            int userID = AuthOptions.GetUserID(HttpContext);
+            int userID = GetAuthUserID;
 
-            if (!_position.IsLifePositionExist(typeID, posID)) 
-                return StatusCode(404, new { status = "Жизненной позиции с заданным идентификатором не существует" });
-            if (_profile.IsPositionTypeAdded(userID, typeID)) 
-                _profile.RemoveLifePositionType(userID, typeID);
+            if (!_db.Positions.IsLifePositionExist(typeID, posID))
+            {
+                return StatusCode(404, new 
+                { 
+                    status = "Жизненной позиции с заданным идентификатором не существует" 
+                });
+            }
+            if (_db.Profiles.IsPositionTypeAdded(userID, typeID))
+            {
+                _db.Profiles.RemoveLifePositionType(userID, typeID);
+            }
 
-            _profile.AddLifePosition(userID, posID);
-            return StatusCode(200, new { status = "Новая жизненная позиция была успешно добавлена" });
+            _db.Profiles.AddLifePosition(userID, posID);
+            return StatusCode(200, new 
+            { 
+                status = "Новая жизненная позиция была успешно добавлена" 
+            });
         }
 
         /// <summary>
-        /// Добавить карьеру в список карьер пользователя
+        /// Добавить карьеру в список карьер авторизованного пользователя
         /// </summary>
         /// <param name="cityID">Идентификатор города</param>
         /// <param name="company">Наименование компании</param>
         /// <param name="job">Наименование должности</param>
         /// <param name="dateFrom">Дата начала работы</param>
         /// <param name="dateTo">Дата окончания</param>
-        [HttpPost("Carrer/Add/cityID={cityID:int}&company={company}&job={job}&dateFrom={dateFrom:datetime}&dateTo={dateTo:datetime}")]
-        public IActionResult AddCarrer(int cityID, string company, string? job, DateTime? dateFrom, DateTime? dateTo)
+        [HttpPost("Carrers")]
+        public IActionResult AddCarrer([FromBody] int cityID, [FromBody] string company, [FromBody] string? job, [FromBody] DateTime? dateFrom, [FromBody] DateTime? dateTo)
         {
-            int userID = AuthOptions.GetUserID(HttpContext);
+            int userID = GetAuthUserID;
 
-            if (!_place.IsCityExist(cityID))
-                return StatusCode(404, new { status = "Города с заданным идентификатором не существует" });
-            if (_profile.IsCarrerAdded(userID, cityID, company, job, dateFrom, dateTo))
-                return StatusCode(406, new { status = "Такая карьера уже была добавлена" });
+            if (!_db.Places.IsCityExist(cityID))
+            {
+                return StatusCode(404, new 
+                { 
+                    status = "Города с заданным идентификатором не существует" 
+                });
+            }
+            if (_db.Profiles.IsCarrerAdded(userID, cityID, company, job, dateFrom, dateTo))
+            {
+                return StatusCode(406, new 
+                { 
+                    status = "Такая карьера уже была добавлена" 
+                });
+            }
 
-            _profile.AddCarrer(userID, cityID, company, job, dateFrom, dateTo);
-            return StatusCode(200, new { status = "Новая карьера была успешно добавлена" });
+            _db.Profiles.AddCarrer(userID, cityID, company, job, dateFrom, dateTo);
+            return StatusCode(200, new 
+            { 
+                status = "Новая карьера была успешно добавлена" 
+            });
         }
 
         /// <summary>
-        /// Добавить ВС в список ВС пользователя
+        /// Добавить ВС в список ВС авторизованного пользователя
         /// </summary>
         /// <param name="countryID">Идентификатор страны</param>
         /// <param name="unit">Место проведения ВС</param>
         /// <param name="dateFrom">Дата начала ВС</param>
         /// <param name="dateTo">Дата окончания ВС</param>
-        [HttpPost("Military/Add/countryID={countryID:int}&unit={unit}&dateFrom={dateFrom:datetime}&dateTo={dateTo:datetime}")]
-        public IActionResult AddMilitaryService(int countryID, string unit, DateTime? dateFrom, DateTime? dateTo)
+        [HttpPost("Militaries")]
+        public IActionResult AddMilitaryService([FromBody] int countryID, [FromBody] string unit, [FromBody] DateTime? dateFrom, [FromBody] DateTime? dateTo)
         {
-            int userID = AuthOptions.GetUserID(HttpContext);
+            int userID = GetAuthUserID;
 
-            if (!_place.IsCountryExist(countryID))
-                return StatusCode(404, new { status = "Страны с заданным идентификатором не существует" });
-            if (_profile.IsMilitaryServiceAdded(userID, countryID, unit, dateFrom, dateTo))
-                return StatusCode(406, new { status = "Такая ВС уже добавлена в профиль пользователя" });
+            if (!_db.Places.IsCountryExist(countryID))
+            {
+                return StatusCode(404, new 
+                { 
+                    status = "Страны с заданным идентификатором не существует" 
+                });
+            }
+            if (_db.Profiles.IsMilitaryServiceAdded(userID, countryID, unit, dateFrom, dateTo))
+            {
+                return StatusCode(406, new 
+                { 
+                    status = "Такая ВС уже добавлена в профиль пользователя" 
+                });
+            }
 
-            _profile.AddMilitaryService(userID, countryID, unit, dateFrom, dateTo);
-            return StatusCode(200, new { status = "Новая ВС была успешно добавлена" });
+            _db.Profiles.AddMilitaryService(userID, countryID, unit, dateFrom, dateTo);
+            return StatusCode(200, new 
+            { 
+                status = "Новая ВС была успешно добавлена" 
+            });
         }
 
         #endregion
@@ -255,45 +381,53 @@ namespace api.service.profile.Controllers
         #region PUT
 
         /// <summary>
-        /// Обновить статус в профиле пользователя
+        /// Обновить статус в профиле авторизованного пользователя
         /// </summary>
         /// <param name="status">Статус пользователя</param>
-        [HttpPut("BaseInfo/Status/Update/status={status}")]
-        public IActionResult UpdateProfileStatus(string status)
+        [HttpPut("Base/Status")]
+        public IActionResult UpdateProfileStatus([FromBody] string status)
         {
-            int userID = AuthOptions.GetUserID(HttpContext);
-            
-            _profile.ChangeStatus(userID, status);
-            return StatusCode(200, new { status = "Статус пользователя в профиле был успешно обновлён" });
+            _db.Profiles.ChangeStatus(GetAuthUserID, status);
+            return StatusCode(200, new 
+            { 
+                status = "Статус пользователя в профиле был успешно обновлён" 
+            });
         }
 
         /// <summary>
-        /// Обновить аватар в профиле пользователя
+        /// Обновить аватар в профиле авторизованного пользователя
         /// </summary>
         /// <param name="avatar">Аватарка</param>
-        [HttpPut("BaseInfo/Avatar/Update/avatar={avatar}")]
+        [HttpPut("Base/Avatar")]
         public IActionResult UpdateProfileAvatar(string avatar)
         {
-            int userID = AuthOptions.GetUserID(HttpContext);
-           
-            _profile.ChangeAvatar(userID, avatar);
-            return StatusCode(200, new { status = "Аватарка пользователя в профиле была успешно обновлена" });
+            _db.Profiles.ChangeAvatar(GetAuthUserID, avatar);
+            return StatusCode(200, new 
+            { 
+                status = "Аватарка пользователя в профиле была успешно обновлена" 
+            });
         }
 
         /// <summary>
-        /// Обновить город в профиле пользователя
+        /// Обновить город в профиле авторизованного пользователя
         /// </summary>
         /// <param name="cityID">Идентификатор города</param>
-        [HttpPut("BaseInfo/City/Update/cityID={cityID:int}")]
+        [HttpPut("Base/City")]
         public IActionResult UpdateProfileCity(int cityID) 
         {
-            int userID = AuthOptions.GetUserID(HttpContext);
-            
-            if (!_place.IsCityExist(cityID)) 
-                return StatusCode(404, new { status = "Города с заданным идентификатором не существует" });
+            if (!_db.Places.IsCityExist(cityID))
+            {
+                return StatusCode(404, new 
+                { 
+                    status = "Города с заданным идентификатором не существует" 
+                });
+            }
 
-            _profile.ChangeCity(userID, cityID);
-            return StatusCode(200, new { status = "Город пользователя в профиле был успешно обновлён" });
+            _db.Profiles.ChangeCity(GetAuthUserID, cityID);
+            return StatusCode(200, new 
+            { 
+                status = "Город пользователя в профиле был успешно обновлён" 
+            });
         }
 
         /// <summary>
@@ -308,7 +442,7 @@ namespace api.service.profile.Controllers
             if (!_status.IsStatusExist(statusID)) 
                 return StatusCode(404, new { status = "Семейного положения с заданным идентификатором не существует" });
 
-            _profile.ChangeFamilyStatus(userID, statusID);
+            _db.ChangeFamilyStatus(userID, statusID);
             return StatusCode(200, new { status = "Статус пользователя в профиле был успешно обновлён" });
         }
 
@@ -321,7 +455,7 @@ namespace api.service.profile.Controllers
         {
             int userID = AuthOptions.GetUserID(HttpContext);
 
-            _profile.ChangeBirthDate(userID, date);
+            _db.ChangeBirthDate(userID, date);
             return StatusCode(200, new { status = "Дата рождения пользователя в профиле была успешно обновлена" });
         }
 
@@ -336,7 +470,7 @@ namespace api.service.profile.Controllers
         {
             int userID = AuthOptions.GetUserID(HttpContext);
 
-            _profile.ChangeFullname(userID, surname, name, patronymic);
+            _db.ChangeFullname(userID, surname, name, patronymic);
             return StatusCode(200, new { status = "ФИО пользователя в профиле было успешно обновлено" });
         }
 
@@ -356,10 +490,10 @@ namespace api.service.profile.Controllers
 
             if (!_place.IsCityExist(cityID))
                 return StatusCode(404, new { status = "Города с заданным идентификатором не существует" });
-            if (!_profile.IsCarrerAdded(userID, carrerID))
+            if (!_db.IsCarrerAdded(userID, carrerID))
                 return StatusCode(404, new { status = "Карьеры с заданными параметрами не существует" });
 
-            _profile.UpdateCarrer(carrerID, cityID, company, job, dateFrom, dateTo);
+            _db.UpdateCarrer(carrerID, cityID, company, job, dateFrom, dateTo);
             return StatusCode(200, new { status = "Обновление информации о карьере прошло успешно" });
         }
 
@@ -378,10 +512,10 @@ namespace api.service.profile.Controllers
 
             if (!_place.IsCountryExist(countryID))
                 return StatusCode(404, new { status = "Страны с заданным идентификатором не существует" });
-            if (!_profile.IsMilitaryServiceAdded(userID, countryID))
+            if (!_db.IsMilitaryServiceAdded(userID, countryID))
                 return StatusCode(404, new { status = "ВС с заданными параметрами не существует" });
 
-            _profile.UpdateMilitaryService(serviceID, countryID, unit, dateFrom, dateTo);
+            _db.UpdateMilitaryService(serviceID, countryID, unit, dateFrom, dateTo);
             return StatusCode(200, new { status = "Обновление информации о ВС прошло успешно" });
         }
 
@@ -402,10 +536,10 @@ namespace api.service.profile.Controllers
 
             if (!_language.IsLanguageExist(langID)) 
                 return StatusCode(404, new { status = "Языка с заданным идентификатором не существует" });
-            if (!_profile.IsLanguageAdded(userID, langID)) 
+            if (!_db.IsLanguageAdded(userID, langID)) 
                 return StatusCode(406, new { status = "У пользователя отсутствует заданный язык в списке языков" });
 
-            _profile.RemoveLanguage(userID, langID);
+            _db.RemoveLanguage(userID, langID);
             return StatusCode(200, new { status = "Удаление языка из профиля пользователя прошло успешно" });
         }
 
@@ -421,10 +555,10 @@ namespace api.service.profile.Controllers
 
             if (!_position.IsLifePositionExist(typeID, posID)) 
                 return StatusCode(404, new { status = "Жизненной позиции в заданном типе не существует" });
-            if (!_profile.IsPositionAdded(userID, posID)) 
+            if (!_db.IsPositionAdded(userID, posID)) 
                 return StatusCode(404, new { status = "Жизненной позиции с заданным идентификатором не существует" });
 
-            _profile.RemoveLifePosition(userID, posID);
+            _db.RemoveLifePosition(userID, posID);
             return StatusCode(200, new { status = "Удаление жизненной позиции прошло успешно" });
         }
 
@@ -437,10 +571,10 @@ namespace api.service.profile.Controllers
         {
             int userID = AuthOptions.GetUserID(HttpContext);
 
-            if (!_profile.IsCarrerAdded(userID, carrerID))
+            if (!_db.IsCarrerAdded(userID, carrerID))
                 return StatusCode(404, new { status = "Карьеры с заданными параметрами не существует" });
 
-            _profile.RemoveCarrer(userID, carrerID);
+            _db.RemoveCarrer(userID, carrerID);
             return StatusCode(200, new { status = "Удаление карьеры прошло успешно" });
         }
 
@@ -453,10 +587,10 @@ namespace api.service.profile.Controllers
         {
             int userID = AuthOptions.GetUserID(HttpContext);
 
-            if (!_profile.IsMilitaryServiceAdded(userID, serviceID))
+            if (!_db.IsMilitaryServiceAdded(userID, serviceID))
                 return StatusCode(404, new { status = "ВС с заданными параметрами не существует" });
 
-            _profile.RemoveMilitaryService(userID, serviceID);
+            _db.RemoveMilitaryService(userID, serviceID);
             return StatusCode(200, new { status = "Удаление ВС прошло успешно" });
         }
 

@@ -38,14 +38,17 @@ namespace api.v1.service.auth.Controllers
         /// </summary>
         private readonly IModel _channel;
 
-        public AuthController(IAuthRepos auth, IConfiguration configuration, IConnection connection, IModel channel)
+        public AuthController(IAuthRepos auth, IConfiguration configuration)
         {
             _auth = auth;
             _config = configuration;
 
             var factory = new ConnectionFactory() { HostName = "localhost" };
-            _connection = connection;
-            _channel = channel;
+            _connection = factory.CreateConnection();
+            _channel = _connection.CreateModel();
+            _channel.ExchangeDeclare(
+                exchange: "direct_profiles",
+                type: ExchangeType.Direct);
         }
 
 
@@ -69,15 +72,12 @@ namespace api.v1.service.auth.Controllers
                     return StatusCode(406, new { status = "Почта уже занята другим пользователем" });
 
                 case false:
-                    int userID = _auth.AddAccount(email, password);
+                    int user_id = _auth.AddAccount(email, password);
 
-                    _channel.ExchangeDeclare(
-                        exchange: "direct_profiles",
-                        type: ExchangeType.Direct);
                     _channel.BasicPublish(
                         exchange: "direct_profiles",
                         routingKey: "create",
-                        body: Encoding.UTF8.GetBytes(JsonSerializer.Serialize(new { userID, surname, name, patronymic })));
+                        body: Encoding.UTF8.GetBytes(JsonSerializer.Serialize(new { user_id, surname, name, patronymic })));
 
                     return StatusCode(200, new { status = "Новый аккаунт был успешно зарегистрирован" });
             }
@@ -186,8 +186,11 @@ namespace api.v1.service.auth.Controllers
         [NonAction]
         public void Dispose()
         {
-            _channel.Close();
-            _connection.Close();
+            if (_connection.IsOpen)
+            {
+                _channel.Close();
+                _connection.Close();
+            }
         }
     }
 }

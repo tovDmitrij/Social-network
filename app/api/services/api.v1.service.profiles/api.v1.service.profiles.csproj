@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\components\db.v1.context.profiles\db.v1.context.profiles.csproj" />
+    <ProjectReference Include="..\..\components\misc.jwt\misc.jwt.csproj" />
   </ItemGroup>
 
 </Project>

@@ -21,7 +21,7 @@ namespace api.logger.error
 
         static void Main(string[] args)
         {
-            AppDomain.CurrentDomain.ProcessExit += new EventHandler(ExitMessage);
+            AppDomain.CurrentDomain.ProcessExit += new EventHandler(ExitMessage!);
             StartMessage();
             Connect();
         }
@@ -64,7 +64,10 @@ namespace api.logger.error
                                 consumer: consumer);
 
                             Console.ReadLine();
+
+                            channel.Close();
                         }
+                        connection.Close();
                     }
                 }
             }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-namespace db.v1.context.profiles.Models.LifePositions
+namespace db.v1.context.profiles.Models.Profiles.LifePositions
 {
     /// <summary>
     /// Подробная информация о жизненной позиции пользователя

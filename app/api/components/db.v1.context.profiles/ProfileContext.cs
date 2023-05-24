@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using db.v1.context.profiles.Models.BaseInfo;
-using db.v1.context.profiles.Models.Careers;
-using db.v1.context.profiles.Models.Languages;
-using db.v1.context.profiles.Models.LifePositions;
-using db.v1.context.profiles.Models.MilitaryServices;
+using db.v1.context.profiles.Models.Dictionary;
+using db.v1.context.profiles.Models.Dictionary.Places;
+using db.v1.context.profiles.Models.Profiles.BaseInfo;
+using db.v1.context.profiles.Models.Profiles.Carrers;
+using db.v1.context.profiles.Models.Profiles.Languages;
+using db.v1.context.profiles.Models.Profiles.LifePositions;
+using db.v1.context.profiles.Models.Profiles.MilitaryServices;
 namespace db.v1.context.profiles
 {
     /// <summary>
@@ -11,6 +13,11 @@ namespace db.v1.context.profiles
     /// </summary>
     public sealed class ProfileContext : DbContext
     {
+
+
+
+        #region Профиль
+
         /// <summary>
         /// Таблица с базовой информацией о профилях пользователей
         /// </summary>
@@ -59,6 +66,51 @@ namespace db.v1.context.profiles
         /// Представление с подробной информацией о военных службах пользователей
         /// </summary>
         public DbSet<ProfileMilitaryServiceViewModel> ViewProfileMilitaryService { get; set; }
+
+        #endregion
+
+
+
+        #region Справочник
+
+        /// <summary>
+        /// Таблица с информацией обо всех языках
+        /// </summary>
+        public DbSet<LanguageModel> TableLanguages { get; set; }
+
+        /// <summary>
+        /// Представление с информацией обо всех жизненных позициях
+        /// </summary>
+        public DbSet<LifePositionModel> ViewLifePositions { get; set; }
+
+        /// <summary>
+        /// Представление с информацией обо всех местах проживания
+        /// </summary>
+        public DbSet<PlaceModel> ViewPlaces { get; set; }
+
+        /// <summary>
+        /// Таблица с информацией обо всех городах
+        /// </summary>
+        public DbSet<CityModel> TableCities { get; set; }
+
+        /// <summary>
+        /// Таблица с информацией обо всех регионах
+        /// </summary>
+        public DbSet<RegionModel> TableRegions { get; set; }
+
+        /// <summary>
+        /// Таблица с информацией обо всех странах
+        /// </summary>
+        public DbSet<CountryModel> TableCountries { get; set; }
+
+        /// <summary>
+        /// Таблица с информацией обо всех семейных положениях
+        /// </summary>
+        public DbSet<FamilyStatusModel> TableFamilyStatuses { get; set; }
+
+        #endregion
+
+
 
         public ProfileContext(DbContextOptions options) : base(options) { }
     }

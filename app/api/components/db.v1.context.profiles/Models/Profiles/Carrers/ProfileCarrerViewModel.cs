@@ -1,12 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-namespace db.v1.context.profiles.Models.Careers
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+
+namespace db.v1.context.profiles.Models.Profiles.Carrers
 {
     /// <summary>
-    /// Информация о карьере пользователя
+    /// Подробная информация о карьере пользователя
     /// </summary>
-    [Table("user_profile_carrer")]
-    public sealed class ProfileCarrerModel
+    [Table("view_profile_carrer")]
+    public sealed class ProfileCarrerViewModel
     {
         /// <summary>
         /// Идентификатор карьеры
@@ -30,10 +31,17 @@ namespace db.v1.context.profiles.Models.Careers
         public int CityID { get; set; }
 
         /// <summary>
+        /// Наименование города
+        /// </summary>
+        [Required]
+        [Column("city_name")]
+        public string CityName { get; set; }
+
+        /// <summary>
         /// Наименование компании
         /// </summary>
         [Required]
-        [Column("company_name")]
+        [Column("company")]
         public string Company { get; set; }
 
         /// <summary>
@@ -55,39 +63,31 @@ namespace db.v1.context.profiles.Models.Careers
         public DateTime? DateTo { get; set; }
 
         /// <summary>
-        /// Информация о карьере пользователя
+        /// Подробная информация о карьере пользователя
         /// </summary>
         /// <param name="id">Идентификатор карьеры</param>
         /// <param name="user_id">Идентификатор пользователя</param>
         /// <param name="city_id">Идентификатор города</param>
+        /// <param name="city_name">Наименование города</param>
         /// <param name="company">Наименование компании</param>
         /// <param name="job">Наименование должности</param>
-        /// <param name="date_from">Дата начала карьеры</param>
-        /// <param name="date_to">Дата окончания карьеры</param>
-        public ProfileCarrerModel(int id, int user_id, int city_id, string company, string? job, DateTime? date_from, DateTime? date_to) : this(user_id, city_id, company, job, date_from, date_to) => ID = id;
-
-        /// <summary>
-        /// Информация о карьере пользователя
-        /// </summary>
-        /// <param name="user_id">Идентификатор пользователя</param>
-        /// <param name="city_id">Идентификатор города</param>
-        /// <param name="company">Наименование компании</param>
-        /// <param name="job">Наименование должности</param>
-        /// <param name="date_from">Дата начала карьеры</param>
-        /// <param name="date_to">Дата окончания карьеры</param>
-        public ProfileCarrerModel(int user_id, int city_id, string company, string? job, DateTime? date_from, DateTime? date_to)
+        /// <param name="dateFrom">Дата начала карьеры</param>
+        /// <param name="dateTo">Дата окончания карьеры</param>
+        public ProfileCarrerViewModel(int id, int user_id, int city_id, string city_name, string company, string? job, DateTime? dateFrom, DateTime? dateTo)
         {
+            ID = id;
             UserID = user_id;
             CityID = city_id;
+            CityName = city_name;
             Company = company;
             Job = job;
-            DateFrom = date_from;
-            DateTo = date_to;
+            DateFrom = dateFrom;
+            DateTo = dateTo;
         }
 
         /// <summary>
-        /// Информация о карьере пользователя
+        /// Подробная информация о карьере пользователя
         /// </summary>
-        public ProfileCarrerModel() { }
+        public ProfileCarrerViewModel() { }
     }
 }

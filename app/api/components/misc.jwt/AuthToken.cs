@@ -12,12 +12,12 @@ namespace misc.jwt
         /// <summary>
         /// Получить идентификатор пользователя из access-токена
         /// </summary>
-        /// <param name="context">Запрос к API</param>
-        public static int GetUserID(HttpRequest request)
+        /// <param name="header">Запрос к API</param>
+        public static int GetUserID(IHeaderDictionary header)
         {
             try
             {
-                string token = request.Headers.Authorization.ToString().Split(' ')[1];
+                string token = header.Authorization.ToString().Split(' ')[1];
                 IEnumerable<Claim> claims = GetClaims(token);
                 int userID = Convert.ToInt32(claims.First(id => id.Type == ClaimTypes.Name).Value);
                 return userID;

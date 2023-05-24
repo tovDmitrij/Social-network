@@ -3,8 +3,10 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using api.service.profile.Middlewares;
-using db.v1.context.profiles.Repos;
 using db.v1.context.profiles;
+using db.v1.context.profiles.Wrappers;
+using api.v1.service.profiles.Middlewares;
+
 namespace api.service.profile
 {
     public class Program
@@ -41,11 +43,12 @@ namespace api.service.profile
                         policy.AllowAnyMethod().AllowAnyHeader().SetIsOriginAllowed(origin => true).AllowCredentials();
                     });
             });
+
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
             builder.Services.AddDbContext<ProfileContext>(options => options.UseNpgsql(config.GetConnectionString("default")));
-            builder.Services.AddSingleton<IProfileRepos, ProfileRepos>();
+            builder.Services.AddSingleton<IProfileWrapper, ProfileWrapper>();
 
             #endregion
 
@@ -62,6 +65,7 @@ namespace api.service.profile
             }
             app.UseCors("AllOrigins");
             app.UseMiddleware<ExceptionHandlingMiddleware>();
+            app.UseMiddleware<TokenMiddleware>();
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseAuthorization();

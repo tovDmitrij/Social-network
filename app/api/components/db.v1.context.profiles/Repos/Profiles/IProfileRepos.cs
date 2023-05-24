@@ -1,9 +1,9 @@
-﻿using db.v1.context.profiles.Models.BaseInfo;
-using db.v1.context.profiles.Models.Careers;
-using db.v1.context.profiles.Models.Languages;
-using db.v1.context.profiles.Models.LifePositions;
-using db.v1.context.profiles.Models.MilitaryServices;
-namespace db.v1.context.profiles.Repos
+﻿using db.v1.context.profiles.Models.Profiles.BaseInfo;
+using db.v1.context.profiles.Models.Profiles.Carrers;
+using db.v1.context.profiles.Models.Profiles.Languages;
+using db.v1.context.profiles.Models.Profiles.LifePositions;
+using db.v1.context.profiles.Models.Profiles.MilitaryServices;
+namespace db.v1.context.profiles.Repos.Profiles
 {
     /// <summary>
     /// Взаимодействие с профилем пользователей
@@ -14,6 +14,12 @@ namespace db.v1.context.profiles.Repos
 
 
         #region Основная информация
+
+        /// <summary>
+        /// Метод, проверяющий существование профиля
+        /// </summary>
+        /// <param name="id"></param>
+        public bool IsProfileExist(int id);
 
         /// <summary>
         /// Получить базовую информацию о профиле пользователя
@@ -57,13 +63,25 @@ namespace db.v1.context.profiles.Repos
         public void ChangeBirthDate(int userID, DateTime date);
 
         /// <summary>
-        /// Изменить ФИО пользователя в профиле
+        /// Изменить фамилию пользователя в профиле
         /// </summary>
         /// <param name="userID">Идентификатор пользователя</param>
         /// <param name="surname">Фамилия пользователя</param>
+        public void ChangeSurname(int userID, string surname);
+
+        /// <summary>
+        /// Изменить имя пользователя в профиле
+        /// </summary>
+        /// <param name="userID">Идентификатор пользователя</param>
         /// <param name="name">Имя пользователя</param>
+        public void ChangeName(int userID, string name);
+
+        /// <summary>
+        /// Изменить отчество пользователя в профиле
+        /// </summary>
+        /// <param name="userID">Идентификатор пользователя</param>
         /// <param name="patronymic">Отчество пользователя</param>
-        public void ChangeFullname(int userID, string surname, string name, string patronymic);
+        public void ChangePatronymic(int userID, string patronymic);
 
         #endregion
 
@@ -173,7 +191,7 @@ namespace db.v1.context.profiles.Repos
         /// <param name="dateFrom">Дата начала карьеры</param>
         /// <param name="dateTo">Дата окончания</param>
         public void UpdateCarrer(int carrerID, int cityID, string company, string? job, DateTime? dateFrom, DateTime? dateTo);
-        
+
         /// <summary>
         /// Удалить карьеру из профиля пользователя
         /// </summary>
@@ -230,7 +248,7 @@ namespace db.v1.context.profiles.Repos
         /// <param name="dateFrom">Дата начала ВС</param>
         /// <param name="dateTo">Дата конца ВС</param>
         public void UpdateMilitaryService(int serviceID, int countryID, string militaryUnit, DateTime? dateFrom, DateTime? dateTo);
-        
+
         /// <summary>
         /// Удалить ВС у пользователя
         /// </summary>
