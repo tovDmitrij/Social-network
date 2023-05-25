@@ -64,7 +64,7 @@ namespace api.v1.service.auth.Controllers
         /// <param name="name">Имя пользователя</param>
         /// <param name="patronymic">Отчество пользователя</param>
         [HttpPost("SignUp")]
-        public IActionResult SignUp([FromBody] string email, [FromBody] string password, [FromBody] string surname, [FromBody] string name, [FromBody] string? patronymic)
+        public IActionResult SignUp(string email, string password, string surname, string name, string? patronymic)
         {
             switch (_auth.IsEmailBusy(email))
             {
@@ -89,7 +89,7 @@ namespace api.v1.service.auth.Controllers
         /// <param name="email">Почта пользователя</param>
         /// <param name="password">Пароль пользоватея</param>
         [HttpPost("SignIn")]
-        public IActionResult SignIn([FromBody] string email, [FromBody] string password)
+        public IActionResult SignIn(string email, string password)
         {
             switch (_auth.IsAccountExist(email, password))
             {
@@ -119,7 +119,7 @@ namespace api.v1.service.auth.Controllers
         [HttpPost("Refresh")]
         public IActionResult UpdateRefreshToken()
         {
-            var user = _auth.GetAccountInfo(AuthToken.GetUserID(HttpContext.Request))!;
+            var user = _auth.GetAccountInfo(AuthToken.GetUserID(HttpContext.Request.Headers))!;
             var refreshToken = Request.Cookies["refresh_token"]!;
 
             if (!_auth.IsTokenExist(user.ID, refreshToken))

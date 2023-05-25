@@ -47,7 +47,7 @@ namespace api.v1.service.auth
             builder.Services.AddSwaggerGen();
 
             builder.Services.AddDbContext<AuthContext>(options => options.UseNpgsql(config.GetConnectionString("default")));
-            builder.Services.AddSingleton<IAuthRepos, AuthRepos>();
+            builder.Services.AddScoped<IAuthRepos, AuthRepos>();
 
             #endregion
 

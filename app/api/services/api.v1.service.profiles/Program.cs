@@ -48,7 +48,7 @@ namespace api.service.profile
             builder.Services.AddSwaggerGen();
 
             builder.Services.AddDbContext<ProfileContext>(options => options.UseNpgsql(config.GetConnectionString("default")));
-            builder.Services.AddSingleton<IProfileWrapper, ProfileWrapper>();
+            builder.Services.AddScoped<IProfileWrapper, ProfileWrapper>();
 
             #endregion
 
@@ -65,7 +65,7 @@ namespace api.service.profile
             }
             app.UseCors("AllOrigins");
             app.UseMiddleware<ExceptionHandlingMiddleware>();
-            app.UseMiddleware<TokenMiddleware>();
+            //app.UseMiddleware<TokenMiddleware>();
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseAuthorization();

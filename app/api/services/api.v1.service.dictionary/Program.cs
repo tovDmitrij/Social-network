@@ -46,7 +46,7 @@ namespace api.service.data
             builder.Services.AddSwaggerGen();
 
             builder.Services.AddDbContext<DictionaryContext>(options => options.UseNpgsql(config.GetConnectionString("default")));
-            builder.Services.AddSingleton<IDictionaryWrapper, IDictionaryWrapper>();
+            builder.Services.AddScoped<IDictionaryWrapper, DictionaryWrapper>();
 
             #endregion
 
