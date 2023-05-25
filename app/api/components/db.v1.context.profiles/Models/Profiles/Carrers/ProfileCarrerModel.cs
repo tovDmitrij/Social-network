@@ -6,7 +6,7 @@ namespace db.v1.context.profiles.Models.Profiles.Carrers
     /// <summary>
     /// Информация о карьере пользователя
     /// </summary>
-    [Table("user_profile_carrer")]
+    [Table("user_profile_carrers")]
     public sealed class ProfileCarrerModel
     {
         /// <summary>

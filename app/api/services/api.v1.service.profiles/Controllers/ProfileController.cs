@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using MassTransit;
 using db.v1.context.profiles.Wrappers;
+using db.v1.context.profiles.Models.Profiles.BaseInfo;
 using misc.jwt;
 namespace api.service.profile.Controllers
 {

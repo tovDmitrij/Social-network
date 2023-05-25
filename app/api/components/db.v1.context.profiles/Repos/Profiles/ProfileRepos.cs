@@ -21,6 +21,12 @@ namespace db.v1.context.profiles.Repos.Profiles
 
         #region Основная информация
 
+        public void AddProfile(int userID, string surname, string name, string? patronymic)
+        {
+            _db.TableProfileBaseInfo.Add(new(userID, surname, name, patronymic));
+            _db.SaveChanges();
+        }
+
         public bool IsProfileExist(int id) => _db.TableProfileBaseInfo
             .Any(profile => profile.UserID == id);
 

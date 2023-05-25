@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-
 namespace db.v1.context.profiles.Models.Profiles.BaseInfo
 {
     /// <summary>

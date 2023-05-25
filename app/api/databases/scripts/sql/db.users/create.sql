@@ -5,7 +5,7 @@ create table if not exists app_user_roles(
 
 create table if not exists users(
 	id					serial				primary key,
-	role_id				integer not null	references app_user_roles(id),
+	role_id				integer 			references app_user_roles(id),
 	email				text not null,
 	password			text not null,
 	registration_date	timestamp default current_timestamp not null

@@ -18,13 +18,6 @@ namespace db.v1.context.profiles.Models.Profiles.BaseInfo
         public int ID { get; set; }
 
         /// <summary>
-        /// Роль пользователя в системе
-        /// </summary>
-        [Required]
-        [Column("role_title")]
-        public string RoleTitle { get; set; }
-
-        /// <summary>
         /// Дата регистрации пользователя
         /// </summary>
         [Required]
@@ -86,7 +79,6 @@ namespace db.v1.context.profiles.Models.Profiles.BaseInfo
         /// </summary>
         /// <param name="id">Идентификатор пользователя</param>
         /// <param name="registration_date">Дата регистрации пользователя</param>
-        /// <param name="role_title">Роль пользователя в системе</param>
         /// <param name="surname">Фамилия пользователя</param>
         /// <param name="name">Имя пользователя</param>
         /// <param name="patronymic">Отчество пользователя</param>
@@ -94,10 +86,9 @@ namespace db.v1.context.profiles.Models.Profiles.BaseInfo
         /// <param name="birthdate">Дата рождения пользователя</param>
         /// <param name="city">Родной город пользователя</param>
         /// <param name="family_status">Статус отношений пользователя</param>
-        public ProfileBaseInfoViewModel(int id, DateTime registration_date, string role_title, string surname, string name, string? patronymic, string? avatar, DateTime birthdate, string city, string family_status)
+        public ProfileBaseInfoViewModel(int id, DateTime registration_date, string surname, string name, string? patronymic, string? avatar, DateTime birthdate, string city, string family_status)
         {
             ID = id;
-            RoleTitle = role_title;
             RegistrationDate = registration_date;
             Surname = surname;
             Name = name;

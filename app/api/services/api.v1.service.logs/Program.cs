@@ -1,110 +1,70 @@
-﻿using System.Text;
-using System.Text.Json;
-using RabbitMQ.Client;
-using RabbitMQ.Client.Events;
-using db.v1.context.logs;
+using Microsoft.EntityFrameworkCore;
+using MassTransit;
 using db.v1.context.logs.Repos;
-using db.v1.context.logs.Models;
-namespace api.logger.error
+using api.v1.service.logs.Consumers;
+
+
+
+#region builder
+
+var builder = WebApplication.CreateBuilder(args);
+var config = builder.Configuration;
+
+builder.Services.AddControllers();
+builder.Services.AddCors(options =>
 {
-    internal class Program
+    options.AddPolicy(
+        name: "AllOrigins",
+        policy =>
+        {
+            policy.AllowAnyMethod().AllowAnyHeader().SetIsOriginAllowed(origin => true).AllowCredentials();
+        });
+});
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+builder.Services.AddDbContext<db.v1.context.logs.LogContext>(options => options.UseNpgsql(config.GetConnectionString("default")));
+builder.Services.AddScoped<ILogRepos, LogRepos>();
+
+builder.Services.AddMassTransit(options =>
+{
+    options.AddConsumer<LogConsumer>();
+    options.AddBus(provider => Bus.Factory.CreateUsingRabbitMq(factoryCfg =>
     {
-        /// <summary>
-        /// Взаимодействие с таблицей логов в БД
-        /// </summary>
-        private static ILoggerRepos _logger;
-
-        /// <summary>
-        /// Массив цветов для чата
-        /// </summary>
-        private static readonly ConsoleColor[] _colors = (ConsoleColor[])Enum.GetValues(typeof(ConsoleColor));
-
-        static void Main(string[] args)
+        factoryCfg.Host("rabbitmq://localhost", hostCfg =>
         {
-            AppDomain.CurrentDomain.ProcessExit += new EventHandler(ExitMessage!);
-            StartMessage();
-            Connect();
-        }
-
-        /// <summary>
-        /// Подключение к очереди сообщений логов
-        /// </summary>
-        private static void Connect()
+            hostCfg.Username("guest");
+            hostCfg.Password("guest");
+        });
+        factoryCfg.ReceiveEndpoint("logs_create", endpointCfg =>
         {
-            try
-            {
-                using (LoggerContext db = new LoggerContext())
-                {
-                    _logger = new LoggerRepos(db);
-                    var factory = new ConnectionFactory() { HostName = "localhost" };
-                    using (var connection = factory.CreateConnection())
-                    {
-                        using (var channel = connection.CreateModel())
-                        {
-                            channel.ExchangeDeclare(
-                                exchange: "direct_logs",
-                                type: ExchangeType.Direct);
+            endpointCfg.PrefetchCount = 16;
+            endpointCfg.UseMessageRetry(msgCfg => msgCfg.Interval(4, 1000));
+            endpointCfg.ConfigureConsumer<LogConsumer>(provider);
+        });
+    }));
+});
 
-                            string queueName = channel.QueueDeclare().QueueName;
-                            channel.QueueBind(
-                                queue: queueName,
-                                exchange: "direct_logs",
-                                routingKey: "error");
+#endregion
 
-                            var consumer = new EventingBasicConsumer(channel);
-                            consumer.Received += (sender, args) =>
-                            {
-                                _logger.Log(JsonSerializer.Deserialize<LogModel>(Encoding.UTF8.GetString(args.Body.ToArray()))!);
-                                PrintMessage();
-                            };
 
-                            channel.BasicConsume(
-                                queue: queueName,
-                                autoAck: true,
-                                consumer: consumer);
 
-                            Console.ReadLine();
+#region app
 
-                            channel.Close();
-                        }
-                        connection.Close();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                ExitErrorMessage(ex);
-            }
-        }
+var app = builder.Build();
 
-        private static void StartMessage()
-        {
-            Console.ForegroundColor = _colors[4];
-            Console.WriteLine("========================");
-            Console.WriteLine("=== API.Logger.Error ===");
-            Console.WriteLine("========================");
-            Console.ResetColor();
-        }
-        
-        private static void PrintMessage()
-        {
-            Console.ForegroundColor = _colors[7];
-            Console.WriteLine($">>{DateTime.Now}\tНовый отчёт об ошибке готов и отправлен в БД");
-            Console.ResetColor();
-        }
-        
-        private static void ExitMessage(object sender, EventArgs e)
-        {
-            Console.ForegroundColor = _colors[11];
-            Console.WriteLine(">>Работа логгера успешно завершена");
-            Console.ResetColor();
-        }
-
-        private static void ExitErrorMessage(Exception ex) 
-        {
-            Console.ForegroundColor = _colors[11];
-            Console.WriteLine($">>Работа логгера аварийно завершена по причине: {ex.Message}");
-            Console.ResetColor();
-        }
-    }
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
+app.UseCors("AllOrigins");
+app.UseHttpsRedirection();
+app.MapControllers();
+app.Run();
+
+#endregion
+
+

@@ -22,6 +22,15 @@ namespace db.v1.context.profiles.Repos.Profiles
         public bool IsProfileExist(int id);
 
         /// <summary>
+        /// Добавить новый профиль пользователя
+        /// </summary>
+        /// <param name="userID">Идентификатор аккаунта пользователя</param>
+        /// <param name="surname">Фамилия пользователя</param>
+        /// <param name="name">Имя пользователя</param>
+        /// <param name="patronymic">Отчество пользователя</param>
+        public void AddProfile(int userID, string surname, string name, string? patronymic);
+
+        /// <summary>
         /// Получить базовую информацию о профиле пользователя
         /// </summary>
         /// <param name="id">Идентификатор пользователя</param>

@@ -1,12 +1,11 @@
-﻿using System.Text;
-using System.Text.Json;
-using RabbitMQ.Client;
+﻿using MassTransit;
+using db.v1.context.logs.Models;
 namespace api.service.data.Middlewares
 {
     /// <summary>
     /// МиддлВаря-обработчик ошибок
     /// </summary>
-    public sealed class ExceptionHandlingMiddleware : IDisposable
+    public sealed class ExceptionHandlingMiddleware
     {
         /// <summary>
         /// Обрабатываемый запрос
@@ -14,25 +13,14 @@ namespace api.service.data.Middlewares
         private readonly RequestDelegate _next;
 
         /// <summary>
-        /// Подключение к брокеру сообщений
+        /// Взаимодействие с другими сервисами
         /// </summary>
-        private readonly IConnection _connection;
+        private readonly IBus _bus;
 
-        /// <summary>
-        /// Канал связи с сервисом логирования ошибок
-        /// </summary>
-        private readonly IModel _channel;
-
-        public ExceptionHandlingMiddleware(RequestDelegate next)
+        public ExceptionHandlingMiddleware(RequestDelegate next, IBus bus)
         {
             _next = next;
-
-            var factory = new ConnectionFactory() { HostName = "localhost" };
-            _connection = factory.CreateConnection();
-            _channel = _connection.CreateModel();
-            _channel.ExchangeDeclare(
-                 exchange: "direct_logs",
-                 type: ExchangeType.Direct);
+            _bus = bus;
         }
 
         /// <summary>
@@ -46,28 +34,16 @@ namespace api.service.data.Middlewares
             }
             catch (Exception ex)
             {
-                await context.Response.WriteAsJsonAsync(new 
-                { 
-                    statusCode = 500, 
-                    status = "Произошла непредвиденная ошибка. Повторите позже" 
+                await context.Response.WriteAsJsonAsync(new
+                {
+                    statusCode = 500,
+                    status = "Произошла непредвиденная ошибка. Повторите позже"
                 });
 
-                _channel.BasicPublish(
-                    exchange: "direct_logs",
-                    routingKey: "error",
-                    body: Encoding.UTF8.GetBytes(JsonSerializer.Serialize(
-                        new { ex.Message, ex.Source, ex.StackTrace },
-                        new JsonSerializerOptions() { WriteIndented = true })));
-                return;
-            }
-        }
+                ISendEndpoint endpoint = await _bus.GetSendEndpoint(new Uri("rabbitmq://localhost/logs_create"));
+                await endpoint.Send(new LogModel(ex.Message, ex.Source ?? "-1", ex.StackTrace ?? "-1"));
 
-        public void Dispose()
-        {
-            if (_connection.IsOpen)
-            {
-                _channel.Close();
-                _connection.Close();
+                return;
             }
         }
     }

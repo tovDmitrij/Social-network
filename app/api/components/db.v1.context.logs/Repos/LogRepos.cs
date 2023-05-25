@@ -4,14 +4,14 @@ namespace db.v1.context.logs.Repos
     /// <summary>
     /// Взаимодействие с таблицей логов
     /// </summary>
-    public sealed class LoggerRepos : ILoggerRepos
+    public sealed class LogRepos : ILogRepos
     {
         /// <summary>
         /// База данных логов
         /// </summary>
-        private readonly LoggerContext _db;
+        private readonly LogContext _db;
 
-        public LoggerRepos(LoggerContext db) => _db = db;
+        public LogRepos(LogContext db) => _db = db;
 
         public void Log(LogModel log)
         {

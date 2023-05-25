@@ -1,13 +1,13 @@
 ﻿using System.Text;
-using System.Text.Json;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using RabbitMQ.Client;
+using MassTransit;
 using api.v1.service.auth.Models;
 using db.v1.context.auth.Repos;
+using db.v1.context.profiles.Models.Profiles.BaseInfo;
 using misc.jwt;
 namespace api.v1.service.auth.Controllers
 {
@@ -16,7 +16,7 @@ namespace api.v1.service.auth.Controllers
     /// </summary>
     [ApiController]
     [Route("api/v1/[controller]")]
-    public sealed class AuthController : ControllerBase, IDisposable
+    public sealed class AuthController : ControllerBase
     {
         /// <summary>
         /// Взаимодействие с аккаунтами пользователей
@@ -29,26 +29,15 @@ namespace api.v1.service.auth.Controllers
         private readonly IConfiguration _config;
 
         /// <summary>
-        /// Подключение к брокеру сообщений
+        /// Взаимодействие с другими сервисами
         /// </summary>
-        private readonly IConnection _connection;
+        private readonly IBus _bus;
 
-        /// <summary>
-        /// Канал связи с сервисом профилей пользователей
-        /// </summary>
-        private readonly IModel _channel;
-
-        public AuthController(IAuthRepos auth, IConfiguration configuration)
+        public AuthController(IAuthRepos auth, IConfiguration configuration, IBus bus)
         {
             _auth = auth;
             _config = configuration;
-
-            var factory = new ConnectionFactory() { HostName = "localhost" };
-            _connection = factory.CreateConnection();
-            _channel = _connection.CreateModel();
-            _channel.ExchangeDeclare(
-                exchange: "direct_profiles",
-                type: ExchangeType.Direct);
+            _bus = bus;
         }
 
 
@@ -64,7 +53,7 @@ namespace api.v1.service.auth.Controllers
         /// <param name="name">Имя пользователя</param>
         /// <param name="patronymic">Отчество пользователя</param>
         [HttpPost("SignUp")]
-        public IActionResult SignUp(string email, string password, string surname, string name, string? patronymic)
+        public async Task<IActionResult> SignUp(string email, string password, string surname, string name, string? patronymic)
         {
             switch (_auth.IsEmailBusy(email))
             {
@@ -72,12 +61,10 @@ namespace api.v1.service.auth.Controllers
                     return StatusCode(406, new { status = "Почта уже занята другим пользователем" });
 
                 case false:
-                    int user_id = _auth.AddAccount(email, password);
+                    int userID = _auth.AddAccount(email, password);
 
-                    _channel.BasicPublish(
-                        exchange: "direct_profiles",
-                        routingKey: "create",
-                        body: Encoding.UTF8.GetBytes(JsonSerializer.Serialize(new { user_id, surname, name, patronymic })));
+                    ISendEndpoint endpoint = await _bus.GetSendEndpoint(new Uri("rabbitmq://localhost/profiles_create"));
+                    await endpoint.Send(new ProfileBaseInfoModel(userID, surname, name, patronymic));
 
                     return StatusCode(200, new { status = "Новый аккаунт был успешно зарегистрирован" });
             }
@@ -120,7 +107,7 @@ namespace api.v1.service.auth.Controllers
         public IActionResult UpdateRefreshToken()
         {
             var user = _auth.GetAccountInfo(AuthToken.GetUserID(HttpContext.Request.Headers))!;
-            var refreshToken = Request.Cookies["refresh_token"]!;
+            var refreshToken = Request.Cookies["refresh_token"] ?? "-1";
 
             if (!_auth.IsTokenExist(user.ID, refreshToken))
             {
@@ -166,7 +153,7 @@ namespace api.v1.service.auth.Controllers
 
             var token = new JwtSecurityToken(
                 claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(24),
+                expires: DateTime.UtcNow.AddMinutes(5),
                 signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature));
             
             return new JwtSecurityTokenHandler().WriteToken(token);
@@ -179,18 +166,11 @@ namespace api.v1.service.auth.Controllers
         private RefreshToken CreateRefreshToken()
         {
             var refresh_token = new RefreshToken(Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)), DateTime.Now.AddDays(14), DateTime.Now);
-            Response.Cookies.Append("refresh_token", refresh_token.Value, new CookieOptions { HttpOnly = true, Expires = refresh_token.Expires });
+            Response.Cookies.Append("refresh_token", refresh_token.Value, new CookieOptions { 
+                Secure = true, 
+                HttpOnly = true, 
+                Expires = refresh_token.Expires });
             return refresh_token;
-        }
-
-        [NonAction]
-        public void Dispose()
-        {
-            if (_connection.IsOpen)
-            {
-                _channel.Close();
-                _connection.Close();
-            }
         }
     }
 }

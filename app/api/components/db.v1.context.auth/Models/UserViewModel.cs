@@ -19,7 +19,7 @@ namespace db.v1.context.auth.Models
         /// Идентификатор роли пользователя в системе
         /// </summary>
         [Required]
-        [Column("role_id)")]
+        [Column("role_id")]
         public int RoleID { get; set; }
 
         /// <summary>

@@ -1,12 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-
 namespace db.v1.context.profiles.Models.Profiles.Carrers
 {
     /// <summary>
     /// Подробная информация о карьере пользователя
     /// </summary>
-    [Table("view_profile_carrer")]
+    [Table("view_profile_carrers")]
     public sealed class ProfileCarrerViewModel
     {
         /// <summary>

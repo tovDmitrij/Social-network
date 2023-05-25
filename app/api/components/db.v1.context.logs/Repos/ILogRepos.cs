@@ -4,7 +4,7 @@ namespace db.v1.context.logs.Repos
     /// <summary>
     /// Взаимодействие с таблицей логов
     /// </summary>
-    public interface ILoggerRepos
+    public interface ILogRepos
     {
         /// <summary>
         /// Отправить новый отчёт об ошибке в базу данных

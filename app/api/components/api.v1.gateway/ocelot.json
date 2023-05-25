@@ -1,6 +1,6 @@
 {
   "GlobalConfiguration": {
-    "BaseURL": "https://localhost:7237"
+    "BaseURL": "https://localhost:7001"
   },
   "Routes": [
     {
@@ -11,7 +11,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 7179
+          "Port": 7003
         }
       ]
     },
@@ -23,7 +23,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 7164
+          "Port": 7005
         }
       ]
     }
