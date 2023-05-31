@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-
 namespace db.v1.context.profiles.Models.Profiles.Carrers
 {
     /// <summary>
@@ -65,7 +64,9 @@ namespace db.v1.context.profiles.Models.Profiles.Carrers
         /// <param name="job">Наименование должности</param>
         /// <param name="date_from">Дата начала карьеры</param>
         /// <param name="date_to">Дата окончания карьеры</param>
-        public ProfileCarrerModel(int id, int user_id, int city_id, string company, string? job, DateTime? date_from, DateTime? date_to) : this(user_id, city_id, company, job, date_from, date_to) => ID = id;
+        public ProfileCarrerModel(int id, int user_id, int city_id, string company, 
+                                  string? job, DateTime? date_from, DateTime? date_to) : 
+                                  this(user_id, city_id, company, job, date_from, date_to) => ID = id;
 
         /// <summary>
         /// Информация о карьере пользователя
@@ -76,7 +77,8 @@ namespace db.v1.context.profiles.Models.Profiles.Carrers
         /// <param name="job">Наименование должности</param>
         /// <param name="date_from">Дата начала карьеры</param>
         /// <param name="date_to">Дата окончания карьеры</param>
-        public ProfileCarrerModel(int user_id, int city_id, string company, string? job, DateTime? date_from, DateTime? date_to)
+        public ProfileCarrerModel(int user_id, int city_id, string company, 
+                                  string? job, DateTime? date_from, DateTime? date_to)
         {
             UserID = user_id;
             CityID = city_id;

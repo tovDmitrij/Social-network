@@ -77,17 +77,19 @@ namespace db.v1.context.profiles.Models.Profiles.BaseInfo
         /// <param name="avatar">Аватарка пользователя</param>
         /// <param name="status">Статус пользователя в его профиле</param>
         /// <param name="birthdate">Дата рождения пользователя</param>
-        public ProfileBaseInfoModel(int user_id, int? family_status_id, int? city_id, string surname, string name, string? patronymic, string? avatar, string? status, DateTime? birthdate)
+        public ProfileBaseInfoModel(int user_id, int? family_status_id, int? city_id, 
+                                    string surname, string name, string? patronymic, 
+                                    string? avatar, string? status, DateTime? birthdate)
         {
             UserID = user_id;
-            FamilyStatusID = family_status_id;
-            CityID = city_id;
             Surname = surname;
             Name = name;
             Patronymic = patronymic;
             Avatar = avatar;
-            Status = status;
             BirthDate = birthdate;
+            Status = status;
+            CityID = city_id;
+            FamilyStatusID = family_status_id;
         }
 
         /// <summary>

@@ -1,28 +1,19 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 namespace db.v1.context.profiles.Models.Profiles.BaseInfo
 {
     /// <summary>
     /// Базовая информация о профиле пользователя с подробностями
     /// </summary>
-    [Keyless]
     [Table("view_profile_base_info")]
     public sealed class ProfileBaseInfoViewModel
     {
         /// <summary>
         /// Идентификатор пользователя
         /// </summary>
-        [Required]
-        [Column("id")]
-        public int ID { get; set; }
-
-        /// <summary>
-        /// Дата регистрации пользователя
-        /// </summary>
-        [Required]
-        [Column("registration_date")]
-        public DateTime RegistrationDate { get; set; }
+        [Key]
+        [Column("user_id")]
+        public int UserID { get; set; }
 
         /// <summary>
         /// Фамилия пользователя
@@ -63,40 +54,58 @@ namespace db.v1.context.profiles.Models.Profiles.BaseInfo
         public DateTime? BirthDate { get; set; }
 
         /// <summary>
+        /// Идентификатор родного города пользователя
+        /// </summary>
+        [Column("city_id")]
+        public int? CityID { get; set; }
+
+        /// <summary>
         /// Родной город пользователя
         /// </summary>
-        [Column("city")]
-        public string? City { get; set; }
+        [Column("city_name")]
+        public string? CityName { get; set; }
+
+        /// <summary>
+        /// Идентификатор семейного положения пользователя
+        /// </summary>
+        [Column("family_status_id")]
+        public int? FamilyStatusID { get; set; }
 
         /// <summary>
         /// Статус отношений пользователя
         /// </summary>
-        [Column("family_status")]
-        public string? FamilyStatus { get; set; }
+        [Column("family_status_name")]
+        public string? FamilyStatusName { get; set; }
 
         /// <summary>
         /// Базовая информация о профиле пользователя с подробностями
         /// </summary>
-        /// <param name="id">Идентификатор пользователя</param>
-        /// <param name="registration_date">Дата регистрации пользователя</param>
+        /// <param name="user_id">Идентификатор пользователя</param>
         /// <param name="surname">Фамилия пользователя</param>
         /// <param name="name">Имя пользователя</param>
         /// <param name="patronymic">Отчество пользователя</param>
         /// <param name="avatar">Аватарка пользователя</param>
         /// <param name="birthdate">Дата рождения пользователя</param>
-        /// <param name="city">Родной город пользователя</param>
-        /// <param name="family_status">Статус отношений пользователя</param>
-        public ProfileBaseInfoViewModel(int id, DateTime registration_date, string surname, string name, string? patronymic, string? avatar, DateTime birthdate, string city, string family_status)
+        /// <param name="city_id">Идентификатор родного города пользователя</param>
+        /// <param name="city_name">Родной город пользователя</param>
+        /// <param name="family_status_id">Идентификатор семейного положения пользователя</param>
+        /// <param name="family_status_name">Статус отношений пользователя</param>
+
+        public ProfileBaseInfoViewModel(int user_id, string surname, string name, string? patronymic, string? avatar, 
+                                        string? status, DateTime? birthdate, int? city_id, string? city_name, 
+                                        int? family_status_id, string? family_status_name)
         {
-            ID = id;
-            RegistrationDate = registration_date;
+            UserID = user_id;
             Surname = surname;
             Name = name;
             Patronymic = patronymic;
             Avatar = avatar;
             BirthDate = birthdate;
-            City = city;
-            FamilyStatus = family_status;
+            Status = status;
+            CityID = city_id;
+            CityName = city_name;
+            FamilyStatusID = family_status_id;
+            FamilyStatusName = family_status_name;
         }
 
         /// <summary>

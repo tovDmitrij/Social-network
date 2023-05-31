@@ -72,7 +72,8 @@ namespace db.v1.context.profiles.Models.Profiles.Carrers
         /// <param name="job">Наименование должности</param>
         /// <param name="dateFrom">Дата начала карьеры</param>
         /// <param name="dateTo">Дата окончания карьеры</param>
-        public ProfileCarrerViewModel(int id, int user_id, int city_id, string city_name, string company, string? job, DateTime? dateFrom, DateTime? dateTo)
+        public ProfileCarrerViewModel(int id, int user_id, int city_id, string city_name, 
+                                      string company, string? job, DateTime? dateFrom, DateTime? dateTo)
         {
             ID = id;
             UserID = user_id;

@@ -32,7 +32,7 @@ namespace db.v1.context.profiles.Repos.Profiles
             .Any(profile => profile.UserID == id);
 
         public ProfileBaseInfoViewModel? GetProfileBaseInfo(int id) => _db.ViewProfileBaseInfo
-            .FirstOrDefault(user => user.ID == id);
+            .FirstOrDefault(user => user.UserID == id);
 
         public void ChangeStatus(int userID, string status)
         {
@@ -109,7 +109,8 @@ namespace db.v1.context.profiles.Repos.Profiles
 
         public void AddLanguage(int userID, int langID)
         {
-            _db.TableProfileLanguages.Add(new(userID, langID));
+            DateTime date = DateTime.Now;
+            _db.TableProfileLanguages.Add(new(userID, langID, date));
             _db.SaveChanges();
         }
 
@@ -138,7 +139,8 @@ namespace db.v1.context.profiles.Repos.Profiles
 
         public void AddLifePosition(int userID, int posID)
         {
-            _db.TableProfileLifePositions.Add(new(userID, posID));
+            DateTime date = DateTime.Now;
+            _db.TableProfileLifePositions.Add(new(userID, posID, date));
             _db.SaveChanges();
         }
 

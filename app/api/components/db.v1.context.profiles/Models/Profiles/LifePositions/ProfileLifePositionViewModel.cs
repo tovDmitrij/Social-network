@@ -1,15 +1,20 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 namespace db.v1.context.profiles.Models.Profiles.LifePositions
 {
     /// <summary>
     /// Подробная информация о жизненной позиции пользователя
     /// </summary>
-    [Keyless]
     [Table("view_profile_life_positions")]
     public sealed class ProfileLifePositionViewModel
     {
+        /// <summary>
+        /// Идентификатор связи между пользователем и выбранной жизненной позицией
+        /// </summary>
+        [Key]
+        [Column("id")]
+        public int ID { get; set; }
+
         /// <summary>
         /// Идентификатор пользователя
         /// </summary>
@@ -55,14 +60,17 @@ namespace db.v1.context.profiles.Models.Profiles.LifePositions
         /// <summary>
         /// Подробная информация о жизненной позиции пользователя
         /// </summary>
+        /// <param name="id">Идентификатор связи между пользователем и выбранной жизненной позицией</param>
         /// <param name="user_id">Идентификатор пользователя</param>
         /// <param name="type_id">Идентификатор типа жизненной позиции</param>
         /// <param name="type_name">Наименование типа жизненной позиции</param>
         /// <param name="position_id">Идентификатор жизненной позиции</param>
         /// <param name="position_name">Наименование жизненной позиции</param>
         /// <param name="date">Дата добавления жизненной позиции пользователем</param>
-        public ProfileLifePositionViewModel(int user_id, int type_id, string type_name, int position_id, string position_name, DateTime date)
+        public ProfileLifePositionViewModel(int id, int user_id, int type_id, string type_name, 
+                                            int position_id, string position_name, DateTime date)
         {
+            ID = id;
             UserID = user_id;
             TypeID = type_id;
             TypeName = type_name;

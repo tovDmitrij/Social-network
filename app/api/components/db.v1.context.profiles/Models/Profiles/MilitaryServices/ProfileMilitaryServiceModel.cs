@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-
 namespace db.v1.context.profiles.Models.Profiles.MilitaryServices
 {
     /// <summary>
@@ -58,7 +57,9 @@ namespace db.v1.context.profiles.Models.Profiles.MilitaryServices
         /// <param name="military_unit">Военная часть</param>
         /// <param name="date_from">Дата начала военной службы</param>
         /// <param name="date_to">Дата окончания военной службы</param>
-        public ProfileMilitaryServiceModel(int id, int user_id, int country_id, string military_unit, DateTime? date_from, DateTime? date_to) : this(user_id, country_id, military_unit, date_from, date_to) => ID = id;
+        public ProfileMilitaryServiceModel(int id, int user_id, int country_id, string military_unit, 
+                                           DateTime? date_from, DateTime? date_to) : 
+                                           this(user_id, country_id, military_unit, date_from, date_to) => ID = id;
 
         /// <summary>
         /// Информация о военной службе пользователя
@@ -68,7 +69,8 @@ namespace db.v1.context.profiles.Models.Profiles.MilitaryServices
         /// <param name="military_unit">Военная часть</param>
         /// <param name="date_from">Дата начала военной службы</param>
         /// <param name="date_to">Дата окончания военной службы</param>
-        public ProfileMilitaryServiceModel(int user_id, int country_id, string military_unit, DateTime? date_from, DateTime? date_to)
+        public ProfileMilitaryServiceModel(int user_id, int country_id, string military_unit, 
+                                           DateTime? date_from, DateTime? date_to)
         {
             UserID = user_id;
             CountryID = country_id;

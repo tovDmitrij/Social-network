@@ -132,21 +132,21 @@ create table if not exists user_profile_universities(
 
 --Представление, содержащее основную информацию о пользователе
 create or replace view view_profile_base_info as
-	select upmi.user_id id, upmi.surname, upmi.name, upmi.patronymic, upmi.avatar, upmi.status, upmi.birthdate, fs.name family_status, c.name city
+	select upmi.user_id, upmi.surname, upmi.name, upmi.patronymic, upmi.avatar, upmi.status, upmi.birthdate, c.id city_id, c.name city_name, fs.id family_status_id, fs.name family_status_name
 	from user_profile_main_info upmi
 		left join family_statuses fs on upmi.family_status_id = fs.id
 		left join cities c on c.id = upmi.city_id;
 		
 --Представление, содержащее выбранные языки пользователя
 create or replace view view_profile_languages as
-	select upmi.user_id, upl.language_id, l.name language_name, upl.date 
+	select upl.id, upmi.user_id, upl.language_id, l.name language_name, upl.date 
 	from user_profile_main_info upmi
 		right join user_profile_languages upl on upl.user_id = upmi.user_id
 		left join languages l on l.id = upl.language_id;
 
 --Представление, содержащее информацию и выбранных жизненных позициях пользователя
 create or replace view view_profile_life_positions as
-	select upmi.user_id, lp.type_id, lpt.name type_name, lp.id position_id, lp.name position_name, ulp.date
+	select ulp.id, upmi.user_id, lp.type_id, lpt.name type_name, lp.id position_id, lp.name position_name, ulp.date
 	from user_profile_main_info upmi
 		right join user_life_positions ulp on upmi.user_id = ulp.user_id
 		left join life_positions lp on ulp.life_position_id = lp.id
