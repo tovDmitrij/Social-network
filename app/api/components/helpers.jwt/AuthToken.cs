@@ -1,19 +1,14 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
-namespace misc.jwt
+namespace helpers.jwt
 {
     /// <summary>
     /// Взаимодействие с JWT-токеном
     /// </summary>
-    public static class AuthToken
+    public class AuthToken: IAuthServiceToken, IProfileServiceToken
     {
-
-        /// <summary>
-        /// Получить идентификатор пользователя из access-токена
-        /// </summary>
-        /// <param name="header">Запрос к API</param>
-        public static int GetUserID(IHeaderDictionary header)
+        public int GetUserID(IHeaderDictionary header)
         {
             try
             {
@@ -28,10 +23,6 @@ namespace misc.jwt
             }
         }
 
-        /// <summary>
-        /// Получить данные из access-токена
-        /// </summary>
-        /// <param name="token">Access-токен</param>
-        public static IEnumerable<Claim> GetClaims(string token) => new JwtSecurityTokenHandler().ReadJwtToken(token).Claims;
+        public IEnumerable<Claim> GetClaims(string token) => new JwtSecurityTokenHandler().ReadJwtToken(token).Claims;
     }
 }

@@ -6,9 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using MassTransit;
 using api.v1.service.auth.Models;
+using api.v1.service.auth.Helpers;
 using db.v1.context.auth.Repos;
 using db.v1.context.profiles.Models.Profiles.BaseInfo;
-using misc.jwt;
+using helpers.jwt;
 namespace api.v1.service.auth.Controllers
 {
     /// <summary>
@@ -21,7 +22,7 @@ namespace api.v1.service.auth.Controllers
         /// <summary>
         /// Взаимодействие с аккаунтами пользователей
         /// </summary>
-        private readonly IAuthRepos _auth;
+        private readonly IAuthRepos _authRepos;
 
         /// <summary>
         /// Конфиг с настройками
@@ -33,11 +34,17 @@ namespace api.v1.service.auth.Controllers
         /// </summary>
         private readonly IBus _bus;
 
-        public AuthController(IAuthRepos auth, IConfiguration configuration, IBus bus)
+        /// <summary>
+        /// Взаимодействие с JWT-токеном
+        /// </summary>
+        private readonly IAuthServiceToken _jwt;
+
+        public AuthController(IAuthRepos auth, IConfiguration configuration, IBus bus, IAuthServiceToken jwt)
         {
-            _auth = auth;
+            _authRepos = auth;
             _config = configuration;
             _bus = bus;
+            _jwt = jwt;
         }
 
 
@@ -55,13 +62,13 @@ namespace api.v1.service.auth.Controllers
         [HttpPost("SignUp")]
         public async Task<IActionResult> SignUp(string email, string password, string surname, string name, string? patronymic)
         {
-            switch (_auth.IsEmailBusy(email))
+            switch (_authRepos.IsEmailBusy(email))
             {
                 case true:
                     return StatusCode(406, new { status = "Почта уже занята другим пользователем" });
 
                 case false:
-                    int userID = _auth.AddAccount(email, password);
+                    int userID = _authRepos.AddAccount(email, SecurityHelper.HashPassword(email, password));
 
                     ISendEndpoint endpoint = await _bus.GetSendEndpoint(new Uri("rabbitmq://localhost/profiles_create"));
                     await endpoint.Send(new ProfileBaseInfoModel(userID, surname, name, patronymic));
@@ -78,13 +85,14 @@ namespace api.v1.service.auth.Controllers
         [HttpPost("SignIn")]
         public IActionResult SignIn(string email, string password)
         {
-            switch (_auth.IsAccountExist(email, password))
+            string hashPass = SecurityHelper.HashPassword(email, password);
+            switch (_authRepos.IsAccountExist(email, hashPass))
             {
                 case true:
-                    var user = _auth.GetAccountInfo(email, password)!;
+                    var user = _authRepos.GetAccountInfo(email, hashPass)!;
 
                     var refresh_token = CreateRefreshToken();
-                    _auth.AddToken(new(user.ID, refresh_token.Value, refresh_token.Created, refresh_token.Expires));
+                    _authRepos.AddToken(new(user.ID, refresh_token.Value, refresh_token.Created, refresh_token.Expires));
 
                     return StatusCode(200, new
                     {
@@ -106,26 +114,26 @@ namespace api.v1.service.auth.Controllers
         [HttpPost("Refresh")]
         public IActionResult UpdateRefreshToken()
         {
-            var user = _auth.GetAccountInfo(AuthToken.GetUserID(HttpContext.Request.Headers))!;
+            var user = _authRepos.GetAccountInfo(_jwt.GetUserID(HttpContext.Request.Headers))!;
             var refreshToken = Request.Cookies["refresh_token"] ?? "-1";
 
-            if (!_auth.IsTokenExist(user.ID, refreshToken))
+            if (!_authRepos.IsTokenExist(user.ID, refreshToken))
             {
                 return StatusCode(404, new
                 {
                     status = "Токен не был найден"
                 });
             }
-            if (!_auth.IsTokenExpired(user.ID, refreshToken))
+            if (!_authRepos.IsTokenExpired(user.ID, refreshToken))
             {
-                return StatusCode(403, new
+                return StatusCode(406, new
                 {
                     status = "Срок жизни токена истёк"
                 });
             }
 
             var refresh_token = CreateRefreshToken();
-            _auth.AddToken(new(user.ID, refresh_token.Value, refresh_token.Created, refresh_token.Expires));
+            _authRepos.AddToken(new(user.ID, refresh_token.Value, refresh_token.Created, refresh_token.Expires));
 
             return StatusCode(200, new
             {
@@ -163,9 +171,9 @@ namespace api.v1.service.auth.Controllers
         /// Создать refresh токен
         /// </summary>
         [NonAction]
-        private RefreshToken CreateRefreshToken()
+        private RefreshTokenModel CreateRefreshToken()
         {
-            var refresh_token = new RefreshToken(Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)), DateTime.Now.AddDays(14), DateTime.Now);
+            var refresh_token = new RefreshTokenModel(Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)), DateTime.Now.AddDays(14), DateTime.Now);
             Response.Cookies.Append("refresh_token", refresh_token.Value, new CookieOptions { 
                 Secure = true, 
                 HttpOnly = true, 

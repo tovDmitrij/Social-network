@@ -20,8 +20,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\components\db.v1.context.auth\db.v1.context.auth.csproj" />
     <ProjectReference Include="..\..\components\db.v1.context.logs\db.v1.context.logs.csproj" />
-    <ProjectReference Include="..\..\components\misc.jwt\misc.jwt.csproj" />
-    <ProjectReference Include="..\..\components\misc.security\misc.security.csproj" />
+    <ProjectReference Include="..\..\components\helpers.jwt\helpers.jwt.csproj" />
     <ProjectReference Include="..\api.v1.service.profiles\api.v1.service.profiles.csproj" />
   </ItemGroup>
 

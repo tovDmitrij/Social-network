@@ -15,8 +15,8 @@ namespace db.v1.context.auth.Repos
         /// Метод, проверяющий зарегистрирован ли аккаунт в системе
         /// </summary>
         /// <param name="email">Почта пользователя</param>
-        /// <param name="password">Пароль пользователя</param>
-        public bool IsAccountExist(string email, string password);
+        /// <param name="hashPass">Хешированный пароль пользователя</param>
+        public bool IsAccountExist(string email, string hashPass);
 
         /// <summary>
         /// Метод, проверяющий занятость кем-либо указанной почты
@@ -28,15 +28,15 @@ namespace db.v1.context.auth.Repos
         /// Добавить нового пользователя в систему
         /// </summary>
         /// <param name="email">Почта пользователя</param>
-        /// <param name="password">Пароль пользователя</param>
-        public int AddAccount(string email, string password);
+        /// <param name="hashPass">Хешированный пароль пользователя</param>
+        public int AddAccount(string email, string hashPass);
 
         /// <summary>
         /// Получить базовую информацию о пользователе
         /// </summary>
         /// <param name="email">Почта пользователя</param>
-        /// <param name="password">Пароль пользователя</param>
-        public UserViewModel? GetAccountInfo(string email, string password);
+        /// <param name="hashPass">Хешированный пароль пользователя</param>
+        public UserViewModel? GetAccountInfo(string email, string hashPass);
 
         /// <summary>
         /// Получить базовую информацию о пользователе

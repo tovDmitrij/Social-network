@@ -11,9 +11,9 @@ namespace api.v1.service.profiles.Consumers
         /// <summary>
         /// Взаимодействие с БД профилей пользователей
         /// </summary>
-        private readonly IProfileWrapper _db;
+        private readonly IProfileWrapper _profWrapper;
 
-        public ProfileConsumer(IProfileWrapper db) => _db = db;
+        public ProfileConsumer(IProfileWrapper db) => _profWrapper = db;
 
         /// <summary>
         /// Добавить профиль нового пользователя
@@ -22,7 +22,7 @@ namespace api.v1.service.profiles.Consumers
         public async Task Consume(ConsumeContext<ProfileBaseInfoModel> context)
         {
             var data = context.Message;
-            _db.Profiles.AddProfile(data.UserID, data.Surname, data.Name, data.Patronymic);
+            _profWrapper.Profiles.AddProfile(data.UserID, data.Surname, data.Name, data.Patronymic);
         }
     }
 }

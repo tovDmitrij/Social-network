@@ -1,4 +1,5 @@
-﻿using db.v1.context.dictionary.Models;
+﻿using db.v1.context.dictionary.Contexts.Interfaces;
+using db.v1.context.dictionary.Models;
 namespace db.v1.context.dictionary.Repos.Languages
 {
     /// <summary>
@@ -9,8 +10,8 @@ namespace db.v1.context.dictionary.Repos.Languages
         /// <summary>
         /// База данных словаря
         /// </summary>
-        private readonly DictionaryContext _db;
-        public LanguageRepos(DictionaryContext db) => _db = db;
+        private readonly ILanguageContext _db;
+        public LanguageRepos(ILanguageContext db) => _db = db;
 
         public bool IsLanguageExist(int langID) => _db.TableLanguages
             .Any(lang => lang.ID == langID);

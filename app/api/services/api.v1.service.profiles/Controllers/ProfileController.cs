@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using MassTransit;
 using db.v1.context.profiles.Wrappers;
-using db.v1.context.profiles.Models.Profiles.BaseInfo;
-using misc.jwt;
+using helpers.jwt;
 namespace api.service.profile.Controllers
 {
     /// <summary>
@@ -17,14 +15,23 @@ namespace api.service.profile.Controllers
         /// <summary>
         /// Взаимодействие с БД профилей пользователей
         /// </summary>
-        private readonly IProfileWrapper _db;
+        private readonly IProfileWrapper _profWrapper;
+
+        /// <summary>
+        /// Взаимодействие с JWT-токеном
+        /// </summary>
+        private readonly IProfileServiceToken _jwt;
 
         /// <summary>
         /// Получить идентификатор авторизованного пользователя
         /// </summary>
-        private int GetAuthUserID => AuthToken.GetUserID(HttpContext.Request.Headers);
+        private int GetAuthUserID => _jwt.GetUserID(HttpContext.Request.Headers);
 
-        public ProfileController(IProfileWrapper db) => _db = db;
+        public ProfileController(IProfileWrapper db, IProfileServiceToken jwt) 
+        { 
+            _profWrapper = db; 
+            _jwt = jwt;
+        }
 
 
         #region GET
@@ -36,7 +43,7 @@ namespace api.service.profile.Controllers
         public IActionResult GetBaseProfileInfo() => StatusCode(200, new
         {
             status = "Базовая информация о профиле пользователе была успешно сформирована",
-            data = _db.Profiles.GetProfileBaseInfo(GetAuthUserID)
+            data = _profWrapper.Profiles.GetProfileBaseInfo(GetAuthUserID)
         });
 
         /// <summary>
@@ -45,7 +52,7 @@ namespace api.service.profile.Controllers
         [HttpGet("Languages")]
         public IActionResult GetLanguagesInfo()
         {
-            var languages = _db.Profiles.GetLanguages(GetAuthUserID);
+            var languages = _profWrapper.Profiles.GetLanguages(GetAuthUserID);
             return languages.Any() ?
                 StatusCode(200, new 
                 { 
@@ -64,7 +71,7 @@ namespace api.service.profile.Controllers
         [HttpGet("LifePositions")]
         public IActionResult GetLifePositionsInfo()
         {
-            var positions = _db.Profiles.GetLifePositions(GetAuthUserID);
+            var positions = _profWrapper.Profiles.GetLifePositions(GetAuthUserID);
             return positions.Any() ?
                 StatusCode(200, new 
                 { 
@@ -83,7 +90,7 @@ namespace api.service.profile.Controllers
         [HttpGet("Carrers")]
         public IActionResult GetCarrersInfo()
         {
-            var carrers = _db.Profiles.GetCarrers(GetAuthUserID);
+            var carrers = _profWrapper.Profiles.GetCarrers(GetAuthUserID);
             return carrers.Any() ?
                 StatusCode(200, new 
                 { 
@@ -102,7 +109,7 @@ namespace api.service.profile.Controllers
         [HttpGet("Militaries")]
         public IActionResult GetMilitaryServicesInfo()
         {
-            var services = _db.Profiles.GetMilitaryServices(GetAuthUserID);
+            var services = _profWrapper.Profiles.GetMilitaryServices(GetAuthUserID);
             return services.Any() ?
                 StatusCode(200, new 
                 { 
@@ -120,12 +127,12 @@ namespace api.service.profile.Controllers
         /// Получить базовую информацию о профиле пользователя по его идентификатору
         /// </summary>
         /// <param name="user_id">Идентификатор пользователя</param>
-        [HttpGet("Base/{user_id:int}")]
-        public IActionResult GetBaseProfileInfo(int user_id) => _db.Profiles.IsProfileExist(user_id) ?
+        [HttpGet("{user_id:int}/Base")]
+        public IActionResult GetBaseProfileInfo(int user_id) => _profWrapper.Profiles.IsProfileExist(user_id) ?
             StatusCode(200, new 
             { 
                 status = "Базовая информация о профиле пользователе была успешно сформирована", 
-                data = _db.Profiles.GetProfileBaseInfo(user_id) 
+                data = _profWrapper.Profiles.GetProfileBaseInfo(user_id) 
             }) :
             StatusCode(404, new 
             { 
@@ -136,10 +143,10 @@ namespace api.service.profile.Controllers
         /// Получить список языков пользователя по его идентификатору
         /// </summary>
         /// <param name="user_id">Идентификатор пользователя</param>
-        [HttpGet("Languages/{user_id:int}")]
+        [HttpGet("{user_id:int}/Languages")]
         public IActionResult GetLanguagesInfo(int user_id)
         {
-            if (!_db.Profiles.IsProfileExist(user_id))
+            if (!_profWrapper.Profiles.IsProfileExist(user_id))
             {
                 return StatusCode(404, new 
                 { 
@@ -147,7 +154,7 @@ namespace api.service.profile.Controllers
                 });
             }
 
-            var languages = _db.Profiles.GetLanguages(user_id);
+            var languages = _profWrapper.Profiles.GetLanguages(user_id);
             return languages.Any() ?
                 StatusCode(200, new 
                 { 
@@ -164,10 +171,10 @@ namespace api.service.profile.Controllers
         /// Получить список жизненных позиций пользователя по его идентификатору
         /// </summary>
         /// <param name="user_id">Идентификатор пользователя</param>
-        [HttpGet("LifePositions/{user_id:int}")]
+        [HttpGet("{user_id:int}/LifePositions")]
         public IActionResult GetLifePositionsInfo(int user_id) 
         {
-            if (!_db.Profiles.IsProfileExist(user_id))
+            if (!_profWrapper.Profiles.IsProfileExist(user_id))
             {
                 return StatusCode(404, new
                 {
@@ -175,7 +182,7 @@ namespace api.service.profile.Controllers
                 });
             }
 
-            var positions = _db.Profiles.GetLifePositions(user_id);
+            var positions = _profWrapper.Profiles.GetLifePositions(user_id);
             return positions.Any() ?
                 StatusCode(200, new 
                 { 
@@ -192,10 +199,10 @@ namespace api.service.profile.Controllers
         /// Получить список карьер пользователя по его идентификатору
         /// </summary>
         /// <param name="user_id">Идентификатор пользователя</param>
-        [HttpGet("Carrers/{user_id:int}")]
+        [HttpGet("{user_id:int}/Carrers")]
         public IActionResult GetCarrersInfo(int user_id)
         {
-            if (!_db.Profiles.IsProfileExist(user_id))
+            if (!_profWrapper.Profiles.IsProfileExist(user_id))
             {
                 return StatusCode(404, new
                 {
@@ -203,7 +210,7 @@ namespace api.service.profile.Controllers
                 });
             }
 
-            var carrers = _db.Profiles.GetCarrers(user_id);
+            var carrers = _profWrapper.Profiles.GetCarrers(user_id);
             return carrers.Any() ?
                 StatusCode(200, new 
                 { 
@@ -220,10 +227,10 @@ namespace api.service.profile.Controllers
         /// Получить список ВС пользователя по его идентификатору
         /// </summary>
         /// <param name="user_id">Идентификатор пользователя</param>
-        [HttpGet("Militaries/{user_id:int}")]
+        [HttpGet("{user_id:int}/Militaries")]
         public IActionResult GetMilitaryServicesInfo(int user_id)
         {
-            if (!_db.Profiles.IsProfileExist(user_id))
+            if (!_profWrapper.Profiles.IsProfileExist(user_id))
             {
                 return StatusCode(404, new
                 {
@@ -231,7 +238,7 @@ namespace api.service.profile.Controllers
                 });
             }
 
-            var services = _db.Profiles.GetMilitaryServices(user_id);
+            var services = _profWrapper.Profiles.GetMilitaryServices(user_id);
             return services.Any() ?
                 StatusCode(200, new 
                 { 
@@ -259,14 +266,14 @@ namespace api.service.profile.Controllers
         {
             int user_id = GetAuthUserID;
 
-            if (!_db.Langs.IsLanguageExist(lang_id))
+            if (!_profWrapper.Langs.IsLanguageExist(lang_id))
             {
                 return StatusCode(404, new 
                 { 
                     status = "Языка с заданным идентификатором не существует" 
                 });
             }
-            if (_db.Profiles.IsLanguageAdded(user_id, lang_id))
+            if (_profWrapper.Profiles.IsLanguageAdded(user_id, lang_id))
             {
                 return StatusCode(406, new 
                 { 
@@ -274,7 +281,7 @@ namespace api.service.profile.Controllers
                 });
             }
 
-            _db.Profiles.AddLanguage(user_id, lang_id);
+            _profWrapper.Profiles.AddLanguage(user_id, lang_id);
             return StatusCode(200, new 
             { 
                 status = "Новый язык был успешно добавлен" 
@@ -291,19 +298,19 @@ namespace api.service.profile.Controllers
         {
             int user_id = GetAuthUserID;
 
-            if (!_db.Positions.IsLifePositionExist(type_id, pos_id))
+            if (!_profWrapper.Positions.IsLifePositionExist(type_id, pos_id))
             {
                 return StatusCode(404, new 
                 { 
                     status = "Жизненной позиции с заданным идентификатором не существует" 
                 });
             }
-            if (_db.Profiles.IsPositionTypeAdded(user_id, type_id))
+            if (_profWrapper.Profiles.IsPositionTypeAdded(user_id, type_id))
             {
-                _db.Profiles.RemoveLifePositionType(user_id, type_id);
+                _profWrapper.Profiles.RemoveLifePositionType(user_id, type_id);
             }
 
-            _db.Profiles.AddLifePosition(user_id, pos_id);
+            _profWrapper.Profiles.AddLifePosition(user_id, pos_id);
             return StatusCode(200, new 
             { 
                 status = "Новая жизненная позиция была успешно добавлена" 
@@ -323,14 +330,14 @@ namespace api.service.profile.Controllers
         {
             int user_id = GetAuthUserID;
 
-            if (!_db.Places.IsCityExist(city_id))
+            if (!_profWrapper.Places.IsCityExist(city_id))
             {
                 return StatusCode(404, new 
                 { 
                     status = "Города с заданным идентификатором не существует" 
                 });
             }
-            if (_db.Profiles.IsCarrerAdded(user_id, city_id, company, job, date_from, date_to))
+            if (_profWrapper.Profiles.IsCarrerAdded(user_id, city_id, company, job, date_from, date_to))
             {
                 return StatusCode(406, new 
                 { 
@@ -338,7 +345,7 @@ namespace api.service.profile.Controllers
                 });
             }
 
-            _db.Profiles.AddCarrer(user_id, city_id, company, job, date_from, date_to);
+            _profWrapper.Profiles.AddCarrer(user_id, city_id, company, job, date_from, date_to);
             return StatusCode(200, new 
             { 
                 status = "Новая карьера была успешно добавлена" 
@@ -357,14 +364,14 @@ namespace api.service.profile.Controllers
         {
             int user_id = GetAuthUserID;
 
-            if (!_db.Places.IsCountryExist(country_id))
+            if (!_profWrapper.Places.IsCountryExist(country_id))
             {
                 return StatusCode(404, new 
                 { 
                     status = "Страны с заданным идентификатором не существует" 
                 });
             }
-            if (_db.Profiles.IsMilitaryServiceAdded(user_id, country_id, unit, date_from, date_to))
+            if (_profWrapper.Profiles.IsMilitaryServiceAdded(user_id, country_id, unit, date_from, date_to))
             {
                 return StatusCode(406, new 
                 { 
@@ -372,7 +379,7 @@ namespace api.service.profile.Controllers
                 });
             }
 
-            _db.Profiles.AddMilitaryService(user_id, country_id, unit, date_from, date_to);
+            _profWrapper.Profiles.AddMilitaryService(user_id, country_id, unit, date_from, date_to);
             return StatusCode(200, new 
             { 
                 status = "Новая ВС была успешно добавлена" 
@@ -392,7 +399,7 @@ namespace api.service.profile.Controllers
         [HttpPut("Base/Status")]
         public IActionResult UpdateProfileStatus(string status)
         {
-            _db.Profiles.ChangeStatus(GetAuthUserID, status);
+            _profWrapper.Profiles.ChangeStatus(GetAuthUserID, status);
             return StatusCode(200, new 
             { 
                 status = "Статус пользователя в профиле был успешно обновлён" 
@@ -406,7 +413,7 @@ namespace api.service.profile.Controllers
         [HttpPut("Base/Avatar")]
         public IActionResult UpdateProfileAvatar(string avatar)
         {
-            _db.Profiles.ChangeAvatar(GetAuthUserID, avatar);
+            _profWrapper.Profiles.ChangeAvatar(GetAuthUserID, avatar);
             return StatusCode(200, new 
             { 
                 status = "Аватарка пользователя в профиле была успешно обновлена" 
@@ -420,7 +427,7 @@ namespace api.service.profile.Controllers
         [HttpPut("Base/City")]
         public IActionResult UpdateProfileCity(int city_id) 
         {
-            if (!_db.Places.IsCityExist(city_id))
+            if (!_profWrapper.Places.IsCityExist(city_id))
             {
                 return StatusCode(404, new 
                 { 
@@ -428,7 +435,7 @@ namespace api.service.profile.Controllers
                 });
             }
 
-            _db.Profiles.ChangeCity(GetAuthUserID, city_id);
+            _profWrapper.Profiles.ChangeCity(GetAuthUserID, city_id);
             return StatusCode(200, new 
             { 
                 status = "Город пользователя в профиле был успешно обновлён" 
@@ -442,7 +449,7 @@ namespace api.service.profile.Controllers
         [HttpPut("Base/FamilyStatus")]
         public IActionResult UpdateProfileFamilyStatus(int status_id) 
         {
-            if (!_db.Families.IsStatusExist(status_id))
+            if (!_profWrapper.Families.IsStatusExist(status_id))
             {
                 return StatusCode(404, new 
                 { 
@@ -450,7 +457,7 @@ namespace api.service.profile.Controllers
                 });
             }
 
-            _db.Profiles.ChangeFamilyStatus(GetAuthUserID, status_id);
+            _profWrapper.Profiles.ChangeFamilyStatus(GetAuthUserID, status_id);
             return StatusCode(200, new 
             { 
                 status = "Статус пользователя в профиле был успешно обновлён" 
@@ -464,7 +471,7 @@ namespace api.service.profile.Controllers
         [HttpPut("Base/Birthdate")]
         public IActionResult UpdateProfileBirthdate(DateTime date)
         {
-            _db.Profiles.ChangeBirthDate(GetAuthUserID, date);
+            _profWrapper.Profiles.ChangeBirthDate(GetAuthUserID, date);
             return StatusCode(200, new 
             { 
                 status = "Дата рождения пользователя в профиле была успешно обновлена" 
@@ -478,7 +485,7 @@ namespace api.service.profile.Controllers
         [HttpPut("Base/Surname")]
         public IActionResult UpdateProfileSurname(string surname)
         {
-            _db.Profiles.ChangeSurname(GetAuthUserID, surname);
+            _profWrapper.Profiles.ChangeSurname(GetAuthUserID, surname);
             return StatusCode(200, new 
             { 
                 status = "Фамилия пользователя в профиле была успешно обновлена" 
@@ -492,7 +499,7 @@ namespace api.service.profile.Controllers
         [HttpPut("Base/Name")]
         public IActionResult UpdateProfileName(string name)
         {
-            _db.Profiles.ChangeName(GetAuthUserID, name);
+            _profWrapper.Profiles.ChangeName(GetAuthUserID, name);
             return StatusCode(200, new
             {
                 status = "Имя пользователя в профиле было успешно обновлено"
@@ -506,7 +513,7 @@ namespace api.service.profile.Controllers
         [HttpPut("Base/Patronymic")]
         public IActionResult UpdateProfilePatronymic(string patronymic)
         {
-            _db.Profiles.ChangePatronymic(GetAuthUserID, patronymic);
+            _profWrapper.Profiles.ChangePatronymic(GetAuthUserID, patronymic);
             return StatusCode(200, new
             {
                 status = "Отчество пользователя в профиле было успешно обновлено"
@@ -525,14 +532,14 @@ namespace api.service.profile.Controllers
         [HttpPut("Carrers")]
         public IActionResult UpdateProfileCarrer(int carrer_id, int city_id, string company, string? job, DateTime? date_from, DateTime? date_to)
         {
-            if (!_db.Places.IsCityExist(city_id))
+            if (!_profWrapper.Places.IsCityExist(city_id))
             {
                 return StatusCode(404, new 
                 { 
                     status = "Города с заданным идентификатором не существует" 
                 });
             }
-            if (!_db.Profiles.IsCarrerAdded(GetAuthUserID, carrer_id))
+            if (!_profWrapper.Profiles.IsCarrerAdded(GetAuthUserID, carrer_id))
             {
                 return StatusCode(404, new 
                 { 
@@ -540,7 +547,7 @@ namespace api.service.profile.Controllers
                 });
             }
 
-            _db.Profiles.UpdateCarrer(carrer_id, city_id, company, job, date_from, date_to);
+            _profWrapper.Profiles.UpdateCarrer(carrer_id, city_id, company, job, date_from, date_to);
             return StatusCode(200, new 
             { 
                 status = "Обновление информации о карьере прошло успешно" 
@@ -558,14 +565,14 @@ namespace api.service.profile.Controllers
         [HttpPut("Militaries")]
         public IActionResult UpdateProfileMilitaryService(int service_id, int country_id, string military_unit, DateTime? date_from, DateTime? date_to)
         {
-            if (!_db.Places.IsCountryExist(country_id))
+            if (!_profWrapper.Places.IsCountryExist(country_id))
             {
                 return StatusCode(404, new 
                 { 
                     status = "Страны с заданным идентификатором не существует" 
                 });
             }
-            if (!_db.Profiles.IsMilitaryServiceAdded(GetAuthUserID, service_id))
+            if (!_profWrapper.Profiles.IsMilitaryServiceAdded(GetAuthUserID, service_id))
             {
                 return StatusCode(404, new
                 {
@@ -573,7 +580,7 @@ namespace api.service.profile.Controllers
                 });
             }
 
-            _db.Profiles.UpdateMilitaryService(service_id, country_id, military_unit, date_from, date_to);
+            _profWrapper.Profiles.UpdateMilitaryService(service_id, country_id, military_unit, date_from, date_to);
             return StatusCode(200, new 
             { 
                 status = "Обновление информации о ВС прошло успешно" 
@@ -595,14 +602,14 @@ namespace api.service.profile.Controllers
         {
             int user_id = GetAuthUserID;
 
-            if (!_db.Langs.IsLanguageExist(lang_id))
+            if (!_profWrapper.Langs.IsLanguageExist(lang_id))
             {
                 return StatusCode(404, new 
                 { 
                     status = "Языка с заданным идентификатором не существует" 
                 });
             }
-            if (!_db.Profiles.IsLanguageAdded(user_id, lang_id))
+            if (!_profWrapper.Profiles.IsLanguageAdded(user_id, lang_id))
             {
                 return StatusCode(406, new 
                 { 
@@ -610,7 +617,7 @@ namespace api.service.profile.Controllers
                 });
             }
 
-            _db.Profiles.RemoveLanguage(user_id, lang_id);
+            _profWrapper.Profiles.RemoveLanguage(user_id, lang_id);
             return StatusCode(200, new 
             { 
                 status = "Удаление языка из профиля пользователя прошло успешно" 
@@ -627,14 +634,14 @@ namespace api.service.profile.Controllers
         {
             int user_id = GetAuthUserID;
 
-            if (!_db.Positions.IsLifePositionExist(type_id, pos_id))
+            if (!_profWrapper.Positions.IsLifePositionExist(type_id, pos_id))
             {
                 return StatusCode(404, new 
                 { 
                     status = "Жизненной позиции в заданном типе не существует" 
                 });
             }
-            if (!_db.Profiles.IsPositionAdded(user_id, pos_id))
+            if (!_profWrapper.Profiles.IsPositionAdded(user_id, pos_id))
             {
                 return StatusCode(404, new 
                 { 
@@ -642,7 +649,7 @@ namespace api.service.profile.Controllers
                 });
             }
 
-            _db.Profiles.RemoveLifePosition(user_id, pos_id);
+            _profWrapper.Profiles.RemoveLifePosition(user_id, pos_id);
             return StatusCode(200, new 
             { 
                 status = "Удаление жизненной позиции прошло успешно" 
@@ -658,7 +665,7 @@ namespace api.service.profile.Controllers
         {
             int user_id = GetAuthUserID;
 
-            if (!_db.Profiles.IsCarrerAdded(user_id, carrer_id))
+            if (!_profWrapper.Profiles.IsCarrerAdded(user_id, carrer_id))
             {
                 return StatusCode(404, new 
                 { 
@@ -666,7 +673,7 @@ namespace api.service.profile.Controllers
                 });
             }
 
-            _db.Profiles.RemoveCarrer(user_id, carrer_id);
+            _profWrapper.Profiles.RemoveCarrer(user_id, carrer_id);
             return StatusCode(200, new 
             { 
                 status = "Удаление карьеры прошло успешно" 
@@ -682,7 +689,7 @@ namespace api.service.profile.Controllers
         {
             int user_id = GetAuthUserID;
 
-            if (!_db.Profiles.IsMilitaryServiceAdded(user_id, service_id))
+            if (!_profWrapper.Profiles.IsMilitaryServiceAdded(user_id, service_id))
             {
                 return StatusCode(404, new 
                 { 
@@ -690,7 +697,7 @@ namespace api.service.profile.Controllers
                 });
             }
 
-            _db.Profiles.RemoveMilitaryService(user_id, service_id);
+            _profWrapper.Profiles.RemoveMilitaryService(user_id, service_id);
             return StatusCode(200, new 
             { 
                 status = "Удаление ВС прошло успешно" 

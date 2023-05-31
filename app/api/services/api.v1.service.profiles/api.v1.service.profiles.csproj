@@ -20,7 +20,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\components\db.v1.context.logs\db.v1.context.logs.csproj" />
     <ProjectReference Include="..\..\components\db.v1.context.profiles\db.v1.context.profiles.csproj" />
-    <ProjectReference Include="..\..\components\misc.jwt\misc.jwt.csproj" />
+    <ProjectReference Include="..\..\components\helpers.jwt\helpers.jwt.csproj" />
   </ItemGroup>
 
 </Project>

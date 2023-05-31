@@ -1,4 +1,5 @@
-﻿using db.v1.context.profiles.Models.Dictionary;
+﻿using db.v1.context.profiles.Contexts.Interfaces;
+using db.v1.context.profiles.Models.Dictionary;
 namespace db.v1.context.profiles.Repos.FamilyStatuses
 {
     /// <summary>
@@ -9,9 +10,9 @@ namespace db.v1.context.profiles.Repos.FamilyStatuses
         /// <summary>
         /// База данных профилей пользователей
         /// </summary>
-        private readonly ProfileContext _db;
+        private readonly IFamilyStatusContext _db;
 
-        public FamilyStatusRepos(ProfileContext db) => _db = db;
+        public FamilyStatusRepos(IFamilyStatusContext db) => _db = db;
 
         public bool IsStatusExist(int statusID) => _db.TableFamilyStatuses
             .Any(status => status.ID == statusID);

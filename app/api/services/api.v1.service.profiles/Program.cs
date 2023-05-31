@@ -5,9 +5,10 @@ using Microsoft.IdentityModel.Tokens;
 using MassTransit;
 using api.service.profile.Middlewares;
 using api.service.profile.Controllers;
-using db.v1.context.profiles;
 using db.v1.context.profiles.Wrappers;
 using api.v1.service.profiles.Consumers;
+using db.v1.context.profiles.Contexts;
+using helpers.jwt;
 
 
 
@@ -45,6 +46,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<ProfileContext>(options => options.UseNpgsql(config.GetConnectionString("default")));
 builder.Services.AddScoped<IProfileWrapper, ProfileWrapper>();
+builder.Services.AddScoped<IProfileServiceToken, AuthToken>();
 
 builder.Services.AddMassTransit(options =>
 {

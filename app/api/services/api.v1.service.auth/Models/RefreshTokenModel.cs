@@ -6,5 +6,5 @@
     /// <param name="Value">Значение</param>
     /// <param name="Expires">Дата просрочки токена</param>
     /// <param name="Created">Дата создания токена</param>
-    internal record RefreshToken(string Value, DateTime Expires, DateTime Created);
+    internal record RefreshTokenModel(string Value, DateTime Expires, DateTime Created);
 }

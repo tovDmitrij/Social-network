@@ -1,4 +1,5 @@
-﻿using db.v1.context.profiles.Models.Profiles.BaseInfo;
+﻿using db.v1.context.profiles.Contexts.Interfaces;
+using db.v1.context.profiles.Models.Profiles.BaseInfo;
 using db.v1.context.profiles.Models.Profiles.Carrers;
 using db.v1.context.profiles.Models.Profiles.Languages;
 using db.v1.context.profiles.Models.Profiles.LifePositions;
@@ -13,9 +14,9 @@ namespace db.v1.context.profiles.Repos.Profiles
         /// <summary>
         /// База данных профилей пользователей
         /// </summary>
-        private readonly ProfileContext _db;
+        private readonly IProfileContext _db;
 
-        public ProfileRepos(ProfileContext db) => _db = db;
+        public ProfileRepos(IProfileContext db) => _db = db;
 
 
 

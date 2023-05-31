@@ -1,5 +1,4 @@
 ﻿using db.v1.context.auth.Models;
-using misc.security;
 namespace db.v1.context.auth.Repos
 {
     public sealed class AuthRepos : IAuthRepos
@@ -15,22 +14,22 @@ namespace db.v1.context.auth.Repos
 
         #region Аккаунты
 
-        public bool IsAccountExist(string email, string password) => _db.TableUsers
-            .Any(user => user.Email == email && user.Password == Security.HashPassword(email, password));
+        public bool IsAccountExist(string email, string hashPass) => _db.TableUsers
+            .Any(user => user.Email == email && user.Password == hashPass);
 
         public bool IsEmailBusy(string email) => _db.TableUsers
             .Any(user => user.Email == email);
 
-        public int AddAccount(string email, string password)
+        public int AddAccount(string email, string hashPass)
         {
-            var account = new UserModel(email, Security.HashPassword(email, password));
+            var account = new UserModel(email, hashPass);
             _db.TableUsers.Add(account);
             _db.SaveChanges();
             return account.ID;
         }
 
-        public UserViewModel? GetAccountInfo(string email, string password) => _db.ViewUsers
-            .FirstOrDefault(user => user.Email == email && user.Password == Security.HashPassword(email, password));
+        public UserViewModel? GetAccountInfo(string email, string hashPass) => _db.ViewUsers
+            .FirstOrDefault(user => user.Email == email && user.Password == hashPass);
 
         public UserViewModel? GetAccountInfo(int id) => _db.ViewUsers
             .FirstOrDefault(user => user.ID == id);

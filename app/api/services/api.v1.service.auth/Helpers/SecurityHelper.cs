@@ -1,11 +1,11 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
-namespace misc.security
+namespace api.v1.service.auth.Helpers
 {
     /// <summary>
-    /// Различные методы, обеспечивающие безопасность данных
+    /// Различные методы безопасности
     /// </summary>
-    public static class Security
+    public static class SecurityHelper
     {
         private const string SALT = "salt_secret_key";
 

@@ -11,14 +11,14 @@ namespace api.v1.service.logs.Consumers
         /// <summary>
         /// Взаимодействие с таблицей логов в БД
         /// </summary>
-        private readonly ILogRepos _db;
+        private readonly ILogRepos _logRepos;
 
-        public LogConsumer(ILogRepos db) => _db = db;
+        public LogConsumer(ILogRepos db) => _logRepos = db;
 
         /// <summary>
         /// Добавить новый лог в БД
         /// </summary>
         /// <param name="context">Информация об ошибке</param>
-        public async Task Consume(ConsumeContext<LogModel> context) => _db.Log(context.Message);
+        public async Task Consume(ConsumeContext<LogModel> context) => _logRepos.Log(context.Message);
     }
 }

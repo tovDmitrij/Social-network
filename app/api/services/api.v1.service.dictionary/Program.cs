@@ -2,9 +2,10 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using api.service.data.Middlewares;
+using api.service.dictionary.Middlewares;
 using db.v1.context.dictionary;
 using db.v1.context.dictionary.Wrappers;
+using MassTransit;
 
 
 
@@ -41,6 +42,18 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<DictionaryContext>(options => options.UseNpgsql(config.GetConnectionString("default")));
 builder.Services.AddScoped<IDictionaryWrapper, DictionaryWrapper>();
+
+builder.Services.AddMassTransit(options =>
+{
+    options.AddBus(provider => Bus.Factory.CreateUsingRabbitMq(factoryCfg =>
+    {
+        factoryCfg.Host("rabbitmq://localhost", hostCfg =>
+        {
+            hostCfg.Username("guest");
+            hostCfg.Password("guest");
+        });
+    }));
+});
 
 #endregion
 

@@ -1,4 +1,4 @@
-﻿using misc.jwt;
+﻿using helpers.jwt;
 namespace api.v1.service.profiles.Middlewares
 {
     /// <summary>
@@ -18,15 +18,15 @@ namespace api.v1.service.profiles.Middlewares
         /// </summary>
         public async Task InvokeAsync(HttpContext context)
         {
-            if (AuthToken.GetUserID(context.Request.Headers) == -1)
-            {
-                await context.Response.WriteAsJsonAsync(new
-                {
-                    statusCode = 401,
-                    status = "Токен пользователя повреждён или не соответствует действительности"
-                }, CancellationToken.None);
-                return;
-            }
+            //if (AuthToken.GetUserID(context.Request.Headers) == -1)
+            //{
+            //    await context.Response.WriteAsJsonAsync(new
+            //    {
+            //        statusCode = 401,
+            //        status = "Токен пользователя повреждён или не соответствует действительности"
+            //    }, CancellationToken.None);
+            //    return;
+            //}
 
             await _next(context);
         }

@@ -1,4 +1,5 @@
-﻿using db.v1.context.profiles.Models.Dictionary.Places;
+﻿using db.v1.context.profiles.Contexts.Interfaces;
+using db.v1.context.profiles.Models.Dictionary.Places;
 namespace db.v1.context.profiles.Repos.Places
 {
     /// <summary>
@@ -9,9 +10,9 @@ namespace db.v1.context.profiles.Repos.Places
         /// <summary>
         /// База данных профилей пользователей
         /// </summary>
-        private readonly ProfileContext _db;
+        private readonly IPlaceContext _db;
 
-        public PlaceRepos(ProfileContext db) => _db = db;
+        public PlaceRepos(IPlaceContext db) => _db = db;
 
 
 

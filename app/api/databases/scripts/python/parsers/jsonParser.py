@@ -1,15 +1,19 @@
 import json
 import codecs
-import db_info
+from db import ExecuteScript
+import enums
 
 
-def InsertData(path: str):
+def InsertData(path: str, db: enums.Databases):
     '''
-    Вставка в базу данных её базовой информации из JSON файла
+    Вставка в базу данных информации из JSON файла
 
     path - путь до JSON файла
+
+    db - в какую БД будут вставляться данные
     '''
     index = 0
+    sql = ""
     with codecs.open(path, 'r', encoding="utf-8") as FILE:
         FILE_DATA = json.load(FILE)
         for table in FILE_DATA["data"]:
@@ -33,20 +37,23 @@ def InsertData(path: str):
                         tableValues += ','
 
                 try:
-                    print(f"insert into {tableName}({tableAttributes}) values({tableValues})")
-                    db_info.DATABASE_CURSOR.execute(f"insert into {tableName}({tableAttributes}) values({tableValues})")
-                    db_info.DATABASE_CONNECTION.commit()
+                    sql = f"insert into {tableName}({tableAttributes}) values({tableValues})"
+                    print(sql)
+                    ExecuteScript(sql, db.value)
                 except Exception as e:
                     print(f"\033[91m>>>{e}\033[0m")
 
-def GrantPermissions(path: str, user: str):
+def GrantPermissions(path: str, user: str, db: enums.Databases):
     '''
     Выдача прав для пользователей базы данных
 
     path - путь до JSON файла
 
     user - пользователь, к-рому даются права
+
+    db - в какой БД будут выдаваться права
     '''
+    sql = ""
     with codecs.open(path, 'r', encoding="utf-8") as FILE:
         FILE_DATA = json.load(FILE)
         for table in FILE_DATA["data"]:
@@ -65,9 +72,9 @@ def GrantPermissions(path: str, user: str):
                 attributes += ")"
 
             try:
-                print(f"grant {dmlCommand} {attributes} on table {objectName} to {user}")
-                db_info.DATABASE_CURSOR.execute(f"\ngrant {dmlCommand} {attributes} on table {objectName} to {user}")
-                db_info.DATABASE_CONNECTION.commit()
+                sql = f"grant {dmlCommand} {attributes} on table {objectName} to {user}"
+                print(sql)
+                ExecuteScript(sql, db.value)
             except Exception as e:
                 print(f"\033[91m>>>{e}\033[0m")
                 return

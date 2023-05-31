@@ -1,6 +1,6 @@
 ﻿using MassTransit;
 using db.v1.context.logs.Models;
-namespace api.service.data.Middlewares
+namespace api.service.dictionary.Middlewares
 {
     /// <summary>
     /// МиддлВаря-обработчик ошибок

@@ -1,4 +1,5 @@
-﻿using db.v1.context.dictionary.Models.Places;
+﻿using db.v1.context.dictionary.Contexts.Interfaces;
+using db.v1.context.dictionary.Models.Places;
 namespace db.v1.context.dictionary.Repos.Places
 {
     /// <summary>
@@ -9,9 +10,9 @@ namespace db.v1.context.dictionary.Repos.Places
         /// <summary>
         /// База данных словаря
         /// </summary>
-        private readonly DictionaryContext _db;
+        private readonly IPlaceContext _db;
 
-        public PlaceRepos(DictionaryContext db) => _db = db;
+        public PlaceRepos(IPlaceContext db) => _db = db;
 
 
 

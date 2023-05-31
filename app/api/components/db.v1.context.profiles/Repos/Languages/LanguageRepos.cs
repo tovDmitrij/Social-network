@@ -1,4 +1,5 @@
-﻿using db.v1.context.profiles.Models.Dictionary;
+﻿using db.v1.context.profiles.Contexts.Interfaces;
+using db.v1.context.profiles.Models.Dictionary;
 namespace db.v1.context.profiles.Repos.Languages
 {
     /// <summary>
@@ -9,9 +10,9 @@ namespace db.v1.context.profiles.Repos.Languages
         /// <summary>
         /// База данных профилей пользователей
         /// </summary>
-        private readonly ProfileContext _db;
+        private readonly ILanguageContext _db;
 
-        public LanguageRepos(ProfileContext db) => _db = db;
+        public LanguageRepos(ILanguageContext db) => _db = db;
 
         public bool IsLanguageExist(int langID) => _db.TableLanguages
             .Any(lang => lang.ID == langID);

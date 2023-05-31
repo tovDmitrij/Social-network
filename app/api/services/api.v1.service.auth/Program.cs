@@ -6,6 +6,7 @@ using MassTransit;
 using api.v1.service.auth.Middlewares;
 using db.v1.context.auth.Repos;
 using db.v1.context.auth;
+using helpers.jwt;
 
 
 
@@ -43,6 +44,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<AuthContext>(options => options.UseNpgsql(config.GetConnectionString("default")));
 builder.Services.AddScoped<IAuthRepos, AuthRepos>();
+builder.Services.AddScoped<IAuthServiceToken, AuthToken>();
 
 builder.Services.AddMassTransit(options =>
 {

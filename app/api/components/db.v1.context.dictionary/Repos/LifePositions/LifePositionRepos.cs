@@ -1,4 +1,5 @@
-﻿using db.v1.context.dictionary.Models;
+﻿using db.v1.context.dictionary.Contexts.Interfaces;
+using db.v1.context.dictionary.Models;
 namespace db.v1.context.dictionary.Repos.LifePositions
 {
     /// <summary>
@@ -9,9 +10,9 @@ namespace db.v1.context.dictionary.Repos.LifePositions
         /// <summary>
         /// База данных словаря
         /// </summary>
-        private readonly DictionaryContext _db;
+        private readonly ILifePositionContext _db;
 
-        public LifePositionRepos(DictionaryContext db) => _db = db;
+        public LifePositionRepos(ILifePositionContext db) => _db = db;
 
         public bool IsLifePositionExist(int posID) => _db.ViewLifePositions
             .Any(pos => pos.PositionID == posID);
