@@ -4,6 +4,7 @@
 drop.sql    linguist-detectable=false
 insert.sql  linguist-detectable=false
 
-
-
-dump.sql    linguist-detectable=false
+Dockerfile.*  linguist-detectable=true
+Dockerfile.*  linguist-language=Dockerfile
+*.yaml        linguist-detectable=true
+*.yaml        linguist-language=YAML
