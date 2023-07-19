@@ -7,7 +7,7 @@ namespace api.service.dictionary.Controllers
     /// Получение различной справочной информации
     /// </summary>
     [ApiController]
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     public sealed class DictionaryController : ControllerBase
     {

@@ -2,11 +2,13 @@
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.IdentityModel.Tokens.Jwt;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using MassTransit;
-using api.v1.service.auth.Models;
 using api.v1.service.auth.Helpers;
+using api.v1.service.auth.Models;
+using api.v1.service.auth.Models.Requests;
 using db.v1.context.auth.Repos;
 using db.v1.context.profiles.Models.Profiles.BaseInfo;
 using helpers.jwt;
@@ -39,12 +41,19 @@ namespace api.v1.service.auth.Controllers
         /// </summary>
         private readonly IAuthServiceToken _jwt;
 
-        public AuthController(IAuthRepos auth, IConfiguration configuration, IBus bus, IAuthServiceToken jwt)
+        /// <summary>
+        /// Логгирование текста в консоль
+        /// </summary>
+        private readonly ILogger _logger;
+
+        public AuthController(IAuthRepos auth, IConfiguration configuration, IBus bus, 
+                              IAuthServiceToken jwt, ILogger<AuthController> logger)
         {
             _authRepos = auth;
             _config = configuration;
             _bus = bus;
             _jwt = jwt;
+            _logger = logger;
         }
 
 
@@ -54,42 +63,51 @@ namespace api.v1.service.auth.Controllers
         /// <summary>
         /// Регистрация нового пользователя в системе
         /// </summary>
-        /// <param name="email">Почта пользователя</param>
-        /// <param name="password">Пароль пользоватея</param>
-        /// <param name="surname">Фамилия пользователя</param>
-        /// <param name="name">Имя пользователя</param>
-        /// <param name="patronymic">Отчество пользователя</param>
         [HttpPost("SignUp")]
-        public async Task<IActionResult> SignUp(string email, string password, string surname, string name, string? patronymic)
+        public async Task<IActionResult> SignUp([FromBody][Required] SignUpRequestModel request)
         {
-            switch (_authRepos.IsEmailBusy(email))
+            switch (_authRepos.IsEmailBusy(request.Email))
             {
                 case true:
-                    return StatusCode(406, new { status = "Почта уже занята другим пользователем" });
+                    return StatusCode(409, new 
+                    { 
+                        status = "Почта уже занята другим пользователем" 
+                    });
 
                 case false:
-                    int userID = _authRepos.AddAccount(email, SecurityHelper.HashPassword(email, password));
+                    int userID = _authRepos.AddAccount(request.Email, SecurityHelper.HashPassword(request.Email, request.Password));
+
+                    var newProfile = new ProfileBaseInfoModel(userID, request.Surname, request.Name, request.Patronymic);
 
                     ISendEndpoint endpoint = await _bus.GetSendEndpoint(new Uri("rabbitmq://localhost/profiles_create"));
-                    await endpoint.Send(new ProfileBaseInfoModel(userID, surname, name, patronymic));
+                    await endpoint.Send(newProfile);
 
-                    return StatusCode(200, new { status = "Новый аккаунт был успешно зарегистрирован" });
+                    return StatusCode(201, new 
+                    { 
+                        status = "Новый аккаунт был успешно зарегистрирован" 
+                    });
             }
         }
 
         /// <summary>
         /// Авторизация пользователя в системе
         /// </summary>
-        /// <param name="email">Почта пользователя</param>
-        /// <param name="password">Пароль пользоватея</param>
         [HttpPost("SignIn")]
-        public IActionResult SignIn(string email, string password)
+        //[ValidateAntiForgeryToken]
+        public IActionResult SignIn([FromBody][Required] SignInRequestModel request)
         {
-            string hashPass = SecurityHelper.HashPassword(email, password);
-            switch (_authRepos.IsAccountExist(email, hashPass))
+            //_logger.LogInformation(
+            //    $"\tDate: {DateTime.Now:dd:MM:yyyy}\n" +
+            //    $"\tTime: {DateTime.Now:HH:mm:ss:ff}\n" +
+            //    $"\tIP: {HttpContext.Connection.RemoteIpAddress}\n" +
+            //    $"\tMethod: {HttpContext.Request.Method}\n" +
+            //    $"\tEndpoint: {HttpContext.Request.Path}");
+
+            string hashPass = SecurityHelper.HashPassword(request.Email, request.Password);
+            switch (_authRepos.IsAccountExist(request.Email, hashPass))
             {
                 case true:
-                    var user = _authRepos.GetAccountInfo(email, hashPass)!;
+                    var user = _authRepos.GetAccountInfo(request.Email, hashPass)!;
 
                     var refresh_token = CreateRefreshToken();
                     _authRepos.AddToken(new(user.ID, refresh_token.Value, refresh_token.Created, refresh_token.Expires));
@@ -101,7 +119,7 @@ namespace api.v1.service.auth.Controllers
                     });
 
                 case false:
-                    return StatusCode(404, new 
+                    return StatusCode(204, new 
                     { 
                         status = "Аккаунта с заданной почтой и паролем не существует" 
                     });
@@ -119,14 +137,14 @@ namespace api.v1.service.auth.Controllers
 
             if (!_authRepos.IsTokenExist(user.ID, refreshToken))
             {
-                return StatusCode(404, new
+                return StatusCode(409, new
                 {
                     status = "Токен не был найден"
                 });
             }
             if (!_authRepos.IsTokenExpired(user.ID, refreshToken))
             {
-                return StatusCode(406, new
+                return StatusCode(401, new
                 {
                     status = "Срок жизни токена истёк"
                 });
@@ -135,7 +153,7 @@ namespace api.v1.service.auth.Controllers
             var refresh_token = CreateRefreshToken();
             _authRepos.AddToken(new(user.ID, refresh_token.Value, refresh_token.Created, refresh_token.Expires));
 
-            return StatusCode(200, new
+            return StatusCode(201, new
             {
                 status = "Токен был успешно обновлён",
                 access_token = CreateAccessToken(user.ID.ToString(), user.RoleName)
@@ -144,7 +162,6 @@ namespace api.v1.service.auth.Controllers
         }
 
         #endregion
-
 
 
 

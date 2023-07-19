@@ -6,7 +6,7 @@ namespace api.v1.service.profiles.Consumers
     /// <summary>
     /// Взаимодействие с сервисом профилей пользователей
     /// </summary>
-    public class ProfileConsumer: IConsumer<ProfileBaseInfoModel>
+    public sealed class ProfileConsumer: IConsumer<ProfileBaseInfoModel>
     {
         /// <summary>
         /// Взаимодействие с БД профилей пользователей

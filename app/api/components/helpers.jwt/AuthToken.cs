@@ -6,7 +6,7 @@ namespace helpers.jwt
     /// <summary>
     /// Взаимодействие с JWT-токеном
     /// </summary>
-    public class AuthToken: IAuthServiceToken, IProfileServiceToken
+    public sealed class AuthToken: IAuthServiceToken, IProfileServiceToken
     {
         public int GetUserID(IHeaderDictionary header)
         {

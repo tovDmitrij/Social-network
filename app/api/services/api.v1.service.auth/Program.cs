@@ -38,10 +38,12 @@ builder.Services.AddCors(options =>
             policy.AllowAnyMethod().AllowAnyHeader().SetIsOriginAllowed(origin => true).AllowCredentials();
         });
 });
-builder.Services.AddAntiforgery(options =>
-{
-    options.SuppressXFrameOptionsHeader = true;
-});
+builder.Services.AddHealthChecks();
+//builder.Services.AddAntiforgery(options =>
+//{
+//    options.HeaderName = "X-XSRF-TOKEN";
+//    options.SuppressXFrameOptionsHeader = true;
+//});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -52,6 +54,7 @@ builder.Services.AddScoped<IAuthServiceToken, AuthToken>();
 
 builder.Services.AddMassTransit(options =>
 {
+    options.AddHealthChecks();
     options.AddBus(provider => Bus.Factory.CreateUsingRabbitMq(factoryCfg =>
     {
         factoryCfg.Host("rabbitmq://localhost", hostCfg =>
@@ -78,6 +81,8 @@ if (app.Environment.IsDevelopment())
 }
 app.UseCors("AllOrigins");
 app.UseMiddleware<ExceptionHandlingMiddleware>();
+app.UseMiddleware<HeadersMiddleware>();
+app.UseHealthChecks("/health");
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();

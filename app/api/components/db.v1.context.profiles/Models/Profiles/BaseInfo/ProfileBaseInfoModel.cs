@@ -99,7 +99,7 @@ namespace db.v1.context.profiles.Models.Profiles.BaseInfo
         /// <param name="surname">Фамилия пользователя</param>
         /// <param name="name">Имя пользователя</param>
         /// <param name="patronymic">Отчество пользователя</param>
-        public ProfileBaseInfoModel(int user_id, string surname, string name, string patronymic)
+        public ProfileBaseInfoModel(int user_id, string surname, string name, string? patronymic)
         {
             UserID = user_id;
             Surname = surname;
