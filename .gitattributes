@@ -7,4 +7,4 @@ insert.sql  linguist-detectable=false
 Dockerfile.*  linguist-detectable=true
 Dockerfile.*  linguist-language=Dockerfile
 *.yaml        linguist-detectable=true
-*.yaml        linguist-language=YAML
+*.yaml        linguist-language=Dockerfile

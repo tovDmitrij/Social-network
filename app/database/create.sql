@@ -11,31 +11,57 @@ create table if not exists app_user_roles(
 	tag		text not null
 ); create index on app_user_roles(id); create index on app_user_roles(tag);
 
-create table if not exists users(
+create table if not exists family_statuses(
+	id		serial					primary key,
+	name	text not null,
+	tag		text not null
+); create index on family_statuses(id); create index on family_statuses(tag);
+
+create table if not exists countries(
+	id		serial			primary key,
+	name	text not null,
+	tag		text not null
+); create index on countries(id); create index on countries(tag);
+
+create table if not exists regions(
 	id			serial				primary key,
-	role_id		integer 			references app_user_roles(id),
-	email		text not null,
-	password	text not null,
-	date		decimal not null
-); create index on users(id); create index on users(email, password);
+	country_id	integer not null	references countries(id),
+	name		text not null,
+	tag			text not null
+); create index on regions(id); create index on regions(country_id); create index on regions(tag);
 
-create table if not exists user_tokens(
-	user_id 	integer 			primary key references users(id),
-	token 		text not null,
-	create_date decimal not null,
-	expire_date decimal not null
-); create index on user_tokens(user_id);
+create table if not exists cities(
+	id			serial				primary key,
+	region_id 	integer not null	references regions(id),
+	name		text not null,
+	tag			text not null
+); create index on cities(id); create index on cities(region_id); create index on cities(tag);
 
-create table if not exists user_settings(
-    user_id                                     integer             primary key references users(id),
-    profile_is_private                          boolean not null,
-    friends_can_create_notes                    boolean not null,
-    friends_can_comment_notes                   boolean not null,
-    not_friends_can_create_notes                boolean not null,
-    not_friends_can_comment_notes               boolean not null,
-    not_friends_can_write_msg                   boolean not null,
-    not_friends_can_invite_into_conversation    boolean not null
-); create index on user_settings(user_id);
+create table if not exists users(
+	id					serial				primary key,
+	role_id				integer not null 	references app_user_roles(id),
+	email				text not null,
+	password			text not null,
+	reg_date			decimal not null,
+	refresh_token 		text,
+	token_create_date 	decimal,
+	token_expire_date 	decimal,
+
+	family_status_id	integer			references family_statuses(id),
+	city_id				integer			references cities(id),
+	surname				text not null,
+	name				text not null,
+	avatar				text,
+	status				text,
+	birthdate			decimal,
+	profile_url 		text,
+
+	profile_is_private			boolean default false not null,
+    friends_can_create_notes	boolean default true not null,
+    friends_can_comment_notes	boolean default true not null,
+    not_friends_can_write_msg	boolean default true not null
+); create index on users(id); create index on users(email, password); 
+create index on users(family_status_id); create index on users(city_id); create index on users(profile_url);
 
 create table if not exists life_position_types(
 	id		serial			primary key,
@@ -56,44 +82,6 @@ create table if not exists user_life_positions(
 	life_position_id	integer not null	references life_positions(id),
 	date				decimal not null
 ); create index on user_life_positions(user_id);
-
-create table if not exists family_statuses(
-	id		serial					primary key,
-	name	text not null,
-	tag		text not null
-); create index on family_statuses(id); create index on family_statuses(tag);
-
-create table if not exists countries(
-	id		integer			primary key,
-	name	text not null,
-	tag		text not null
-); create index on countries(id); create index on countries(tag);
-
-create table if not exists regions(
-	id			integer				primary key,
-	country_id	integer not null	references countries(id),
-	name		text not null,
-	tag			text not null
-); create index on regions(id); create index on regions(country_id); create index on regions(tag);
-
-create table if not exists cities(
-	id			integer				primary key,
-	region_id 	integer not null	references regions(id),
-	name		text not null,
-	tag			text not null
-); create index on cities(id); create index on cities(region_id); create index on cities(tag);
-
-create table if not exists user_base_info(
-	user_id				integer			primary key	references users(id),
-	family_status_id	integer			references family_statuses(id),
-	city_id				integer			references cities(id),
-	surname				text not null,
-	name				text not null,
-	patronymic			text,
-	avatar				text,
-	status				text,
-	birthdate			decimal
-); create index on user_base_info(user_id);
 
 create table if not exists user_careers(
 	id				serial				primary key,
@@ -171,13 +159,18 @@ create table if not exists university_faculties(
 create table if not exists user_universities(
 	id				serial				primary key,
 	user_id			integer not null	references users(id),
-	univercity_id	integer not null	references universities(id),
+	university_id	integer not null	references universities(id),
 	degree_id		integer				references study_degrees(id),
 	direction_id	integer				references study_directions(id),
 	study_form_id	integer				references study_forms(id),
 	date_from		decimal,
 	date_to			decimal
 ); create index on user_universities(user_id);
+
+
+--TODO
+
+
 
 create table if not exists user_banlists(
 	id 				serial 				primary key,
