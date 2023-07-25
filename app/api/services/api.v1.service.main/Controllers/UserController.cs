@@ -35,6 +35,13 @@ namespace api.v1.service.main.Controllers
         }
 
         [HttpPut("refresh")]
-        public IActionResult RefreshToken() => Ok(_userService.UpdateAccessToken(Request.Cookies["refresh_token"] ?? "-1"));
+        public IActionResult RefreshToken() 
+        {
+            var refreshToken = GetRefreshToken();
+            return Ok(_userService.UpdateAccessToken(refreshToken)); 
+        }
+
+        [NonAction]
+        private string GetRefreshToken() => Request.Cookies["refresh_token"] ?? "-1";
     }
 }

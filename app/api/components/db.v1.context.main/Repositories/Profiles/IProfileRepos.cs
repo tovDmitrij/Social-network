@@ -4,6 +4,6 @@ namespace db.v1.context.main.Repositories.Profiles
 {
     public interface IProfileRepos
     {
-        public ProfileBaseInfoDTO GetProfileBaseInfo(int userID);
+        public ProfileBaseInfoDTO GetProfileBaseInfo(Guid userID);
     }
 }

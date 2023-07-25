@@ -9,7 +9,7 @@ namespace db.v1.context.main.Repositories.Users
 
         public UserRepos(IUserContext users) => _db = users;
 
-        public void SignUp(string email, string hashedPass, decimal regDate, int roleID, string surname, string name, string profileURL)
+        public void SignUp(string email, string hashedPass, decimal regDate, Guid roleID, string surname, string name, string profileURL)
         {
             _db.Users.Add(new(roleID, email, hashedPass, regDate, surname, name, profileURL));
             _db.SaveChanges();

@@ -2,6 +2,6 @@
 {
     public interface IJWTHelper
     {
-        public int GetUserID(string token);
+        public Guid GetUserID(string token);
     }
 }

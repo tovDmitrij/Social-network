@@ -8,17 +8,17 @@ namespace db.v1.context.main.Entities.Users
     {
         [Key]
         [Column("id")]
-        public int ID { get; set; }
+        public Guid UUID { get; set; }
 
         [Required]
         [Column("role_id")]
-        public int RoleID { get; set; }
+        public Guid RoleID { get; set; }
 
         [Column("family_status_id")]
-        public int? FamilyStatusID { get; set; }
+        public Guid? FamilyStatusID { get; set; }
 
         [Column("city_id")]
-        public int? CityID { get; set; }
+        public Guid? CityID { get; set; }
 
         [Required]
         [Column("email")]
@@ -73,15 +73,15 @@ namespace db.v1.context.main.Entities.Users
         [Column("not_friends_can_write_msg")]
         public bool NotFriendsCanWriteMsg { get; set; } = true;
 
-        public UserEntity(int id, string token, decimal token_create_date, decimal token_expire_date)
+        public UserEntity(Guid id, string token, decimal token_create_date, decimal token_expire_date)
         {
-            ID = id;
+            UUID = id;
             Token = token;
             CreateDate = token_create_date;
             ExpireDate = token_expire_date;
         }
 
-        public UserEntity(int role_id, string email, string password, decimal reg_date, string surname, string name, string profile_url)
+        public UserEntity(Guid role_id, string email, string password, decimal reg_date, string surname, string name, string profile_url)
         {
             RoleID = role_id;
             Email = email;
@@ -92,15 +92,16 @@ namespace db.v1.context.main.Entities.Users
             ProfileURL = profile_url;
         }
 
-        public UserEntity(int id, int role_id, string email, string password, decimal reg_date, string surname, string name)
+        public UserEntity(Guid id, Guid role_id, string email, string password, decimal reg_date, string surname, string name, string profile_url)
         {
-            ID = id;
+            UUID = id;
             RoleID = role_id;
             Email = email;
             Password = password;
             RegDate = reg_date;
             Surname = surname;
             Name = name;
+            ProfileURL = profile_url;
         }
 
         public UserEntity() { }

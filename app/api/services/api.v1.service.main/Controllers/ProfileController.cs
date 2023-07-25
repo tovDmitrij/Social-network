@@ -14,6 +14,13 @@ namespace api.v1.service.main.Controllers
         public ProfileController(IProfileService profiles) => _profileService = profiles;
 
         [HttpGet("authorized")]
-        public IActionResult Index() => Ok(_profileService.GetProfileBaseInfo(HttpContext.Request.Headers.Authorization.ToString().Split(' ')[1]));
+        public IActionResult GetAuthProfileBaseInfo() 
+        {
+            var accessToken = GetAccessToken();
+            return Ok(_profileService.GetProfileBaseInfo(accessToken));
+        }
+
+        [NonAction]
+        private string GetAccessToken() => HttpContext.Request.Headers.Authorization.ToString().Split(' ')[1];
     }
 }

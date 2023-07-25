@@ -37,7 +37,7 @@ namespace api.v1.service.main.Services.Users
             _validateHelper.ValidateEmail(body.email);
             _validateHelper.ValidatePassword(body.password);
             _validateHelper.ValidateFullname($"{body.surname} {body.name}");
-;
+            
             var hashedPass = HashPasswordWithSaltSHA512(body.email, body.password);
 
             if (_userRepos.IsEmailBusy(body.email)) 
@@ -47,7 +47,7 @@ namespace api.v1.service.main.Services.Users
 
 
             var defaultProfileURL = CreateProfileDefaultURL(body.email);
-            var roleID = _dictRepos.GetAppUserRole("default")!.ID;
+            var roleID = _dictRepos.GetAppUserRole("default")!.UUID;
             var regDateTimestamp = _timestampHelper.GetCurrentTimestamp();
 
             _userRepos.SignUp(body.email, hashedPass, regDateTimestamp, roleID, body.surname, body.name, defaultProfileURL);
@@ -66,7 +66,7 @@ namespace api.v1.service.main.Services.Users
             }
 
             var refreshToken = CreateRefreshToken(body.email);
-            var userID = _userRepos.GetUserByRefreshToken(refreshToken)!.ID;
+            var userID = _userRepos.GetUserByRefreshToken(refreshToken)!.UUID;
             var accessToken = CreateAccessToken(userID);
 
             return new(accessToken, refreshToken);
@@ -80,13 +80,13 @@ namespace api.v1.service.main.Services.Users
                 throw new UnauthorizedException("Токен просрочен или повреждён. Пожалуйста, пройдите заново процесс авторизации");
             }
 
-            var userID = _userRepos.GetUserByRefreshToken(refreshToken)!.ID;
+            var userID = _userRepos.GetUserByRefreshToken(refreshToken)!.UUID;
             return CreateAccessToken(userID);
         }
 
 
 
-        private string CreateAccessToken(int userID)
+        private string CreateAccessToken(Guid userID)
         {
             var claims = new List<Claim> { new(ClaimTypes.Name, userID.ToString()) };
             var credentials = new SigningCredentials(

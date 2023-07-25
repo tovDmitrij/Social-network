@@ -7,11 +7,11 @@ namespace api.v1.service.main.Helpers.Validators
     public sealed class ValidateHelper : IUserValidateHelper
     {
         public void ValidateEmail(string email) =>
-            Validate(@"^([\.\-\_\w]+)@([\-\w]+)\.(\w+)$", email,
+            Validate(@"^[\w]+\@[\-\w]+\.[\w]+$", email,
                      "Почта не валидная. Пример: ivanov@mail.ru");
 
         public void ValidatePassword(string password) => 
-            Validate(@"^(\w){8,}$", password, 
+            Validate(@"^[\w]{8,}$", password, 
                      "Пароль не валидный. Разрешённые символы: буквы, цифры. Минимальная длина 8 символов");
 
         public void ValidateFullname(string fullname) => 

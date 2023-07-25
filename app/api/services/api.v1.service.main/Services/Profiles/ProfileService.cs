@@ -17,7 +17,7 @@ namespace api.v1.service.main.Services.Profiles
 
         public ProfileBaseInfoDTO GetProfileBaseInfo(string accessToken)
         {
-            int userID = _jwtHelper.GetUserID(accessToken);
+            var userID = _jwtHelper.GetUserID(accessToken);
 
             return _profileRepos.GetProfileBaseInfo(userID);
         }

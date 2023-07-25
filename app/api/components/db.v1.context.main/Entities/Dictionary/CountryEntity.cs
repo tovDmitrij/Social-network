@@ -2,16 +2,16 @@
 
 namespace db.v1.context.main.Entities.Dictionary
 {
-    [Table("app_user_roles")]
-    public sealed class AppUserRoleEntity : BaseDictionaryEntity
+    [Table("countries")]
+    public sealed class CountryEntity : BaseDictionaryEntity
     {
-        public AppUserRoleEntity(Guid id, string name, string tag)
+        public CountryEntity(Guid id, string name, string tag)
         {
             UUID = id;
             Name = name;
             Tag = tag;
         }
 
-        public AppUserRoleEntity() { }
+        public CountryEntity() { }
     }
 }

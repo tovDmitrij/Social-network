@@ -3,6 +3,7 @@ using api.v1.service.main.Helpers.Timestamps;
 using api.v1.service.main.Helpers.Validators;
 using api.v1.service.main.Helpers.Validators.Interfaces;
 using api.v1.service.main.Middlewares;
+using api.v1.service.main.Services.Dictionary;
 using api.v1.service.main.Services.Profiles;
 using api.v1.service.main.Services.Users;
 using db.v1.context.main.Contexts.Main;
@@ -66,6 +67,7 @@ void AddServices()
 {
     builder.Services.AddScoped<IUserService, UserService>();
     builder.Services.AddScoped<IProfileService, ProfileService>();
+    builder.Services.AddScoped<IDictionaryService, DictionaryService>();
 }
 void AddRepositories()
 {
