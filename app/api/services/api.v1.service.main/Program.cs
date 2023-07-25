@@ -1,5 +1,7 @@
 using api.v1.service.main.Helpers.JWT;
 using api.v1.service.main.Helpers.Timestamps;
+using api.v1.service.main.Helpers.Validators;
+using api.v1.service.main.Helpers.Validators.Interfaces;
 using api.v1.service.main.Middlewares;
 using api.v1.service.main.Services.Profiles;
 using api.v1.service.main.Services.Users;
@@ -58,6 +60,7 @@ void AddHelpers()
 {
     builder.Services.AddScoped<ITimestampHelper, TimestampHelper>();
     builder.Services.AddScoped<IJWTHelper, JWTHelper>();
+    builder.Services.AddScoped<IUserValidateHelper, ValidateHelper>();
 }
 void AddServices()
 {

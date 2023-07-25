@@ -1,6 +1,7 @@
 ﻿using api.v1.service.main.DTOs.Users;
 using api.v1.service.main.Exceptions;
 using api.v1.service.main.Helpers.Timestamps;
+using api.v1.service.main.Helpers.Validators.Interfaces;
 using db.v1.context.main.Repositories.Dictionary;
 using db.v1.context.main.Repositories.Users;
 using Microsoft.IdentityModel.Tokens;
@@ -15,27 +16,35 @@ namespace api.v1.service.main.Services.Users
     {
         private readonly IUserRepos _userRepos;
         private readonly IDictionaryRepos _dictRepos;
+        private readonly IUserValidateHelper _validateHelper;
         private readonly ITimestampHelper _timestampHelper;
         private readonly IConfiguration _cfg;
 
-        public UserService(IUserRepos users, IDictionaryRepos dict, IConfiguration cfg, ITimestampHelper timestamps)
+        public UserService(IUserRepos userRepos, IDictionaryRepos dictRepos, IConfiguration cfg, 
+                           ITimestampHelper timestampHelper, IUserValidateHelper validateHelper)
         {
-            _userRepos = users;
-            _dictRepos = dict;
+            _userRepos = userRepos;
+            _dictRepos = dictRepos;
             _cfg = cfg;
-            _timestampHelper = timestamps;
+            _timestampHelper = timestampHelper;
+            _validateHelper = validateHelper;
         }
         
 
 
         public void SignUp(UserSignUpDTO body)
         {
+            _validateHelper.ValidateEmail(body.email);
+            _validateHelper.ValidatePassword(body.password);
+            _validateHelper.ValidateFullname($"{body.surname} {body.name}");
+;
             var hashedPass = HashPasswordWithSaltSHA512(body.email, body.password);
 
             if (_userRepos.IsEmailBusy(body.email)) 
             { 
                 throw new ValidationException("Почта уже занята другим пользователем"); 
             }
+
 
             var defaultProfileURL = CreateProfileDefaultURL(body.email);
             var roleID = _dictRepos.GetAppUserRole("default")!.ID;
@@ -46,6 +55,9 @@ namespace api.v1.service.main.Services.Users
 
         public TokenDTO SignIn(UserSignInDTO body)
         {
+            _validateHelper.ValidateEmail(body.email);
+            _validateHelper.ValidatePassword(body.password);
+
             var hashedPass = HashPasswordWithSaltSHA512(body.email, body.password);
 
             if (!_userRepos.IsUserExist(body.email, hashedPass))
