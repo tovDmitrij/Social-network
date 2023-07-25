@@ -62,16 +62,16 @@ namespace db.v1.context.main.Entities.Users
         public decimal? BirthDate { get; set; }
 
         [Column("profile_is_private")]
-        public bool? ProfileIsPrivate { get; set; }
+        public bool ProfileIsPrivate { get; set; }
 
         [Column("friends_can_create_notes")]
-        public bool? FriendsCanCreateNotes { get; set; }
+        public bool FriendsCanCreateNotes { get; set; } = true;
 
         [Column("friends_can_comment_notes")]
-        public bool? FriendsCanCommentNotes { get; set; }
+        public bool FriendsCanCommentNotes { get; set; } = true;
 
         [Column("not_friends_can_write_msg")]
-        public bool? NotFroendsCanWriteMsg { get; set; }
+        public bool NotFriendsCanWriteMsg { get; set; } = true;
 
         public UserEntity(int id, string token, decimal token_create_date, decimal token_expire_date)
         {

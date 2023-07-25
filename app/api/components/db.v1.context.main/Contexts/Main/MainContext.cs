@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace db.v1.context.main.Contexts.Main
 {
-    public sealed class MainContext : DbContext, IUserContext, IDictionaryContext
+    public sealed class MainContext : DbContext, IUserContext, IDictionaryContext, IProfileContext
     {
         public DbSet<UserEntity> Users { get; set; }
 

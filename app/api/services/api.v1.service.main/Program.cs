@@ -1,4 +1,7 @@
+using api.v1.service.main.Helpers.JWT;
+using api.v1.service.main.Helpers.Timestamps;
 using api.v1.service.main.Middlewares;
+using api.v1.service.main.Services.Profiles;
 using api.v1.service.main.Services.Users;
 using db.v1.context.main.Contexts.Main;
 using db.v1.context.main.Contexts.Main.Interfaces;
@@ -46,26 +49,35 @@ builder.Services.AddCors(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+AddHelpers();
 AddServices();
 AddRepositories();
 AddContexts();
 
+void AddHelpers()
+{
+    builder.Services.AddScoped<ITimestampHelper, TimestampHelper>();
+    builder.Services.AddScoped<IJWTHelper, JWTHelper>();
+}
 void AddServices()
 {
     builder.Services.AddScoped<IUserService, UserService>();
+    builder.Services.AddScoped<IProfileService, ProfileService>();
 }
 void AddRepositories()
 {
     builder.Services.AddScoped<IUserRepos, UserRepos>();
-    builder.Services.AddScoped<IDictionaryRepos, DictionaryRepos>();
     builder.Services.AddScoped<IProfileRepos, ProfileRepos>();
+    builder.Services.AddScoped<IDictionaryRepos, DictionaryRepos>();
 }
 void AddContexts()
 {
     builder.Services.AddScoped<IUserContext, MainContext>();
+    builder.Services.AddScoped<IProfileContext, MainContext>();
     builder.Services.AddScoped<IDictionaryContext, MainContext>();
     builder.Services.AddDbContext<MainContext>(options => options.UseNpgsql(cfg.GetConnectionString("default")));
 }
+
 #endregion
 
 

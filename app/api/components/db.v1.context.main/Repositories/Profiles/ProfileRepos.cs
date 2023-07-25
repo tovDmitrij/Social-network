@@ -1,18 +1,17 @@
 ﻿using db.v1.context.main.Contexts.Main.Interfaces;
-using db.v1.context.main.Entities.Users;
+using db.v1.context.main.DTOs.Profiles;
 
 namespace db.v1.context.main.Repositories.Profiles
 {
     public sealed class ProfileRepos : IProfileRepos
     {
-        private readonly IUserContext _users;
+        private readonly IProfileContext _db;
 
-        public ProfileRepos(IUserContext users)
-        {
-            _users = users ?? throw new ArgumentNullException(nameof(users));
-        }
+        public ProfileRepos(IProfileContext db) => _db = db;
 
-        public UserEntity GetProfileInfo(int userID) => _users.Users
-            .First(x => x.ID == userID);
+        public ProfileBaseInfoDTO GetProfileBaseInfo(int userID) => _db.Users
+                .Where(x => x.ID == userID)
+                    .Select(x => new ProfileBaseInfoDTO(x.Surname, x.Name))
+                        .First();
     }
 }

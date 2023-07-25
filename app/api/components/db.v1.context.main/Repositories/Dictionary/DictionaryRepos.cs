@@ -5,14 +5,14 @@ namespace db.v1.context.main.Repositories.Dictionary
 {
     public sealed class DictionaryRepos : IDictionaryRepos
     {
-        private readonly IDictionaryContext _dict;
+        private readonly IDictionaryContext _db;
 
-        public DictionaryRepos(IDictionaryContext dict) => _dict = dict;
+        public DictionaryRepos(IDictionaryContext dict) => _db = dict;
 
-        public AppUserRoleEntity GetAppUserRole(string tag) => _dict.AppUserRoles
-            .First(x => x.Tag == tag);
+        public AppUserRoleEntity? GetAppUserRole(string tag) => _db.AppUserRoles
+            .FirstOrDefault(x => x.Tag == tag);
 
-        public List<AppUserRoleEntity> GetAppUserRoles() => _dict.AppUserRoles
+        public List<AppUserRoleEntity> GetAppUserRoles() => _db.AppUserRoles
             .ToList();
     }
 }
