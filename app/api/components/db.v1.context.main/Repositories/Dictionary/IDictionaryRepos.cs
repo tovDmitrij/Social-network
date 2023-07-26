@@ -7,16 +7,16 @@ namespace db.v1.context.main.Repositories.Dictionary
         public AppUserRoleEntity? GetAppUserRole(string tag);
         public List<AppUserRoleEntity> GetAppUserRoles();
 
-        public CountryEntity? GetCountry(Guid uuid);
-        public List<CountryEntity> GetCountryList();
+        public CountryEntity? GetCountry(int id);
+        public List<CountryEntity> GetCountries();
 
-        public RegionEntity? GetRegion(Guid uuid);
+        public RegionEntity? GetRegion(int id);
         public List<RegionEntity> GetRegions();
 
-        public CityEntity? GetCity(Guid uuid);
+        public CityEntity? GetCity(int id);
         public List<CityEntity> GetCities();
 
-        public FamilyStatusEntity? GetFamilyStatus(Guid uuid);
+        public FamilyStatusEntity? GetFamilyStatus(int id);
         public List<FamilyStatusEntity> GetFamilyStatuses();
     }
 }

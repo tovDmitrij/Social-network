@@ -1,39 +1,39 @@
 create extension if not exists "uuid-ossp";
 
 create table if not exists app_rules(
-	id uuid default uuid_generate_v4() primary key,
+	id serial primary key,
 	title text not null,
 	description text not null,
 	penalty text not null
 ); create index on app_rules(id);
 
 create table if not exists app_user_roles(
-	id uuid default uuid_generate_v4() primary key,
+	id serial primary key,
 	name text not null,
 	tag	text not null
 ); create index on app_user_roles(id); create index on app_user_roles(tag);
 
 create table if not exists family_statuses(
-	id uuid default uuid_generate_v4() primary key,
+	id serial primary key,
 	name text not null,
 	tag	text not null
 ); create index on family_statuses(id); create index on family_statuses(tag);
 
 create table if not exists countries(
-	id uuid default uuid_generate_v4() primary key,
+	id serial primary key,
 	name text not null,
 	tag	text not null
 ); create index on countries(id); create index on countries(tag);
 
 create table if not exists regions(
-	id uuid default uuid_generate_v4() primary key,
+	id serial primary key,
 	country_id uuid not null references countries(id),
 	name text not null,
 	tag	text not null
 ); create index on regions(id); create index on regions(country_id); create index on regions(tag);
 
 create table if not exists cities(
-	id uuid default uuid_generate_v4() primary key,
+	id serial primary key,
 	region_id uuid not null references regions(id),
 	name text not null,
 	tag text not null
@@ -49,8 +49,8 @@ create table if not exists users(
 	token_create_date decimal,
 	token_expire_date decimal,
 
-	family_status_id uuid references family_statuses(id),
-	city_id uuid references cities(id),
+	family_status_id integer references family_statuses(id),
+	city_id integer references cities(id),
 	surname text not null,
 	name text not null,
 	avatar text,

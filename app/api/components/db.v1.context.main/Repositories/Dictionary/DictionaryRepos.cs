@@ -12,16 +12,16 @@ namespace db.v1.context.main.Repositories.Dictionary
         public AppUserRoleEntity? GetAppUserRole(string tag) => _db.AppUserRoles.FirstOrDefault(x => x.Tag == tag);
         public List<AppUserRoleEntity> GetAppUserRoles() => _db.AppUserRoles.ToList();
 
-        public CountryEntity? GetCountry(Guid uuid) => _db.Countries.FirstOrDefault(x => x.UUID == uuid);
-        public List<CountryEntity> GetCountryList() => _db.Countries.ToList();
+        public CountryEntity? GetCountry(int id) => _db.Countries.FirstOrDefault(x => x.ID == id);
+        public List<CountryEntity> GetCountries() => _db.Countries.ToList();
 
-        public RegionEntity? GetRegion(Guid uuid) => _db.Regions.FirstOrDefault(x => x.UUID == uuid);
+        public RegionEntity? GetRegion(int id) => _db.Regions.FirstOrDefault(x => x.ID == id);
         public List<RegionEntity> GetRegions() => _db.Regions.ToList();
 
-        public CityEntity? GetCity(Guid uuid) => _db.Cities.FirstOrDefault(x => x.UUID == uuid);
+        public CityEntity? GetCity(int id) => _db.Cities.FirstOrDefault(x => x.ID == id);
         public List<CityEntity> GetCities() => _db.Cities.ToList();
 
-        public FamilyStatusEntity? GetFamilyStatus(Guid uuid) => _db.FamilyStatuses.FirstOrDefault(x => x.UUID == uuid);
+        public FamilyStatusEntity? GetFamilyStatus(int id) => _db.FamilyStatuses.FirstOrDefault(x => x.ID == id);
         public List<FamilyStatusEntity> GetFamilyStatuses() => _db.FamilyStatuses.ToList();
     }
 }

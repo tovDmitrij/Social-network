@@ -11,13 +11,29 @@ namespace api.v1.service.main.Controllers
     {
         private readonly IProfileService _profileService;
 
-        public ProfileController(IProfileService profiles) => _profileService = profiles;
+        public ProfileController(IProfileService profileService) => _profileService = profileService;
 
         [HttpGet("authorized")]
         public IActionResult GetAuthProfileBaseInfo() 
         {
             var accessToken = GetAccessToken();
             return Ok(_profileService.GetProfileBaseInfo(accessToken));
+        }
+
+        [HttpPost("city")]
+        public IActionResult SetCity(int cityID)
+        {
+            var accessToken = GetAccessToken();
+            _profileService.SetCity(accessToken, cityID);
+            return Ok();
+        }
+
+        [HttpPost("familyStatus")]
+        public IActionResult SetFamilyStatus(int familyStatusID)
+        {
+            var accessToken = GetAccessToken();
+            _profileService.SetFamilyStatus(accessToken, familyStatusID);
+            return Ok();
         }
 
         [NonAction]

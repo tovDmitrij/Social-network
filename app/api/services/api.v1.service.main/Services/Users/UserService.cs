@@ -38,17 +38,15 @@ namespace api.v1.service.main.Services.Users
             _validateHelper.ValidatePassword(body.password);
             _validateHelper.ValidateFullname($"{body.surname} {body.name}");
             
-            var hashedPass = HashPasswordWithSaltSHA512(body.email, body.password);
-
             if (_userRepos.IsEmailBusy(body.email)) 
             { 
                 throw new ValidationException("Почта уже занята другим пользователем"); 
             }
 
-
-            var defaultProfileURL = CreateProfileDefaultURL(body.email);
-            var roleID = _dictRepos.GetAppUserRole("default")!.UUID;
+            var defaultProfileURL = CreateProfileDefaultURL(body.email); //base64 -> serial??
+            var roleID = _dictRepos.GetAppUserRole("default")!.ID;
             var regDateTimestamp = _timestampHelper.GetCurrentTimestamp();
+            var hashedPass = HashPasswordWithSaltSHA512(body.email, body.password);
 
             _userRepos.SignUp(body.email, hashedPass, regDateTimestamp, roleID, body.surname, body.name, defaultProfileURL);
         }
@@ -124,6 +122,5 @@ namespace api.v1.service.main.Services.Users
             }
             return hashData.ToString();
         }
-    
     }
 }

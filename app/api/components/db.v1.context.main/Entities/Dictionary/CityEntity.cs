@@ -2,14 +2,14 @@
 
 namespace db.v1.context.main.Entities.Dictionary
 {
-    [Table("regions")]
+    [Table("cities")]
     public sealed class CityEntity : BaseDictionaryEntity
     {
-        public Guid RegionID { get; set; }
+        public int RegionID { get; set; }
 
-        public CityEntity(Guid id, Guid region_id, string name, string tag)
+        public CityEntity(int id, int region_id, string name, string tag)
         {
-            UUID = id;
+            ID = id;
             RegionID = region_id;
             Name = name;
             Tag = tag;

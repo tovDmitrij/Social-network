@@ -5,11 +5,11 @@ namespace db.v1.context.main.Entities.Dictionary
     [Table("regions")]
     public sealed class RegionEntity : BaseDictionaryEntity
     {
-        public Guid CountryID { get; set; }
+        public int CountryID { get; set; }
 
-        public RegionEntity(Guid id, Guid country_id, string name, string tag)
+        public RegionEntity(int id, int country_id, string name, string tag)
         {
-            UUID = id;
+            ID = id;
             CountryID = country_id;
             Name = name;
             Tag = tag;

@@ -5,9 +5,9 @@ namespace db.v1.context.main.Entities.Dictionary
     [Table("family_statuses")]
     public sealed class FamilyStatusEntity : BaseDictionaryEntity
     {
-        public FamilyStatusEntity(Guid id, string name, string tag)
+        public FamilyStatusEntity(int id, string name, string tag)
         {
-            UUID = id;
+            ID = id;
             Name = name;
             Tag = tag;
         }

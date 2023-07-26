@@ -7,7 +7,7 @@ namespace db.v1.context.main.Entities.Dictionary
     {
         [Key]
         [Column("id")]
-        public Guid UUID { get; set; }
+        public int ID { get; set; }
 
         [Required]
         [Column("name")]

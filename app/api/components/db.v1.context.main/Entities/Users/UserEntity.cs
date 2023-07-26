@@ -12,13 +12,13 @@ namespace db.v1.context.main.Entities.Users
 
         [Required]
         [Column("role_id")]
-        public Guid RoleID { get; set; }
+        public int RoleID { get; set; }
 
         [Column("family_status_id")]
-        public Guid? FamilyStatusID { get; set; }
+        public int? FamilyStatusID { get; set; }
 
         [Column("city_id")]
-        public Guid? CityID { get; set; }
+        public int? CityID { get; set; }
 
         [Required]
         [Column("email")]
@@ -73,6 +73,7 @@ namespace db.v1.context.main.Entities.Users
         [Column("not_friends_can_write_msg")]
         public bool NotFriendsCanWriteMsg { get; set; } = true;
 
+
         public UserEntity(Guid id, string token, decimal token_create_date, decimal token_expire_date)
         {
             UUID = id;
@@ -81,7 +82,8 @@ namespace db.v1.context.main.Entities.Users
             ExpireDate = token_expire_date;
         }
 
-        public UserEntity(Guid role_id, string email, string password, decimal reg_date, string surname, string name, string profile_url)
+
+        public UserEntity(int role_id, string email, string password, decimal reg_date, string surname, string name, string profile_url)
         {
             RoleID = role_id;
             Email = email;
@@ -92,7 +94,7 @@ namespace db.v1.context.main.Entities.Users
             ProfileURL = profile_url;
         }
 
-        public UserEntity(Guid id, Guid role_id, string email, string password, decimal reg_date, string surname, string name, string profile_url)
+        public UserEntity(Guid id, int role_id, string email, string password, decimal reg_date, string surname, string name, string profile_url)
         {
             UUID = id;
             RoleID = role_id;
@@ -103,6 +105,7 @@ namespace db.v1.context.main.Entities.Users
             Name = name;
             ProfileURL = profile_url;
         }
+
 
         public UserEntity() { }
     }

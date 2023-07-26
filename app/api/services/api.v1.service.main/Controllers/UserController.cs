@@ -13,7 +13,7 @@ namespace api.v1.service.main.Controllers
     {
         private readonly IUserService _userService;
 
-        public UserController(IUserService users) => _userService = users;
+        public UserController(IUserService userService) => _userService = userService;
 
         [HttpPost("signUp")]
         public IActionResult SignUp([FromBody][Required] UserSignUpDTO body) 
