@@ -1,0 +1,42 @@
+@property --x {
+    syntax: '<percentage>';
+    inherits: false;
+    initial-value: 0%;
+}
+
+@property --y {
+    syntax: '<percentage>';
+    inherits: false;
+    initial-value: 0%;
+}
+
+.background {
+    height: 100vh;
+
+    background: radial-gradient(ellipse farthest-corner at var(--x) var(--y),
+        #ecff72 0%, #dbf33b 8%, #cbde1b 25%, #dbde7e 62.5%, #fff1d2 100%);
+    animation: colorChange 25s infinite alternate;
+}
+
+@keyframes colorChange {
+    0% {
+        --x:0%;
+        --y:0%;
+    }
+    25% {
+        --x:25%;
+        --y:10%;
+    }
+    50% {
+        --x:50%;
+        --y:45%;
+    }
+    75% {
+        --x:75%;
+        --y:75%;
+    }
+    100% {
+        --x:100%;
+        --y:0%;
+    }
+}

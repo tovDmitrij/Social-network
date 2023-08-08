@@ -19,27 +19,29 @@ const SignUpForm = () => {
     })
 
     return (
-        <div className={styles.signUpForm}>
-            <form className='grid'>
-                <img src={appLogo} />
-                <h1>Регистрация</h1>
-                <input
-                    placeholder="Введите почту"
-                    onChange={e => setEmail(e.target.value)} />
-                <input
-                    placeholder="Введите пароль"
-                    onChange={e => setPassword(e.target.value)} />
-                <input
-                    placeholder="Введите фамилию"
-                    onChange={e => setSurname(e.target.value)} />
-                <input
-                    placeholder="Введите имя"
-                    onChange={e => setName(e.target.value)} />
-                <button 
-                    type='button' 
-                    onClick={SignUp}>Подтвердить</button>            
-            </form>
-        </div>
+        <>
+            <div className={styles.signUpForm}>
+                <form className='grid'>
+                    <img src={appLogo} />
+                    <h1>Регистрация</h1>
+                    <input
+                        placeholder="Введите почту"
+                        onChange={e => setEmail(e.target.value)} />
+                    <input
+                        placeholder="Введите пароль"
+                        onChange={e => setPassword(e.target.value)} />
+                    <input
+                        placeholder="Введите фамилию"
+                        onChange={e => setSurname(e.target.value)} />
+                    <input
+                        placeholder="Введите имя"
+                        onChange={e => setName(e.target.value)} />
+                    <button 
+                        type='button' 
+                        onClick={SignUp}>Подтвердить</button>            
+                </form>
+            </div>
+        </>
     )
 }
 

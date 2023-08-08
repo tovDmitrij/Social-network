@@ -21,7 +21,7 @@ namespace api.v1.service.main.Controllers
         public IActionResult SignUp([FromBody][Required] UserSignUpDTO body) 
         { 
             _userService.SignUp(body); 
-            return Ok(); 
+            return Ok("Пользователь был успешно зарегистрирован"); 
         }
 
         [HttpPost("signIn")]
@@ -30,8 +30,11 @@ namespace api.v1.service.main.Controllers
             var tokens = _userService.SignIn(body);
             Response.Cookies.Append("refresh_token", tokens.refresh_token, new CookieOptions
             {
+                HttpOnly = true,
                 Secure = true,
-                HttpOnly = true
+                SameSite = SameSiteMode.Strict,
+                Path = "/",
+                IsEssential = true,
             });
             return Ok(tokens.access_token);
         }
