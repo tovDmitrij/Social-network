@@ -13,14 +13,16 @@ namespace api.v1.service.main.Controllers
 
         public ProfileController(IProfileService profileService) => _profileService = profileService;
 
-        [HttpGet("authorized")]
+
+
+        [HttpGet("auth/base")]
         public IActionResult GetAuthProfileBaseInfo() 
         {
             var accessToken = GetAccessToken();
             return Ok(_profileService.GetProfileBaseInfo(accessToken));
         }
 
-        [HttpPost("city")]
+        [HttpPost("auth/city")]
         public IActionResult SetCity(int cityID)
         {
             var accessToken = GetAccessToken();
@@ -28,7 +30,7 @@ namespace api.v1.service.main.Controllers
             return Ok();
         }
 
-        [HttpPost("familyStatus")]
+        [HttpPost("auth/familyStatus")]
         public IActionResult SetFamilyStatus(int familyStatusID)
         {
             var accessToken = GetAccessToken();
@@ -36,7 +38,42 @@ namespace api.v1.service.main.Controllers
             return Ok();
         }
 
+        //TODO 
+
+        [HttpPost("auth/surname")]
+        public IActionResult SetSurname(string surname)
+        {
+            return Ok();
+        }
+
+        [HttpPost("auth/name")]
+        public IActionResult SetName(string name)
+        {
+            return Ok();
+        }
+
+        [HttpPost("auth/status")]
+        public IActionResult SetStatus(string status)
+        {
+            return Ok();
+        }
+
+        [HttpPost("auth/url")]
+        public IActionResult SetProfileURL(string profileURL)
+        {
+            return Ok();
+        }
+
+        [HttpPost("auth/birthdate")]
+        public IActionResult SetBirthdate(decimal  birthdate)
+        {
+            return Ok();
+        }
+
+
+
         [NonAction]
-        private string GetAccessToken() => HttpContext.Request.Headers.Authorization.ToString().Split(' ')[1];
+        private string GetAccessToken() => 
+            HttpContext.Request.Headers.Authorization.ToString().Split(' ')[1];
     }
 }

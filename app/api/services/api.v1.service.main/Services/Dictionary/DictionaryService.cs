@@ -11,22 +11,22 @@ namespace api.v1.service.main.Services.Dictionary
         public DictionaryService(IDictionaryRepos dictRepos) => _dictRepos = dictRepos;
 
 
-        public List<FamilyStatusEntity> GetFamilyStatuses() => CheckIfEmpty(_dictRepos.GetFamilyStatuses(), "Список семейных статусов пуст");
 
-        public List<CountryEntity> GetCountries() => CheckIfEmpty(_dictRepos.GetCountries(), "Список стран пуст");
+        public List<FamilyStatusEntity> GetFamilyStatuses() =>
+            CheckIfEmpty(_dictRepos.GetFamilyStatuses(), "Список семейных статусов пуст");
 
-        public List<RegionEntity> GetRegions() => CheckIfEmpty(_dictRepos.GetRegions(), "Список регионов пуст");
+        public List<CountryEntity> GetCountries() =>
+            CheckIfEmpty(_dictRepos.GetCountries(), "Список стран пуст");
 
-        public List<CityEntity> GetCities() => CheckIfEmpty(_dictRepos.GetCities(), "Список городов пуст");
+        public List<RegionEntity> GetRegions() =>
+            CheckIfEmpty(_dictRepos.GetRegions(), "Список регионов пуст");
+
+        public List<CityEntity> GetCities() =>
+            CheckIfEmpty(_dictRepos.GetCities(), "Список городов пуст");
 
 
-        private List<T> CheckIfEmpty<T>(List<T> data, string error) where T : BaseDictionaryEntity
-        {
-            if (!data.Any())
-            {
-                throw new NoContentException(error);
-            }
-            return data;
-        }
+
+        private static List<T> CheckIfEmpty<T>(List<T> data, string error) where T : BaseDictionaryEntity => 
+            data.Any() ? data : throw new NoContentException(error);
     }
 }

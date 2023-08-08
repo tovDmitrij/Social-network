@@ -109,9 +109,9 @@ namespace api.v1.service.main.Services.Users
             return refreshToken;
         }
         
-        private string CreateProfileDefaultURL(string email) => Convert.ToBase64String(Encoding.UTF8.GetBytes(email))[..^2];
+        private static string CreateProfileDefaultURL(string email) => Convert.ToBase64String(Encoding.UTF8.GetBytes(email))[..^2];
 
-        private string HashPasswordWithSaltSHA512(string email, string password)
+        private static string HashPasswordWithSaltSHA512(string email, string password)
         {
             const string SALT = "salt_secret_key";
             var bytes = SHA512.HashData(Encoding.UTF8.GetBytes($"{SALT}{email}{password}"));

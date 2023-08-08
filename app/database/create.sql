@@ -27,21 +27,21 @@ create table if not exists countries(
 
 create table if not exists regions(
 	id serial primary key,
-	country_id uuid not null references countries(id),
+	country_id integer not null references countries(id),
 	name text not null,
 	tag	text not null
 ); create index on regions(id); create index on regions(country_id); create index on regions(tag);
 
 create table if not exists cities(
 	id serial primary key,
-	region_id uuid not null references regions(id),
+	region_id integer not null references regions(id),
 	name text not null,
 	tag text not null
 ); create index on cities(id); create index on cities(region_id); create index on cities(tag);
 
 create table if not exists users(
 	id uuid default uuid_generate_v4() primary key,
-	role_id uuid not null references app_user_roles(id),
+	role_id integer not null references app_user_roles(id),
 	email text not null,
 	password text not null,
 	reg_date decimal not null,

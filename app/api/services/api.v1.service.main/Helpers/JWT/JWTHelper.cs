@@ -8,9 +8,11 @@ namespace api.v1.service.main.Helpers.JWT
         public Guid GetUserID(string token)
         {
             var claims = GetClaims(token);
-            return Guid.Parse(claims.First(x => x.Type == ClaimTypes.Name).Value);
+            var userID = claims.First(x => x.Type == ClaimTypes.Name).Value;
+            return Guid.Parse(userID);
         }
 
-        private IEnumerable<Claim> GetClaims(string token) => new JwtSecurityTokenHandler().ReadJwtToken(token).Claims;
+        private static IEnumerable<Claim> GetClaims(string token) => 
+            new JwtSecurityTokenHandler().ReadJwtToken(token).Claims;
     }
 }

@@ -15,6 +15,8 @@ namespace api.v1.service.main.Controllers
 
         public UserController(IUserService userService) => _userService = userService;
 
+
+
         [HttpPost("signUp")]
         public IActionResult SignUp([FromBody][Required] UserSignUpDTO body) 
         { 
@@ -41,7 +43,10 @@ namespace api.v1.service.main.Controllers
             return Ok(_userService.UpdateAccessToken(refreshToken)); 
         }
 
+
+
         [NonAction]
-        private string GetRefreshToken() => Request.Cookies["refresh_token"] ?? "-1";
+        private string GetRefreshToken() => 
+            Request.Cookies["refresh_token"] ?? "-1";
     }
 }
