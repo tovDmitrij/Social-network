@@ -1,6 +1,6 @@
 import SignInForm from "@/widgets/signInForm/index"
 import AppHeader from "@/widgets/header"
-import styles from './styles.module.scss'
+import styles from '@/shared/styles/backgrounds/animatedYellowEllipse/style.module.scss'
 
 const SignInPage = () => {
     return (

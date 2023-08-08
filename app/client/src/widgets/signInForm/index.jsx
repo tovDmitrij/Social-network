@@ -2,7 +2,7 @@ import { useState } from 'react'
 import useFetching from '@/shared/hooks/useFetching'
 import APIService from '@/shared/api/APIService'
 import styles from './styles.module.scss'
-import appLogo from '@/assets/app_logo.png'
+import appLogo from '@/assets/app_logo.webp'
 
 const SignInForm = () => {
     const [email, setEmail] = useState('')
