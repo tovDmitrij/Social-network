@@ -1,41 +1,67 @@
-@property --X {
+@property --x1 {
+    syntax: '<percentage>';
+    inherits: false;
+    initial-value: 0%;
+}
+@property --y1 {
     syntax: '<percentage>';
     inherits: false;
     initial-value: 0%;
 }
 
-@property --Y {
+@property --x2 {
+    syntax: '<percentage>';
+    inherits: false;
+    initial-value: 0%;
+}
+@property --y2 {
     syntax: '<percentage>';
     inherits: false;
     initial-value: 0%;
 }
 
+//#ecff72 0%, #dbf33b 8%, #cbde1b 25%, #dbde7e 62.5%, #fff1d2 100%
 .background {
     height: 100vh;
-    animation: backgroundColorChanger 25s infinite alternate;
-    background: radial-gradient(ellipse farthest-corner at var(--X) var(--Y), 
-        #ecff72 0%, #dbf33b 8%, #cbde1b 25%, #dbde7e 62.5%, #fff1d2 100%);
+    animation: backgroundColorChanger 20s infinite alternate;
+    background: 
+        radial-gradient(ellipse farthest-corner at var(--x1) var(--y1), 
+            rgb(235, 255, 115) 15%, transparent),
+        radial-gradient(ellipse farthest-corner at var(--x2) var(--y2), 
+            rgb(180, 125, 5) 15%, transparent),
+        radial-gradient(ellipse farthest-corner at 100% 100%, 
+            rgb(29, 15, 53) 100%, transparent);
 }
 
 @keyframes backgroundColorChanger {
     0% {
-        --X:0%;
-        --Y:0%;
+        --x1: 0%;
+        --y1: 0%;
+        --x2: 100%;
+        --y2: 50%;
     }
     25% {
-        --X:25%;
-        --Y:10%;
+        --x1: 25%;
+        --y1: 10%;
+        --x2: 75%;
+        --y2: 75%;
     }
     50% {
-        --X:50%;
-        --Y:45%;
+        --x1: 50%;
+        --y1: 45%;
+        --x2: 30%;
+        --y2: 100%;
     }
     75% {
-        --X:75%;
-        --Y:75%;
+        --x1: 75%;
+        --y1: 75%;
+        --x2: 35%;
+        --y2: 65%;
     }
     100% {
-        --X:100%;
-        --Y:50%;
+        --x1: 100%;
+        --y1: 50%;
+        --x2: 0%;
+        --y2: 50%;
     }
 }

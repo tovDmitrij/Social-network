@@ -1,12 +1,15 @@
 import SignUpForm from '@/widgets/signUpForm/index'
 import AppHeader from "@/widgets/header"
-import styles from '@/shared/styles/backgrounds/animatedYellowEllipse/style.module.scss'
+import backgroundStyles from '@/shared/styles/backgrounds/animatedYellowEllipse/style.module.scss'
+import styles from './styles.module.scss'
 
 const SignUpPage = () => {
     return (
-        <div className={styles.background}>
+        <div className={backgroundStyles.background}>
             <AppHeader />
-            <SignUpForm />
+            <div className={styles.signUpForm}>
+                <SignUpForm />
+            </div>
         </div>
     )
 }
