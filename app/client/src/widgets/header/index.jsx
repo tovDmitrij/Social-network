@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import ClientRoutes from '@/shared/routes/Routes.js'
 import styles from './styles.module.scss'
 
-const AppHeader = () => {
+const AppHeaderWidget = () => {
     return(
         <div className={styles.background}>
             {ClientRoutes.map(route =>
@@ -14,4 +14,4 @@ const AppHeader = () => {
     )
 }
 
-export default AppHeader;
+export default AppHeaderWidget;

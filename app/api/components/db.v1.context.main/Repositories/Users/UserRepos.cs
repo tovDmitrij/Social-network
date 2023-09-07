@@ -35,7 +35,7 @@ namespace db.v1.context.main.Repositories.Users
         public bool IsEmailBusy(string email) => _db.Users
             .Any(x => x.Email == email);
 
-        public bool IsRefreshTokenExpired(string refreshToken, decimal utcnow) => _db.Users
+        public bool IsRefreshTokenExpired(string refreshToken, decimal utcnow) => !_db.Users
             .Any(x => x.Token == refreshToken && x.ExpireDate < utcnow);
 
         public UserEntity? GetUserByRefreshToken(string refreshToken) => _db.Users

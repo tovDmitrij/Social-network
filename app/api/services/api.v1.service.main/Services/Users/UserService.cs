@@ -73,6 +73,7 @@ namespace api.v1.service.main.Services.Users
         public string UpdateAccessToken(string refreshToken)
         {
             var utcnow = _timestampHelper.GetCurrentTimestamp();
+
             if (_userRepos.IsRefreshTokenExpired(refreshToken, utcnow))
             {
                 throw new UnauthorizedException("Токен просрочен или повреждён. Пожалуйста, пройдите заново процесс авторизации");
@@ -93,7 +94,8 @@ namespace api.v1.service.main.Services.Users
 
             var accessToken = new JwtSecurityToken(
                 claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(5),
+                //expires: DateTime.UtcNow.AddMinutes(5),
+                expires: DateTime.UtcNow.AddSeconds(10),
                 signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(accessToken);

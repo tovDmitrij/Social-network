@@ -12,6 +12,7 @@ using db.v1.context.main.Repositories.Dictionary;
 using db.v1.context.main.Repositories.Profiles;
 using db.v1.context.main.Repositories.Users;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -39,11 +40,19 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+//builder.Services.AddCookiePolicy(options =>
+//{
+//    options.HttpOnly = HttpOnlyPolicy.None;
+//    options.Secure = CookieSecurePolicy.None;
+//    options.MinimumSameSitePolicy = SameSiteMode.None;
+
+//});
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(
         name: "ProtectedPolicy",
-        policy => policy.AllowAnyMethod().AllowAnyHeader().AllowCredentials().WithOrigins("https://localhost:3000"));
+        policy => policy.AllowAnyMethod().AllowAnyHeader().AllowCredentials().WithOrigins("https://localhost:5173"));
     options.AddPolicy(
         name: "PublicPolicy",
         policy => policy.AllowAnyMethod().AllowAnyHeader().AllowCredentials().SetIsOriginAllowed(origin => true));
@@ -101,6 +110,7 @@ app.UseMiddleware<CustomExceptionHandlerMiddleware>();
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
+//app.UseCookiePolicy();
 app.MapControllers();
 app.Run();
 

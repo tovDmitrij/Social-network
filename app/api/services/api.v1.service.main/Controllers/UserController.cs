@@ -30,18 +30,28 @@ namespace api.v1.service.main.Controllers
             var tokens = _userService.SignIn(body);
             Response.Cookies.Append("refresh_token", tokens.refresh_token, new CookieOptions
             {
-                HttpOnly = true,
-                Secure = true,
-                SameSite = SameSiteMode.Strict,
-                Path = "/",
-                IsEssential = true,
+                HttpOnly = false,
+                Secure = false,
+                SameSite = SameSiteMode.Strict
             });
             return Ok(tokens.access_token);
+
+            //Response.Cookies.Append("refresh_token", tokens.refresh_token, new CookieOptions
+            //{
+            //    HttpOnly = true,
+            //    Secure = true,
+            //    SameSite = SameSiteMode.Strict,
+            //    Path = "/",
+            //    IsEssential = true,
+            //});
         }
 
         [HttpPut("refresh")]
         public IActionResult RefreshToken() 
         {
+            var z = Request.Cookies.Select(x => x);
+            return Ok(z);
+
             var refreshToken = GetRefreshToken();
             return Ok(_userService.UpdateAccessToken(refreshToken)); 
         }
