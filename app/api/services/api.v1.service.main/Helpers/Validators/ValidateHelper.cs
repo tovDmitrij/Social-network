@@ -23,7 +23,7 @@ namespace api.v1.service.main.Helpers.Validators
             var rgx = new Regex(regex);
             if (!rgx.IsMatch(value))
             {
-                throw new ValidationException(error);
+                throw new BadRequestException(error);
             }
         }
     }

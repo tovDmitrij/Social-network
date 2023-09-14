@@ -35,15 +35,6 @@ namespace api.v1.service.main.Controllers
                 SameSite = SameSiteMode.Strict
             });
             return Ok(tokens.access_token);
-
-            //Response.Cookies.Append("refresh_token", tokens.refresh_token, new CookieOptions
-            //{
-            //    HttpOnly = true,
-            //    Secure = true,
-            //    SameSite = SameSiteMode.Strict,
-            //    Path = "/",
-            //    IsEssential = true,
-            //});
         }
 
         [HttpPut("refresh")]

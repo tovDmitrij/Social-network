@@ -33,7 +33,7 @@ namespace api.v1.service.main.Services.Profiles
         public void SetCity(string accessToken, int cityID)
         {
             var userID = GetAndCheckUserID(accessToken);
-            var city = _dictRepos.GetCity(cityID) ?? throw new ValidationException("Города с заданным идентификатором не существует");
+            var city = _dictRepos.GetCity(cityID) ?? throw new BadRequestException("Города с заданным идентификатором не существует");
 
             _profileRepos.SetCity(userID, city.ID);
         }
@@ -41,7 +41,7 @@ namespace api.v1.service.main.Services.Profiles
         public void SetFamilyStatus(string accessToken, int familyStatusID)
         {
             var userID = GetAndCheckUserID(accessToken);
-            var familyStatus = _dictRepos.GetFamilyStatus(familyStatusID) ?? throw new ValidationException("Семейного положения с заданным идентификатором не существует");
+            var familyStatus = _dictRepos.GetFamilyStatus(familyStatusID) ?? throw new BadRequestException("Семейного положения с заданным идентификатором не существует");
 
             _profileRepos.SetFamilyStatus(userID, familyStatus.ID);
         }

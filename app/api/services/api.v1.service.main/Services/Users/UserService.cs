@@ -40,7 +40,7 @@ namespace api.v1.service.main.Services.Users
             
             if (_userRepos.IsEmailBusy(body.email)) 
             { 
-                throw new ValidationException("Почта уже занята другим пользователем"); 
+                throw new BadRequestException("Почта уже занята другим пользователем"); 
             }
 
             var defaultProfileURL = CreateProfileDefaultURL(body.email); //base64 -> serial??
@@ -60,7 +60,7 @@ namespace api.v1.service.main.Services.Users
 
             if (!_userRepos.IsUserExist(body.email, hashedPass))
             {
-                throw new ValidationException("Пользователя с заданным логином и паролем не существует");
+                throw new BadRequestException("Пользователя с заданным логином и паролем не существует");
             }
 
             var refreshToken = CreateRefreshToken(body.email);

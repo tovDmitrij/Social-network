@@ -1,29 +1,7 @@
 import { useState, useEffect } from 'react'
 import styles from './styles.module.scss'
-
-const ProfileAboutModel = ({title, text}) => {
-    return (
-        <div className={`${styles.model} grid grid-cols-2`}>
-            <label>{title}</label>
-            <label>{text}</label>
-        </div>
-    )
-}
-
-const ProfileAboutModel2 = ({title, values}) => {
-    return (
-        <div className={`${styles.model} grid grid-cols-2`}>
-            <label>{title}</label>
-            <div className='flex'>
-                {values.map(value => (
-                    <label>{value}</label>
-                ))}
-            </div>
-        </div>
-    )
-}
-
-
+import ProfileManyModel from '@/models/profile/many'
+import ProfileAboutModel from '@/models/profile/about'
 
 const ProfileAboutWidget = () => {
     const [fullName, setFullName] = useState('')
@@ -34,11 +12,11 @@ const ProfileAboutWidget = () => {
     const [langs, setLangs] = useState([])
 
     useEffect(() => {
-        setFullName('Кузьмин Дмитрий')
+        setFullName('Ivanov Ivan')
         setStatus('Лучше уметь и не нуждаться, чем нуждаться и не уметь')
-        setCity('Дубна')
+        setCity('Moscow')
         setFamilyStatus('Всё сложно')
-        setBirthDate('25.11.2001')
+        setBirthDate('25.10.1998')
         setLangs(['Русский', 'Английский', 'Немецкий'])
     }, [])
 
@@ -51,7 +29,7 @@ const ProfileAboutWidget = () => {
             <ProfileAboutModel title='Семейный статус:' text={familyStatus} />
             <ProfileAboutModel title='Дата рождения:' text={birthDate} />
 
-            <ProfileAboutModel2 title='Языки:' values={langs} />
+            <ProfileManyModel title='Языки:' values={langs} />
         </div>
     )   
 }
